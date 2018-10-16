@@ -4,14 +4,17 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
 import cz.fi.muni.pa165.soccermanager.data.DummyObject;
 
 public class SoccerManagerDAOModuleMain {
+    private static final Logger LOG = LoggerFactory.getLogger(SoccerManagerDAOModuleMain.class);
 
 	public static void main(String[] args) {
-		System.out.println("SoccerManagerDAOModuleMain main");
+		LOG.info("SoccerManagerDAOModuleMain main starting");
 		
 		AnnotationConfigApplicationContext appContext = new AnnotationConfigApplicationContext(InMemoryDatabaseSpring.class);
 
@@ -38,8 +41,8 @@ public class SoccerManagerDAOModuleMain {
 			dummy.setName("TestObject");
 			
 			em.persist(dummy);
-			System.out.println("Dummy id = "+dummy.getId());
-			System.out.println("Dummy name = "+dummy.getName());
+			LOG.info("Dummy id = "+dummy.getId());
+			LOG.info("Dummy name = "+dummy.getName());
 
 			em.getTransaction().commit();
 		} finally { 
