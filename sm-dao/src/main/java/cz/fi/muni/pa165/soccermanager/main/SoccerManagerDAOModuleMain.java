@@ -1,4 +1,4 @@
-package cz.fi.muni.soccermanager.main;
+package cz.fi.muni.pa165.soccermanager.main;
 
 public class SoccerManagerDAOModuleMain {
 
