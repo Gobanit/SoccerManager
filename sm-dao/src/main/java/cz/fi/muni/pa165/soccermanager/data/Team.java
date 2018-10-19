@@ -1,10 +1,8 @@
 package cz.fi.muni.pa165.soccermanager.data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Domain Entity for representing soccer team
@@ -27,11 +25,10 @@ public class Team {
 	
 	@Column
 	private String country;
-	
-// TODO MiRa uncomment after Player entity exists
-//	@OneToMany
-//	@JoinColumn(name = "TEAM_ID")
-//	private List<Player> players = new ArrayList<>();
+
+	@OneToMany
+	@JoinColumn(name = "team_id")
+	private List<SoccerPlayer> players = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -65,14 +62,13 @@ public class Team {
 		this.country = country;
 	}
 
-// TODO MiRa uncomment after Player entity exists
-//	public List<Player> getPlayers() {
-//		return players;
-//	}
-//
-//	public void setPlayers(List<Player> players) {
-//		this.players = players;
-//	}
+	public List<SoccerPlayer> getPlayers() {
+		return players;
+	}
+
+	public void setPlayers(List<SoccerPlayer> players) {
+		this.players = players;
+	}
 	
 	
 }
