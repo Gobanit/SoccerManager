@@ -28,13 +28,19 @@ public interface TeamDAO {
 	public Team findById(Long id);
 	
 	/**
-	 * Saves the team into database or updates it, if already exists.
+	 * Creates new team in database.
 	 * @param team - team to save
-	 * @return saved team. Due to technical implementation, could be 
-	 * other instance than the team instance passed to method as parameter.
-	 * Especially when the updating already existing team.
 	 */
-	public Team saveOrUpdate(Team team);
+	public void create(Team team);
+	
+	/**
+	 * Updates team ind database and returns the updated instance
+	 * @param team - team with new values
+	 * @return saved team. Due to technical implementation, it is
+	 * the other instance than the team instance passed to method 
+	 * as parameter.
+	 */
+	public Team update(Team team);
 	
 	/**
 	 * Removes the team from database
