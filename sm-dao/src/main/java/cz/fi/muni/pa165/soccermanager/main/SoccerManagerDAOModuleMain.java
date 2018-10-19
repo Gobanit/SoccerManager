@@ -19,10 +19,14 @@ public class SoccerManagerDAOModuleMain {
 			appContext = new AnnotationConfigApplicationContext();
 			appContext.register(PersistenceBeansConfig.class);
 			appContext.register(DAOBeansConfig.class);
-			appContext.refresh();
+			appContext.refresh();			
 		} finally {
 			if(appContext != null) appContext.close();
 		}
 	}
+	
+	
+
+
 
 }
