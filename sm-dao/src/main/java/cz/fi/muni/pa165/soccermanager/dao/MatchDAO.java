@@ -3,7 +3,6 @@ package cz.fi.muni.pa165.soccermanager.dao;
 import java.util.List;
 
 import cz.fi.muni.pa165.soccermanager.data.Match;
-import cz.fi.muni.pa165.soccermanager.data.User;
 
 /**
  * DAO layer for Match entity.
