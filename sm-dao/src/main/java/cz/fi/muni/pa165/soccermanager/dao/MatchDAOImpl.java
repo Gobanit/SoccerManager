@@ -22,25 +22,25 @@ public class MatchDAOImpl implements MatchDAO {
     @Transactional
     @Override
     public void save(Match match) {
-		entityManager.persist(match);
-	}
+    	entityManager.persist(match);
+    }
 
     @Transactional
     @Override
     public void delete(Match match) {
     	entityManager.remove(match);
-	}
+    }
 
     @Transactional
     @Override
     public Match findById(Long id) {
     	return entityManager.find(Match.class, id);
-	}
+    }
 
     @Transactional
     @Override
     public List<Match> findAll() {
     	return entityManager.createQuery("from Match", Match.class).getResultList();
-	}
+    }
 
 }
