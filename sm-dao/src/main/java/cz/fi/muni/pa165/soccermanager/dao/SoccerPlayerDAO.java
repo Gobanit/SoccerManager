@@ -23,14 +23,14 @@ public interface SoccerPlayerDAO {
 	 * @param player - soccer player to create
 	 * @return created player.
 	 */
-	public SoccerPlayer create(SoccerPlayer player);
+	public void create(SoccerPlayer player);
 
 	/**
 	 * Update the soccer player in database.
 	 * @param player - soccer player to update
 	 * @return updated player.
 	 */
-	public SoccerPlayer update(SoccerPlayer player);
+	public void update(SoccerPlayer player);
 
 	/**
 	 * Removes the soccer player from database
