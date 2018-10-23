@@ -1,7 +1,7 @@
 package cz.fi.muni.pa165.soccermanager.data;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * Domain Entity for representing match
@@ -18,7 +18,7 @@ public class Match {
 	private Long id;
 	
 	@Column
-	private Timestamp date;
+	private LocalDateTime date;
 	
 	@Column
 	private Integer homeTeamGoals;
@@ -42,11 +42,11 @@ public class Match {
 		this.id = id;
 	}
 
-	public Timestamp getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
 
-	public void setDate(Timestamp date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
 
