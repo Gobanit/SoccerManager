@@ -1,6 +1,8 @@
 package cz.fi.muni.pa165.soccermanager.data;
 
 import javax.persistence.*;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +28,9 @@ public class Team {
 	
 	@Column
 	private String country;
+	
+	@Column
+	private BigDecimal budget;
 
 	@OneToMany
 	@JoinColumn(name = "team_id")
@@ -81,6 +86,14 @@ public class Team {
 		p.setTeam(null);
 	}
 
+	public BigDecimal getBudget() {
+		return budget;
+	}
+
+	public void setBudget(BigDecimal budget) {
+		this.budget = budget;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -130,7 +143,7 @@ public class Team {
 	@Override
 	public String toString() {
 		return "Team [id=" + getId() + ", clubName=" + getClubName() + ", championshipName=" + getChampionshipName() + ", country="
-				+ getCountry() + ", players=" + getPlayers() + "]";
+				+ getCountry() + ", players=" + getPlayers() + "budget=" + budget + "]";
 	}
 	
 	
