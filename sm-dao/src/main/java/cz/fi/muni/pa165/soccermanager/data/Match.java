@@ -25,6 +25,14 @@ public class Match {
 	
 	@Column
 	private Integer awayTeamGoals;
+	
+	@ManyToOne
+	@JoinColumn(name = "homeTeam_id")
+	private Team homeTeam;
+	
+	@ManyToOne
+	@JoinColumn(name = "awayTeam_id")
+	private Team awayTeam;
 
 	public Long getId() {
 		return id;
@@ -57,13 +65,30 @@ public class Match {
 	public void setAwayTeamGoals(Integer awayTeamGoals) {
 		this.awayTeamGoals = awayTeamGoals;
 	}
+	
+	public Team getHomeTeam() {
+		return homeTeam;
+	}
+	
+	public void setHomeTeam(Team homeTeam) {
+		this.homeTeam = homeTeam;
+	}
+
+	public Team getAwayTeam() {
+		return awayTeam;
+	}
+
+	public void setAwayTeam(Team awayTeam) {
+		this.awayTeam = awayTeam;
+	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((awayTeam == null) ? 0 : awayTeam.hashCode());
 		result = prime * result + ((date == null) ? 0 : date.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((homeTeam == null) ? 0 : homeTeam.hashCode());
 		return result;
 	}
 
@@ -75,16 +100,23 @@ public class Match {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
+		
 		Match other = (Match) obj;
-		if (date == null) {
-			if (other.date != null)
+		
+		if (getAwayTeam() == null) {
+			if (other.getAwayTeam() != null)
 				return false;
-		} else if (!date.equals(other.date))
+		} else if (!getAwayTeam().equals(other.getAwayTeam()))
 			return false;
-		if (id == null) {
-			if (other.id != null)
+		if (getDate() == null) {
+			if (other.getDate() != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!getDate().equals(other.getDate()))
+			return false;
+		if (getHomeTeam() == null) {
+			if (other.getHomeTeam() != null)
+				return false;
+		} else if (!getHomeTeam().equals(other.getHomeTeam()))
 			return false;
 		return true;
 	}
