@@ -147,6 +147,7 @@ public class SoccerPlayerDAOTest extends AbstractTestNGSpringContextTests {
 		Team t = new Team();
 		t.setClubName("Arsenal");
 		t.setChampionshipName("Premier League");
+		t.setCountry("England");
 		sp.setTeam(t);		
 		em.persist(t);
 		
