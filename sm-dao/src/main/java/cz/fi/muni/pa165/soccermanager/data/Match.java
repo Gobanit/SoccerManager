@@ -81,14 +81,14 @@ public class Match {
 	public void setAwayTeam(Team awayTeam) {
 		this.awayTeam = awayTeam;
 	}
-
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((awayTeam == null) ? 0 : awayTeam.hashCode());
-		result = prime * result + ((date == null) ? 0 : date.hashCode());
-		result = prime * result + ((homeTeam == null) ? 0 : homeTeam.hashCode());
+		result = prime * result + ((getAwayTeam() == null) ? 0 : getAwayTeam().hashCode());
+		result = prime * result + ((getDate() == null) ? 0 : getDate().hashCode());
+		result = prime * result + ((getHomeTeam() == null) ? 0 : getHomeTeam().hashCode());
 		return result;
 	}
 
@@ -98,7 +98,7 @@ public class Match {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Match))
 			return false;
 		
 		Match other = (Match) obj;
@@ -124,6 +124,7 @@ public class Match {
 	@Override
 	public String toString() {
 		return "Match [id=" + id + ", date=" + date + ", homeTeamGoals=" + homeTeamGoals + ", awayTeamGoals="
-				+ awayTeamGoals + "]";
+				+ awayTeamGoals + ", homeTeam=" + homeTeam + ", awayTeam=" + awayTeam + "]";
 	}
+	
 }
