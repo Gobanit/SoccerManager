@@ -6,6 +6,9 @@ import cz.fi.muni.pa165.soccermanager.data.enums.Position;
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
+import java.util.Date;
 
 import static javax.persistence.GenerationType.IDENTITY;
 @Entity(name = "SoccerPlayer")
@@ -22,8 +25,10 @@ public class SoccerPlayer {
 	@Column(name = "nationality", nullable = false)
 	private String nationality;
 
-	@Column(name = "age", nullable = false)
-	private Integer age;
+	@Column(name = "birth_date", nullable = false)
+	@NotNull
+	@Temporal(TemporalType.DATE)
+	private Date birthDate;
 
 	@Column(name = "rating", nullable = false)
 	@Max(100)
@@ -66,12 +71,12 @@ public class SoccerPlayer {
 		this.nationality = nationality;
 	}
 
-	public Integer getAge() {
-		return age;
+	public Date getBirthDate() {
+		return birthDate;
 	}
 
-	public void setAge(Integer age) {
-		this.age = age;
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
 	}
 
 	public Integer getRating() {
@@ -106,7 +111,8 @@ public class SoccerPlayer {
 		this.footed = footed;
 	}
 
-	@Override public boolean equals(Object o) {
+	@Override
+	public boolean equals(Object o) {
 		if (this == o)
 			return true;
 		if (!(o instanceof SoccerPlayer))
@@ -118,21 +124,23 @@ public class SoccerPlayer {
 			return false;
 		if (!getNationality().equals(that.getNationality()))
 			return false;
-		if (!getAge().equals(that.getAge()))
+		if (!getBirthDate().equals(that.getBirthDate()))
 			return false;
 		return getRating().equals(that.getRating());
 	}
 
-	@Override public int hashCode() {
-		int result = getPlayerName().hashCode();
-		result = 31 * result + getNationality().hashCode();
-		result = 31 * result + getAge().hashCode();
-		result = 31 * result + getRating().hashCode();
+	@Override
+	public int hashCode() {
+		int result = 1;
+		result = 31 * result +((playerName == null) ? 0 : playerName.hashCode());
+		result = 31 * result + ((nationality == null) ? 0 : nationality.hashCode());
+		result = 31 * result + ((birthDate == null) ? 0 : birthDate.hashCode());
+		result = 31 * result + ((rating == null) ? 0 : rating.hashCode());;
 		return result;
 	}
 
 	@Override public String toString() {
-		return "SoccerPlayer{" + "playerName='" + playerName + '\'' + ", nationality='" + nationality + '\'' + ", age=" + age + ", rating="
+		return "SoccerPlayer{" + "playerName='" + playerName + '\'' + ", nationality='" + nationality + '\'' + ", birthDate=" + birthDate + ", rating="
 				+ rating + '}';
 	}
 }

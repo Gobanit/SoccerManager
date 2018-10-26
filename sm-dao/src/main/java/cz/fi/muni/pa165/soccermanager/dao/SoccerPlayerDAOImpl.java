@@ -18,23 +18,28 @@ public class SoccerPlayerDAOImpl implements SoccerPlayerDAO {
 	@PersistenceContext
 	private EntityManager em;
 
-	@Override public List<SoccerPlayer> findAll() {
-		return em.createQuery("select sp from SoccerPlayer", SoccerPlayer.class).getResultList();
+	@Override
+	public List<SoccerPlayer> findAll() {
+		return em.createQuery("select sp from SoccerPlayer sp", SoccerPlayer.class).getResultList();
 	}
 
-	@Override public SoccerPlayer findById(Long id) {
+	@Override
+	public SoccerPlayer findById(Long id) {
 		return em.find(SoccerPlayer.class, id);
 	}
 
-	@Override public void create(SoccerPlayer player) {
+	@Override
+	public void create(SoccerPlayer player) {
 		em.persist(player);
 	}
 
-	@Override public void update(SoccerPlayer player) {
+	@Override
+	public void update(SoccerPlayer player) {
 		em.merge(player);
 	}
 
-	@Override public void delete(SoccerPlayer player) {
+	@Override
+	public void delete(SoccerPlayer player) {
 		em.remove(player);
 	}
 }
