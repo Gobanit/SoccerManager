@@ -1,7 +1,7 @@
 package cz.fi.muni.pa165.soccermanager.data;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 /**
  * Domain Entity for representing match
@@ -18,13 +18,21 @@ public class Match {
 	private Long id;
 	
 	@Column
-	private Timestamp date;
+	private LocalDateTime date;
 	
 	@Column
 	private Integer homeTeamGoals;
 	
 	@Column
 	private Integer awayTeamGoals;
+	
+	@ManyToOne
+	@JoinColumn(name = "homeTeam_id")
+	private Team homeTeam;
+	
+	@ManyToOne
+	@JoinColumn(name = "awayTeam_id")
+	private Team awayTeam;
 
 	public Long getId() {
 		return id;
@@ -34,11 +42,11 @@ public class Match {
 		this.id = id;
 	}
 
-	public Timestamp getDate() {
+	public LocalDateTime getDate() {
 		return date;
 	}
 
-	public void setDate(Timestamp date) {
+	public void setDate(LocalDateTime date) {
 		this.date = date;
 	}
 
@@ -57,13 +65,30 @@ public class Match {
 	public void setAwayTeamGoals(Integer awayTeamGoals) {
 		this.awayTeamGoals = awayTeamGoals;
 	}
+	
+	public Team getHomeTeam() {
+		return homeTeam;
+	}
+	
+	public void setHomeTeam(Team homeTeam) {
+		this.homeTeam = homeTeam;
+	}
 
+	public Team getAwayTeam() {
+		return awayTeam;
+	}
+
+	public void setAwayTeam(Team awayTeam) {
+		this.awayTeam = awayTeam;
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((date == null) ? 0 : date.hashCode());
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((getAwayTeam() == null) ? 0 : getAwayTeam().hashCode());
+		result = prime * result + ((getDate() == null) ? 0 : getDate().hashCode());
+		result = prime * result + ((getHomeTeam() == null) ? 0 : getHomeTeam().hashCode());
 		return result;
 	}
 
@@ -73,18 +98,25 @@ public class Match {
 			return true;
 		if (obj == null)
 			return false;
-		if (getClass() != obj.getClass())
+		if (!(obj instanceof Match))
 			return false;
+		
 		Match other = (Match) obj;
-		if (date == null) {
-			if (other.date != null)
+		
+		if (getAwayTeam() == null) {
+			if (other.getAwayTeam() != null)
 				return false;
-		} else if (!date.equals(other.date))
+		} else if (!getAwayTeam().equals(other.getAwayTeam()))
 			return false;
-		if (id == null) {
-			if (other.id != null)
+		if (getDate() == null) {
+			if (other.getDate() != null)
 				return false;
-		} else if (!id.equals(other.id))
+		} else if (!getDate().equals(other.getDate()))
+			return false;
+		if (getHomeTeam() == null) {
+			if (other.getHomeTeam() != null)
+				return false;
+		} else if (!getHomeTeam().equals(other.getHomeTeam()))
 			return false;
 		return true;
 	}
@@ -92,6 +124,7 @@ public class Match {
 	@Override
 	public String toString() {
 		return "Match [id=" + id + ", date=" + date + ", homeTeamGoals=" + homeTeamGoals + ", awayTeamGoals="
-				+ awayTeamGoals + "]";
+				+ awayTeamGoals + ", homeTeam=" + homeTeam + ", awayTeam=" + awayTeam + "]";
 	}
+	
 }

@@ -20,13 +20,13 @@ public class Team {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 	
-	@Column
+	@Column(nullable = false)
 	private String clubName;
 	
-	@Column
+	@Column(nullable = false)
 	private String championshipName;
 	
-	@Column
+	@Column(nullable = false)
 	private String country;
 	
 	@Column
