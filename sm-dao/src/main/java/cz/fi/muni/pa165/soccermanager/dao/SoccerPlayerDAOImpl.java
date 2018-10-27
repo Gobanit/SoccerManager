@@ -12,29 +12,43 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+/**
+ * DAO implementation for soccer player
+ * @author Dominik Pilar
+ *
+ */
 @Repository
 public class SoccerPlayerDAOImpl implements SoccerPlayerDAO {
 
 	@PersistenceContext
 	private EntityManager em;
 
-	@Override public List<SoccerPlayer> findAll() {
-		return em.createQuery("select sp from SoccerPlayer", SoccerPlayer.class).getResultList();
+	@Override
+	public List<SoccerPlayer> findAll() {
+		return em.createQuery("select sp from SoccerPlayer sp", SoccerPlayer.class).getResultList();
 	}
 
-	@Override public SoccerPlayer findById(Long id) {
+	@Override public List<SoccerPlayer> findAllFreePlayers() {
+		return em.createQuery("select sp from SoccerPlayer sp where sp.team is null").getResultList();
+	}
+
+	@Override
+	public SoccerPlayer findById(Long id) {
 		return em.find(SoccerPlayer.class, id);
 	}
 
-	@Override public void create(SoccerPlayer player) {
+	@Override
+	public void create(SoccerPlayer player) {
 		em.persist(player);
 	}
 
-	@Override public void update(SoccerPlayer player) {
+	@Override
+	public void update(SoccerPlayer player) {
 		em.merge(player);
 	}
 
-	@Override public void delete(SoccerPlayer player) {
+	@Override
+	public void delete(SoccerPlayer player) {
 		em.remove(player);
 	}
 }
