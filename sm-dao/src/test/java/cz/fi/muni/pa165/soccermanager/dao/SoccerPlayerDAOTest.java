@@ -3,6 +3,7 @@
  */
 package cz.fi.muni.pa165.soccermanager.dao;
 
+import java.util.Calendar;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -31,8 +32,8 @@ import cz.fi.muni.pa165.soccermanager.main.PersistenceBeansConfig;
  * @author Michal Randak
  *
  */
-
-@ContextConfiguration(classes = {PersistenceBeansConfig.class, DAOBeansConfig.class })
+@Transactional
+@ContextConfiguration(classes = {DAOBeansConfig.class })
 @TestExecutionListeners(TransactionalTestExecutionListener.class)
 public class SoccerPlayerDAOTest extends AbstractTestNGSpringContextTests {
 
@@ -43,7 +44,6 @@ public class SoccerPlayerDAOTest extends AbstractTestNGSpringContextTests {
 	private SoccerPlayerDAO playerDAO;
 	
 	@Test
-	@Transactional
 	public void testCreate() {
 		// generate some player
 		SoccerPlayer sp = generateDummyPlayer("Thierry Henry");		
@@ -64,7 +64,6 @@ public class SoccerPlayerDAOTest extends AbstractTestNGSpringContextTests {
 	}
 	
 	@Test
-	@Transactional
 	public void testFindAll() {
 		// prepare data
 		SoccerPlayer sp1 = generateDummyPlayer("Ronaldinho");	
@@ -90,7 +89,6 @@ public class SoccerPlayerDAOTest extends AbstractTestNGSpringContextTests {
 	}
 	
 	@Test
-	@Transactional
 	public void testUpdate() {
 		// prepare data
 		SoccerPlayer sp = generateDummyPlayer("Thierry Henry");		
@@ -113,7 +111,6 @@ public class SoccerPlayerDAOTest extends AbstractTestNGSpringContextTests {
 	}
 	
 	@Test
-	@Transactional
 	public void testRemove() {
 		// prepare data
 		SoccerPlayer sp = generateDummyPlayer("Thierry Henry");		
@@ -130,7 +127,6 @@ public class SoccerPlayerDAOTest extends AbstractTestNGSpringContextTests {
 	}
 	
 	@Test(expectedExceptions=PersistenceException.class)
-	@Transactional
 	public void nullPlayerNameNotAllowed(){
 		// generate player with null name
 		SoccerPlayer sp = generateDummyPlayer(null);
@@ -140,7 +136,6 @@ public class SoccerPlayerDAOTest extends AbstractTestNGSpringContextTests {
 	}
 	
 	@Test
-	@Transactional
 	public void createPlayerWithTeam(){
 		// prepare data
 		SoccerPlayer sp = generateDummyPlayer("Thierry Henry");
@@ -161,6 +156,31 @@ public class SoccerPlayerDAOTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(t, found.getTeam());
 	}
 	
+	@Test
+	public void findFreePlayers() {
+		Team t = new Team();
+		t.setClubName("Some Team");
+		t.setChampionshipName("League");
+		t.setCountry("SVK");
+		SoccerPlayer sp1 = generateDummyPlayer("Aaa");
+		sp1.setTeam(t);
+		SoccerPlayer sp2 = generateDummyPlayer("Bbb");
+		SoccerPlayer sp3 = generateDummyPlayer("Ccc");
+		sp3.setTeam(t);
+		
+		em.persist(sp1);
+		em.persist(sp2);
+		em.persist(sp3);
+		em.persist(t);
+		
+		List<SoccerPlayer> players = playerDAO.findAllFreePlayers();
+		Assert.assertEquals(players.size(), 1);
+		Assert.assertEquals(players.contains(sp1), false);
+		Assert.assertEquals(players.contains(sp2), true);
+		Assert.assertEquals(players.contains(sp3), false);
+		
+	}
+	
 	/**
 	 * Used to generate some "dummy" player with required name 
 	 * but any values for other fields to fullfill notNull constraints
@@ -169,7 +189,9 @@ public class SoccerPlayerDAOTest extends AbstractTestNGSpringContextTests {
 		SoccerPlayer sp = new SoccerPlayer();
 		sp.setPlayerName(name);
 		sp.setPosition(Position.OFFENSE);
-		sp.setAge(10);
+		Calendar c = Calendar.getInstance();
+		c.set(1994, 11, 14);
+		sp.setBirthDate(c.getTime());
 		sp.setNationality("Fchrance");
 		sp.setFooted(Footed.RIGHT);
 		sp.setRating(97);
