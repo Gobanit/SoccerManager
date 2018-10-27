@@ -2,6 +2,8 @@ package cz.fi.muni.pa165.soccermanager.data;
 
 import cz.fi.muni.pa165.soccermanager.data.enums.Footed;
 import cz.fi.muni.pa165.soccermanager.data.enums.Position;
+import org.apache.commons.lang.time.DateUtils;
+import org.h2.util.DateTimeUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
@@ -124,7 +126,7 @@ public class SoccerPlayer {
 			return false;
 		if (!getNationality().equals(that.getNationality()))
 			return false;
-		if (!getBirthDate().equals(that.getBirthDate()))
+		if (!DateUtils.isSameDay(getBirthDate(),that.getBirthDate()))
 			return false;
 		return getRating().equals(that.getRating());
 	}

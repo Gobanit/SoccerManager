@@ -12,6 +12,11 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
+/**
+ * DAO implementation for soccer player
+ * @author Dominik Pilar
+ *
+ */
 @Repository
 public class SoccerPlayerDAOImpl implements SoccerPlayerDAO {
 
@@ -21,6 +26,10 @@ public class SoccerPlayerDAOImpl implements SoccerPlayerDAO {
 	@Override
 	public List<SoccerPlayer> findAll() {
 		return em.createQuery("select sp from SoccerPlayer sp", SoccerPlayer.class).getResultList();
+	}
+
+	@Override public List<SoccerPlayer> findAllFreePlayers() {
+		return em.createQuery("select sp from SoccerPlayer sp where sp.team is null").getResultList();
 	}
 
 	@Override
