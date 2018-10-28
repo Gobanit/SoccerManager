@@ -1,6 +1,7 @@
 package cz.fi.muni.pa165.soccermanager.dao;
 
 import cz.fi.muni.pa165.soccermanager.data.User;
+import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -11,6 +12,7 @@ import java.util.List;
  *
  * @author Lenka Horvathova
  */
+@Repository
 public class UserDAOImpl implements UserDAO {
 
     @PersistenceContext
@@ -33,7 +35,10 @@ public class UserDAOImpl implements UserDAO {
 
     @Override
     public User findByUserName(String userName) {
-        return entityManager.find(User.class, userName);
+        return entityManager
+                .createQuery("SELECT u FROM User u WHERE u.userName = :userName", User.class)
+                .setParameter("userName", userName)
+                .getSingleResult();
     }
 
     @Override

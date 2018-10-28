@@ -14,11 +14,11 @@ import java.util.Objects;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @NotNull
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String userName;
 
     @NotNull
@@ -27,6 +27,9 @@ public class User {
 
     @Column(columnDefinition = "boolean default false")
     private boolean admin;
+
+    @OneToOne
+    private Team team;
 
     public Long getId() {
         return id;
@@ -62,19 +65,35 @@ public class User {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return Objects.equals(getId(), user.getId()) &&
-                Objects.equals(getUserName(), user.getUserName());
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null) {
+            return false;
+        }
+
+        if (!(o instanceof User)) {
+            return false;
+        }
+
+        final User other = (User) o;
+
+        return Objects.equals(this.getUserName(), other.getUserName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId());
+        final int prime = 31;
+        int result = 1;
+
+        result = prime * result + ((this.getUserName() == null) ? 0 : this.getUserName().hashCode());
+
+        return result;
     }
 
-    @Override public String toString() {
+    @Override
+    public String toString() {
         return "User: { name: " + getUserName() + ", isAdmin: " + isAdmin() + " }";
     }
 }
