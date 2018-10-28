@@ -26,13 +26,13 @@ public interface MatchDAO {
      */
     public void delete(Match match);
     
-	/**
-	 * Update the match in database.
-	 * @param match - match to update
-	 * @return updated match.
-	 */
-	public Match update(Match match);
-	
+    /**
+     * Update the match in database.
+     * @param match - match to update
+     * @return updated match.
+     */
+    public Match update(Match match);
+    
     /**
      * Finds a match by its id.
      *

@@ -41,9 +41,9 @@ public class MatchDAOImpl implements MatchDAO {
     	return entityManager.createQuery("from Match", Match.class).getResultList();
     }
 
-	@Override
-	public Match update(Match match) {
-		return entityManager.merge(match);
-	}
+    @Override
+    public Match update(Match match) {
+    	return entityManager.merge(match);
+    }
 
 }
