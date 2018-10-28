@@ -63,6 +63,14 @@ public class User {
         this.admin = admin;
     }
 
+    public Team getTeam() {
+        return team;
+    }
+
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
