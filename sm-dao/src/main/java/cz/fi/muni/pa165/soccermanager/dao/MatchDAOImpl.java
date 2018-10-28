@@ -5,6 +5,8 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.springframework.stereotype.Repository;
+
 import cz.fi.muni.pa165.soccermanager.data.Match;
 
 /**
@@ -13,6 +15,7 @@ import cz.fi.muni.pa165.soccermanager.data.Match;
  * @author Michal Mazourek
  */
 
+@Repository
 public class MatchDAOImpl implements MatchDAO {
 
     @PersistenceContext
@@ -37,5 +40,10 @@ public class MatchDAOImpl implements MatchDAO {
     public List<Match> findAll() {
     	return entityManager.createQuery("from Match", Match.class).getResultList();
     }
+
+	@Override
+	public Match update(Match match) {
+		return entityManager.merge(match);
+	}
 
 }
