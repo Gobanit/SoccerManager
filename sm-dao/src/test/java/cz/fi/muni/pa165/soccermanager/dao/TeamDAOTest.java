@@ -100,18 +100,18 @@ public class TeamDAOTest extends AbstractTestNGSpringContextTests {
 	public void testTeamWithPlayers(){
 		SoccerPlayer p1 = new SoccerPlayer();
 		SoccerPlayer p2 = new SoccerPlayer();
-		team1.addPlayer(p1);
-		team1.addPlayer(p2);
+		
+		List<SoccerPlayer> players = new ArrayList<>();
+		players.add(p1);
+		players.add(p2);
+		
+		team1.setPlayers(players);
 		teamDAO.update(team1);
 		Team found = em.find(Team.class, team1.getId());
 		
-		List<SoccerPlayer> expected = new ArrayList<>();
-		expected.add(p1);
-		expected.add(p2);
-		
 		Assert.assertNotNull(found);
 		Assert.assertNotNull(found.getPlayers());
-		Assert.assertEquals(found.getPlayers(), expected);
+		Assert.assertEquals(found.getPlayers(), players);
 	}
 	
 }
