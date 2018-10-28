@@ -24,7 +24,6 @@ import cz.fi.muni.pa165.soccermanager.data.Team;
 import cz.fi.muni.pa165.soccermanager.data.enums.Footed;
 import cz.fi.muni.pa165.soccermanager.data.enums.Position;
 import cz.fi.muni.pa165.soccermanager.main.DAOBeansConfig;
-import cz.fi.muni.pa165.soccermanager.main.PersistenceBeansConfig;
 
 /**
  * Test for SoccerManagerDAO implementation class. 
@@ -43,6 +42,7 @@ public class SoccerPlayerDAOTest extends AbstractTestNGSpringContextTests {
 	@Inject
 	private SoccerPlayerDAO playerDAO;
 	
+		
 	@Test
 	public void testCreate() {
 		// generate some player
@@ -61,6 +61,32 @@ public class SoccerPlayerDAOTest extends AbstractTestNGSpringContextTests {
 		Assert.assertNotNull(found);
 		Assert.assertEquals(sp.getPlayerName(), found.getPlayerName());
 		Assert.assertEquals(sp, found);
+	}
+	
+	@Test
+	public void testFind() {
+		// prepare data
+		SoccerPlayer sp1 = generateDummyPlayer("Ronaldinho");	
+		em.persist(sp1);
+
+		// call DAO findAll method
+		SoccerPlayer found = playerDAO.findById(sp1.getId());		
+		
+		// check assertions
+		Assert.assertEquals(sp1, found);
+	}
+	
+	@Test
+	public void testFindNonExisting() {
+		// prepare data
+		SoccerPlayer sp1 = generateDummyPlayer("Ronaldinho");	
+		em.persist(sp1);
+
+		// call DAO findAll method
+		SoccerPlayer found = playerDAO.findById(sp1.getId()+1);		
+		
+		// check assertions
+		Assert.assertNull(found);
 	}
 	
 	@Test
