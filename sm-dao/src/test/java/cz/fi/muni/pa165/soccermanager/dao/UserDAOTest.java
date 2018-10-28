@@ -115,9 +115,9 @@ public class UserDAOTest extends AbstractTestNGSpringContextTests {
 
 	@Test
 	public void deleteUser() {
-		Assert.assertNotNull(user1.getId());
+		Assert.assertNotNull(userDAO.findById(user1.getId()));
 		userDAO.delete(user1);
-		Assert.assertNotNull(user1.getId());
+		Assert.assertNull(userDAO.findById(user1.getId()));
 	}
 
 }
