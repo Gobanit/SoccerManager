@@ -26,6 +26,13 @@ public interface UserDAO {
     public void delete(User user);
 
     /**
+     * Updates an existing user.
+     *
+     * @param user  a user to be updated
+     */
+    public void update(User user);
+
+    /**
      * Finds a user by his/her id.
      *
      * @param id    a user's id to search by
