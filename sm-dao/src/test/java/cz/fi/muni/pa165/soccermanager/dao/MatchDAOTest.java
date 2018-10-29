@@ -55,8 +55,8 @@ public class MatchDAOTest extends AbstractTestNGSpringContextTests {
         homeTeam.setCountry("Czech Republic");
         homeTeam.setBudget(new BigDecimal(10000000));
 
-        teamDAO.create(awayTeam);
-        teamDAO.create(homeTeam);
+        teamDAO.save(awayTeam);
+        teamDAO.save(homeTeam);
 
         match = new Match();
         match.setDate(DATE);
