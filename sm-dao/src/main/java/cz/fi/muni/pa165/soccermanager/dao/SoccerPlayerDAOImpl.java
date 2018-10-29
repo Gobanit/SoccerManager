@@ -38,7 +38,7 @@ public class SoccerPlayerDAOImpl implements SoccerPlayerDAO {
 	}
 
 	@Override
-	public void create(SoccerPlayer player) {
+	public void save(SoccerPlayer player) {
 		em.persist(player);
 	}
 

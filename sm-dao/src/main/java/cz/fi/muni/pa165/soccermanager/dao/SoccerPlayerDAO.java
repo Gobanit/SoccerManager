@@ -28,7 +28,7 @@ public interface SoccerPlayerDAO {
 	 * @param player - soccer player to create
 	 * @return created player.
 	 */
-	void create(SoccerPlayer player);
+	void save(SoccerPlayer player);
 
 	/**
 	 * Update the soccer player in database.
