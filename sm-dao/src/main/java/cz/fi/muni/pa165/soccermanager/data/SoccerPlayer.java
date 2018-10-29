@@ -3,13 +3,13 @@ package cz.fi.muni.pa165.soccermanager.data;
 import cz.fi.muni.pa165.soccermanager.data.enums.Footed;
 import cz.fi.muni.pa165.soccermanager.data.enums.Position;
 import org.apache.commons.lang.time.DateUtils;
-import org.h2.util.DateTimeUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 import static javax.persistence.GenerationType.IDENTITY;
@@ -29,8 +29,7 @@ public class SoccerPlayer {
 
 	@Column(name = "birth_date", nullable = false)
 	@NotNull
-	@Temporal(TemporalType.DATE)
-	private Date birthDate;
+	private LocalDate birthDate;
 
 	@Column(name = "rating", nullable = false)
 	@Max(100)
@@ -73,11 +72,11 @@ public class SoccerPlayer {
 		this.nationality = nationality;
 	}
 
-	public Date getBirthDate() {
+	public LocalDate getBirthDate() {
 		return birthDate;
 	}
 
-	public void setBirthDate(Date birthDate) {
+	public void setBirthDate(LocalDate birthDate) {
 		this.birthDate = birthDate;
 	}
 
@@ -126,7 +125,7 @@ public class SoccerPlayer {
 			return false;
 		if (!getNationality().equals(that.getNationality()))
 			return false;
-		if (!DateUtils.isSameDay(getBirthDate(),that.getBirthDate()))
+		if (!getBirthDate().equals(that.getBirthDate()))
 			return false;
 		return getRating().equals(that.getRating());
 	}
