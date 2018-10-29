@@ -54,8 +54,8 @@ public class TeamDAOTest extends AbstractTestNGSpringContextTests {
 		team2.setCountry("Czech Republic");
 		team2.setBudget(new BigDecimal(10000000));
 		
-		teamDAO.create(team1);
-		teamDAO.create(team2);
+		teamDAO.save(team1);
+		teamDAO.save(team2);
 	}
 	
 	@Test

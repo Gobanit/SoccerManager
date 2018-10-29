@@ -31,7 +31,7 @@ public interface TeamDAO {
 	 * Creates new team in database.
 	 * @param team - team to save
 	 */
-	public void create(Team team);
+	public void save(Team team);
 	
 	/**
 	 * Updates team ind database and returns the updated instance
