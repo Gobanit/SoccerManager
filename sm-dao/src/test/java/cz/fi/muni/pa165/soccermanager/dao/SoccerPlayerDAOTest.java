@@ -3,6 +3,7 @@
  */
 package cz.fi.muni.pa165.soccermanager.dao;
 
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class SoccerPlayerDAOTest extends AbstractTestNGSpringContextTests {
 		SoccerPlayer sp = generateDummyPlayer("Thierry Henry");		
 		
 		// call DAO create to persist it
-		playerDAO.create(sp);
+		playerDAO.save(sp);
 		
 		// player id should be already available
 		Assert.assertNotNull(sp.getId());
@@ -158,7 +159,7 @@ public class SoccerPlayerDAOTest extends AbstractTestNGSpringContextTests {
 		SoccerPlayer sp = generateDummyPlayer(null);
 		
 		// call DAO create method
-		playerDAO.create(sp);		
+		playerDAO.save(sp);		
 	}
 	
 	@Test
@@ -173,7 +174,7 @@ public class SoccerPlayerDAOTest extends AbstractTestNGSpringContextTests {
 		em.persist(t);
 		
 		// call DAO create method
-		playerDAO.create(sp);
+		playerDAO.save(sp);
 		
 		// check Assertions
 		SoccerPlayer found = em.find(SoccerPlayer.class, sp.getId());
@@ -215,9 +216,7 @@ public class SoccerPlayerDAOTest extends AbstractTestNGSpringContextTests {
 		SoccerPlayer sp = new SoccerPlayer();
 		sp.setPlayerName(name);
 		sp.setPosition(Position.OFFENSE);
-		Calendar c = Calendar.getInstance();
-		c.set(1994, 11, 14);
-		sp.setBirthDate(c.getTime());
+		sp.setBirthDate(LocalDate.of(1944, 12, 14));
 		sp.setNationality("Fchrance");
 		sp.setFooted(Footed.RIGHT);
 		sp.setRating(97);
