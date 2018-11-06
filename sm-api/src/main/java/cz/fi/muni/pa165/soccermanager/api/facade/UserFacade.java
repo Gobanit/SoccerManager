@@ -34,6 +34,15 @@ public interface UserFacade {
 	public UserDTO getUserById(Long userId);
 
 	/**
+	 * Finds user by its username.
+	 * 
+	 * @param username
+	 *            - username
+	 * @return found user or null if not existing
+	 */
+	public UserDTO getUserByUsername(String username);
+
+	/**
 	 * Registers new user
 	 * 
 	 * @param user
