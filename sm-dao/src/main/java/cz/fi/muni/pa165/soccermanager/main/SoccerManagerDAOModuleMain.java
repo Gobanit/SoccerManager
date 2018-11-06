@@ -4,6 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import cz.fi.muni.pa165.soccermanager.dao.config.DAOBeansConfig;
+import cz.fi.muni.pa165.soccermanager.dao.config.PersistenceBeansConfig;
+
 /**
  * @author Michal Randak
  *

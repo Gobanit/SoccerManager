@@ -1,8 +1,9 @@
 package cz.fi.muni.pa165.soccermanager.dao;
 
+import cz.fi.muni.pa165.soccermanager.dao.config.DAOBeansConfig;
 import cz.fi.muni.pa165.soccermanager.data.Match;
 import cz.fi.muni.pa165.soccermanager.data.Team;
-import cz.fi.muni.pa165.soccermanager.main.DAOBeansConfig;
+
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;

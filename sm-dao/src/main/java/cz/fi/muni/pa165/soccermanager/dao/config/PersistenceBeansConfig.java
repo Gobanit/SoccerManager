@@ -1,4 +1,4 @@
-package cz.fi.muni.pa165.soccermanager.main;
+package cz.fi.muni.pa165.soccermanager.dao.config;
 
 import java.sql.SQLException;
 

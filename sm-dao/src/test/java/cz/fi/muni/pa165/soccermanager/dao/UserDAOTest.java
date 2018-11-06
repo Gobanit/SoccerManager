@@ -1,8 +1,9 @@
 package cz.fi.muni.pa165.soccermanager.dao;
 
+import cz.fi.muni.pa165.soccermanager.dao.config.DAOBeansConfig;
+import cz.fi.muni.pa165.soccermanager.dao.config.PersistenceBeansConfig;
 import cz.fi.muni.pa165.soccermanager.data.User;
-import cz.fi.muni.pa165.soccermanager.main.DAOBeansConfig;
-import cz.fi.muni.pa165.soccermanager.main.PersistenceBeansConfig;
+
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;

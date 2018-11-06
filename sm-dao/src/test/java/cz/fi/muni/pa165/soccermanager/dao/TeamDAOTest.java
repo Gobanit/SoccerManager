@@ -17,9 +17,9 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import cz.fi.muni.pa165.soccermanager.dao.config.DAOBeansConfig;
 import cz.fi.muni.pa165.soccermanager.data.SoccerPlayer;
 import cz.fi.muni.pa165.soccermanager.data.Team;
-import cz.fi.muni.pa165.soccermanager.main.DAOBeansConfig;
 
 /**
  * Test for TeamDAO implementation class.

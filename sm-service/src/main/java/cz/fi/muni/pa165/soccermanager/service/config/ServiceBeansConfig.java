@@ -7,7 +7,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 
-import cz.fi.muni.pa165.soccermanager.main.DAOBeansConfig;
+import cz.fi.muni.pa165.soccermanager.dao.config.DAOBeansConfig;
 
 /**
  * @author Michal Randak

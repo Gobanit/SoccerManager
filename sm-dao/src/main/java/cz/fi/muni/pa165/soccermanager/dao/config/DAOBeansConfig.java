@@ -1,7 +1,7 @@
 /**
  * 
  */
-package cz.fi.muni.pa165.soccermanager.main;
+package cz.fi.muni.pa165.soccermanager.dao.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
