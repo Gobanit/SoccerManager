@@ -17,5 +17,10 @@
 			<artifactId>sm-dao</artifactId>
 			<version>${project.parent.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>cz.fi.muni.pa165.soccermanager</groupId>
+			<artifactId>sm-api</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
 	</dependencies>
 </project>
