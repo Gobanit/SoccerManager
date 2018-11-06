@@ -10,6 +10,8 @@
 	<description>Project to wrap all the relevant modules</description>
 	<modules>
 		<module>sm-dao</module>
+		<module>sm-service</module>
+		<module>sm-api</module>
 	</modules>
 
 	<properties>

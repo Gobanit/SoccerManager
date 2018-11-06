@@ -20,11 +20,11 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import cz.fi.muni.pa165.soccermanager.dao.config.DAOBeansConfig;
 import cz.fi.muni.pa165.soccermanager.data.SoccerPlayer;
 import cz.fi.muni.pa165.soccermanager.data.Team;
 import cz.fi.muni.pa165.soccermanager.data.enums.Footed;
 import cz.fi.muni.pa165.soccermanager.data.enums.Position;
-import cz.fi.muni.pa165.soccermanager.main.DAOBeansConfig;
 
 /**
  * Test for SoccerManagerDAO implementation class. 

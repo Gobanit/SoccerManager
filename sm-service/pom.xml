@@ -1,0 +1,26 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>cz.fi.muni.pa165.soccermanager</groupId>
+		<artifactId>sm-parent</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
+	<artifactId>sm-service</artifactId>
+	<name>Soccer Manager Service Module</name>
+	<description>Module containing implementation of Facade layer and also interfaces and implementation of service layer.</description>
+
+	<dependencies>
+		<dependency>
+			<groupId>cz.fi.muni.pa165.soccermanager</groupId>
+			<artifactId>sm-dao</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>cz.fi.muni.pa165.soccermanager</groupId>
+			<artifactId>sm-api</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+	</dependencies>
+</project>
