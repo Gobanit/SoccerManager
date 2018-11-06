@@ -14,19 +14,20 @@ import java.util.List;
  *
  */
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames={"club_name", "championship_name", "country"}))
 public class Team {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 	
-	@Column(nullable = false)
+	@Column(name = "club_name", nullable = false, updatable = false)
 	private String clubName;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, updatable = false)
 	private String championshipName;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, updatable = false)
 	private String country;
 	
 	@Column
