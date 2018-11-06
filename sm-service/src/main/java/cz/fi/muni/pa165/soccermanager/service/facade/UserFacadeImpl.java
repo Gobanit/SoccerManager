@@ -5,6 +5,8 @@ package cz.fi.muni.pa165.soccermanager.service.facade;
 
 import java.util.List;
 
+import javax.inject.Named;
+
 import cz.fi.muni.pa165.soccermanager.api.dto.UserAuthenticateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserCreateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserDTO;
@@ -16,6 +18,7 @@ import cz.fi.muni.pa165.soccermanager.api.facade.UserFacade;
  * @author Michal Randak
  *
  */
+@Named
 public class UserFacadeImpl implements UserFacade {
 
 	@Override
