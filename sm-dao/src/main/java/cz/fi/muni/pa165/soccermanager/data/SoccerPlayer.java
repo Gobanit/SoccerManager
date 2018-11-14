@@ -1,8 +1,9 @@
 package cz.fi.muni.pa165.soccermanager.data;
 
-import cz.fi.muni.pa165.soccermanager.data.enums.Footed;
-import cz.fi.muni.pa165.soccermanager.data.enums.Position;
 import org.apache.commons.lang.time.DateUtils;
+
+import cz.fi.muni.pa165.soccermanager.api.enums.Footed;
+import cz.fi.muni.pa165.soccermanager.api.enums.Position;
 
 import javax.persistence.*;
 import javax.validation.constraints.Max;

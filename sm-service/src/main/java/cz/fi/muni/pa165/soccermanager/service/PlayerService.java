@@ -5,9 +5,9 @@ package cz.fi.muni.pa165.soccermanager.service;
 
 import java.util.List;
 
+import cz.fi.muni.pa165.soccermanager.api.enums.Footed;
+import cz.fi.muni.pa165.soccermanager.api.enums.Position;
 import cz.fi.muni.pa165.soccermanager.data.SoccerPlayer;
-import cz.fi.muni.pa165.soccermanager.data.enums.Footed;
-import cz.fi.muni.pa165.soccermanager.data.enums.Position;
 
 /**
  * Interface defining methods related to Player entity at service layer.

@@ -8,11 +8,11 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import cz.fi.muni.pa165.soccermanager.api.enums.Footed;
+import cz.fi.muni.pa165.soccermanager.api.enums.Position;
 import cz.fi.muni.pa165.soccermanager.api.exceptions.SoccerManagerServiceException;
 import cz.fi.muni.pa165.soccermanager.dao.SoccerPlayerDAO;
 import cz.fi.muni.pa165.soccermanager.data.SoccerPlayer;
-import cz.fi.muni.pa165.soccermanager.data.enums.Footed;
-import cz.fi.muni.pa165.soccermanager.data.enums.Position;
 
 /**
  * Implementation of {@link PlayerService}
