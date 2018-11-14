@@ -11,6 +11,8 @@ import javax.inject.Named;
 import cz.fi.muni.pa165.soccermanager.api.exceptions.SoccerManagerServiceException;
 import cz.fi.muni.pa165.soccermanager.dao.SoccerPlayerDAO;
 import cz.fi.muni.pa165.soccermanager.data.SoccerPlayer;
+import cz.fi.muni.pa165.soccermanager.data.enums.Footed;
+import cz.fi.muni.pa165.soccermanager.data.enums.Position;
 
 /**
  * Implementation of {@link PlayerService}
@@ -59,6 +61,16 @@ public class PlayerServiceImpl implements PlayerService {
 	@Override
 	public List<SoccerPlayer> findFreePlayers() {
 		return playerDAO.findAllFreePlayers();
+	}
+
+	@Override
+	public void changePlayerAttributes(SoccerPlayer player, Position pos, Footed foot, Integer rating) {
+		if(player.getTeam() != null) 
+			throw new SoccerManagerServiceException("Cannot change attributes of player already in team!");
+		
+		player.setPosition(pos);
+		player.setFooted(foot);
+		player.setRating(rating);
 	}
 
 }

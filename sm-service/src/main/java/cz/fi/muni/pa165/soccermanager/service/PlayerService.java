@@ -6,6 +6,8 @@ package cz.fi.muni.pa165.soccermanager.service;
 import java.util.List;
 
 import cz.fi.muni.pa165.soccermanager.data.SoccerPlayer;
+import cz.fi.muni.pa165.soccermanager.data.enums.Footed;
+import cz.fi.muni.pa165.soccermanager.data.enums.Position;
 
 /**
  * Interface defining methods related to Player entity at service layer.
@@ -53,5 +55,17 @@ public interface PlayerService {
 	 * @return list of players without team
 	 */
 	public List<SoccerPlayer> findFreePlayers();
+	
+	/**
+	 * Changes attributes of player not yet belonging to team. 
+	 * In case player already has a team {@link SoccerManagerServiceException} is thrown.
+	 * 
+	 * @param player - player to update
+	 * @param pos - player positition
+	 * @param foot - player stronger foot
+	 * @param rating - player rating
+	 */
+	public void changePlayerAttributes(SoccerPlayer player, Position pos, 
+			Footed foot, Integer rating);
 
 }
