@@ -12,11 +12,6 @@
 	<description>Module containing DTO classes and interfaces of Facade layer. </description>
 
 	<dependencies>
-		<dependency>
-			<groupId>cz.fi.muni.pa165.soccermanager</groupId>
-			<artifactId>sm-dao</artifactId>
-			<version>${project.parent.version}</version>
-		</dependency>
 	</dependencies>
 
 </project>

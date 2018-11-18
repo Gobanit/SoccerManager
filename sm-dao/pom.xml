@@ -17,6 +17,12 @@
 
 	<dependencies>
 
+		<dependency>
+			<groupId>cz.fi.muni.pa165.soccermanager</groupId>
+			<artifactId>sm-api</artifactId>
+			<version>${project.parent.version}</version>
+		</dependency>
+
 		<!-- Spring -->
 		<dependency>
 			<groupId>org.springframework</groupId>
