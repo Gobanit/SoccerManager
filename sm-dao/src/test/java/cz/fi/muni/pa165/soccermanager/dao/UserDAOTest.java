@@ -2,6 +2,7 @@ package cz.fi.muni.pa165.soccermanager.dao;
 
 import cz.fi.muni.pa165.soccermanager.dao.config.DAOBeansConfig;
 import cz.fi.muni.pa165.soccermanager.dao.config.PersistenceBeansConfig;
+import cz.fi.muni.pa165.soccermanager.data.Team;
 import cz.fi.muni.pa165.soccermanager.data.User;
 
 import org.hibernate.exception.ConstraintViolationException;
@@ -13,11 +14,13 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.transaction.annotation.Transactional;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -37,14 +40,34 @@ public class UserDAOTest extends AbstractTestNGSpringContextTests {
 	@Autowired
 	public UserDAO userDAO;
 
+	@Autowired
+	public TeamDAO teamDAO;
+
 	private User user1, user2;
+	private Team team1, team2;
 
 	@BeforeMethod
 	public void createUsers() {
+		team1 = new Team();
+		team1.setCountry("Slovakia");
+		team1.setClubName("Zilina");
+		team1.setChampionshipName("Fortuna liga");
+		team1.setBudget(BigDecimal.valueOf(500000));
+
+		team2 = new Team();
+		team2.setCountry("Slovakia");
+		team2.setClubName("Trnava");
+		team2.setChampionshipName("Fortuna liga");
+		team2.setBudget(BigDecimal.valueOf(1000000));
+
+		teamDAO.save(team1);
+		teamDAO.save(team2);
+
 		user1 = new User();
 		user1.setAdmin(true);
 		user1.setPasswordHash("hash");
 		user1.setUserName("user1");
+		user1.setTeam(team1);
 
 		user2 = new User();
 		user2.setAdmin(false);
@@ -112,6 +135,18 @@ public class UserDAOTest extends AbstractTestNGSpringContextTests {
 		u.setUserName("user1");
 		u.setAdmin(true);
 		Assert.assertEquals(found, u);
+	}
+
+	@Test
+	public void hasAlreadyTeamAssigned() {
+		boolean has = userDAO.isTeamAlreadyAssignedToUser(team1.getId());
+		Assert.assertEquals(true, has);
+	}
+
+	@Test
+	public void hasAlreadyTeamAssignedNot() {
+		boolean has = userDAO.isTeamAlreadyAssignedToUser(team2.getId());
+		Assert.assertEquals(false, has);
 	}
 
 	@Test
