@@ -1,7 +1,9 @@
 package cz.fi.muni.pa165.soccermanager.service.exceptions;
 
 public class ServiceLayerException extends RuntimeException {
-    public ServiceLayerException() {
+	private static final long serialVersionUID = -6163320087416860166L;
+
+	public ServiceLayerException() {
         super();
     }
 
