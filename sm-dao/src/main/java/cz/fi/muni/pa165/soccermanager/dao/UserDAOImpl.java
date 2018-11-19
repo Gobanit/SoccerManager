@@ -4,6 +4,7 @@ import cz.fi.muni.pa165.soccermanager.data.User;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
@@ -49,5 +50,19 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public List<User> findAll() {
         return entityManager.createQuery("SELECT u FROM User u", User.class).getResultList();
+    }
+
+    @Override
+    public boolean isTeamAlreadyAssignedToUser(Long teamId) {
+        try {
+            User u = entityManager
+                    .createQuery("SELECT u FROM User u INNER JOIN u.team t WHERE t.id = :teamId", User.class)
+                    .setParameter("teamId", teamId)
+                    .getSingleResult();
+            return true;
+        } catch (NoResultException ex) {
+            return false;
+        }
+
     }
 }

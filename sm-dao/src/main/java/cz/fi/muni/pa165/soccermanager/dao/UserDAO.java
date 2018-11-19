@@ -56,4 +56,6 @@ public interface UserDAO {
      * @return  a list of all users
      */
     public List<User> findAll();
+
+    public boolean isTeamAlreadyAssignedToUser(Long teamId);
 }
