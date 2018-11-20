@@ -15,7 +15,8 @@ import cz.fi.muni.pa165.soccermanager.dao.config.DAOBeansConfig;
  */
 @Configuration
 @Import(DAOBeansConfig.class)
-@ComponentScan(basePackages = "cz.fi.muni.pa165.soccermanager.service")
+@ComponentScan(basePackages = { "cz.fi.muni.pa165.soccermanager.service", 
+		"cz.fi.muni.pa165.soccermanager.service.facade" })
 public class ServiceBeansConfig {
 
 }

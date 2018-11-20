@@ -2,6 +2,7 @@ package cz.fi.muni.pa165.soccermanager.service;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 /**
@@ -9,6 +10,8 @@ import java.util.*;
  * @author Dominik Pilar
  *
  */
+
+@Service
 public class BeanMappingImpl implements BeanMapping {
     private ModelMapper modelMapper;
 
