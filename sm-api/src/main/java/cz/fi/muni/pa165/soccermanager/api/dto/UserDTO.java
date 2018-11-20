@@ -15,7 +15,7 @@ public class UserDTO {
 
 	private String username;
 
-	private String hashedPassword;
+	private String passwordHash;
 
 	private boolean isAdmin;
 
@@ -35,12 +35,12 @@ public class UserDTO {
 		this.username = username;
 	}
 
-	public String getHashedPassword() {
-		return hashedPassword;
+	public String getPasswordHash() {
+		return passwordHash;
 	}
 
-	public void setHashedPassword(String hashedPassword) {
-		this.hashedPassword = hashedPassword;
+	public void setPasswordHash(String passwordHash) {
+		this.passwordHash = passwordHash;
 	}
 
 	public boolean isAdmin() {
