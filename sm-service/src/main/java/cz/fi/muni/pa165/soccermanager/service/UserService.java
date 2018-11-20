@@ -1,8 +1,9 @@
 package cz.fi.muni.pa165.soccermanager.service;
 
-import cz.fi.muni.pa165.soccermanager.data.User;
-import cz.fi.muni.pa165.soccermanager.service.exceptions.ServiceLayerException;
 import java.util.List;
+
+import cz.fi.muni.pa165.soccermanager.api.exceptions.SoccerManagerServiceException;
+import cz.fi.muni.pa165.soccermanager.data.User;
 
 /**
  * interface for service layer of user
@@ -16,7 +17,7 @@ public interface UserService {
      * @param user to be registered in system
      * @param unencryptedPassword new unencrypted password for user
      * @return new registered user
-     * @throws ServiceLayerException if user already exists in system.
+     * @throws SoccerManagerServiceException if user already exists in system.
      */
     User registerNewUser(User user, String unencryptedPassword);
     /**
@@ -24,7 +25,7 @@ public interface UserService {
      *
      * @param user to be updated in system
      * @return updated user
-     * @throws ServiceLayerException if user is not found in system.
+     * @throws SoccerManagerServiceException if user is not found in system.
      */
     User updateUser(User user);
     /**
@@ -39,7 +40,7 @@ public interface UserService {
      *
      * @param userId id of the user to be loaded
      * @return user with given user id
-     * @throws ServiceLayerException if user is not found in system.
+     * @throws SoccerManagerServiceException if user is not found in system.
      */
     User getUserById(Long userId);
     /**
@@ -47,7 +48,7 @@ public interface UserService {
      *
      * @param userName name of the user to be loaded
      * @return user with given user name
-     * @throws ServiceLayerException if user is not found in system.
+     * @throws SoccerManagerServiceException if user is not found in system.
      */
     User getUserByUsername(String userName);
     /**
@@ -55,7 +56,7 @@ public interface UserService {
      *
      * @param userName name of the user to be authenticated
      * @return true if is authenticated, false otherwise
-     * @throws ServiceLayerException if user is not found in system.
+     * @throws SoccerManagerServiceException if user is not found in system.
      */
     boolean authenticateUser(String userName, String password);
     /**
@@ -69,7 +70,7 @@ public interface UserService {
      *
      * @param userName name of the user
      * @param teamId id of team to be assigned to the user
-     * @throws ServiceLayerException if user is not found in system, team is not found or team is already picked by someone else.
+     * @throws SoccerManagerServiceException if user is not found in system, team is not found or team is already picked by someone else.
      */
     void pickTeamForUser(String userName, Long teamId);
     /**
@@ -77,14 +78,14 @@ public interface UserService {
      *
      * @param userName name of the user to be checked if is admin
      * @return true user is admin, false otherwise
-     * @throws ServiceLayerException if user is not found in system.
+     * @throws SoccerManagerServiceException if user is not found in system.
      */
     boolean isAdmin(String userName);
     /**
      * Change administrator rights of user.
      *
      * @param userName name of the user to change administrator rights
-     * @throws ServiceLayerException if user is not found in system.
+     * @throws SoccerManagerServiceException if user is not found in system.
      */
     void changeAdministratorRights(String userName);
 }
