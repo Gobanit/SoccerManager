@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.mockito.Mockito;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import cz.fi.muni.pa165.soccermanager.data.Team;
@@ -21,12 +20,6 @@ import cz.fi.muni.pa165.soccermanager.data.User;
  */
 
 public class UserServiceBasicTest extends UserServiceAbstractTestBase {
-
-	
-	@BeforeMethod
-	public void fabricate() {
-		super.fabricateObjects();
-	}
 	
 	@Test
 	public void registerNewUser() {

@@ -7,7 +7,11 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
 
 import cz.fi.muni.pa165.soccermanager.dao.TeamDAO;
 import cz.fi.muni.pa165.soccermanager.dao.UserDAO;
@@ -22,7 +26,10 @@ import cz.fi.muni.pa165.soccermanager.data.User;
  *
  */
 public abstract class UserServiceAbstractTestBase {
+
+	@Mock
 	protected UserDAO userDAO;
+	@Mock
 	protected TeamDAO teamDAO;
 
 	protected UserService userService;
@@ -30,14 +37,14 @@ public abstract class UserServiceAbstractTestBase {
 	protected List<User> fabricatedUsers;
 	protected Team fabricatedTeam;
 	
+	@BeforeClass
+    public void setup() {
+        MockitoAnnotations.initMocks(this);
+        userService = new UserServiceImpl(userDAO, teamDAO);
+    }
 	
-	public UserServiceAbstractTestBase() {		
-		userDAO = Mockito.mock(UserDAO.class);
-		teamDAO = Mockito.mock(TeamDAO.class);
-		userService = new UserServiceImpl(userDAO, teamDAO);
-	}
-	
-	protected void fabricateObjects() {
+	@BeforeMethod
+	public void fabricateObjects() {
 		// create new objects before every test method
 		
 		fabricatedUsers = new ArrayList<>();

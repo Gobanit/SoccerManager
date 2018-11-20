@@ -7,7 +7,6 @@ import javax.persistence.EntityExistsException;
 import javax.persistence.PersistenceException;
 
 import org.mockito.Mockito;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import cz.fi.muni.pa165.soccermanager.api.exceptions.SoccerManagerServiceException;
@@ -22,11 +21,6 @@ import cz.fi.muni.pa165.soccermanager.data.User;
  *
  */
 public class UserServiceAdvancedTest extends UserServiceAbstractTestBase {
-		
-	@BeforeMethod
-	public void fabricate() {
-		super.fabricateObjects();
-	}
 	
 	@Test(expectedExceptions = EntityExistsException.class)
 	public void registerExistingUser() {
