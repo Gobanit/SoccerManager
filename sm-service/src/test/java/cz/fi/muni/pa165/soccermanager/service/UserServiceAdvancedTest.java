@@ -4,9 +4,11 @@
 package cz.fi.muni.pa165.soccermanager.service;
 
 import javax.persistence.EntityExistsException;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceException;
 
 import org.mockito.Mockito;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import cz.fi.muni.pa165.soccermanager.api.exceptions.SoccerManagerServiceException;
@@ -22,7 +24,7 @@ import cz.fi.muni.pa165.soccermanager.data.User;
  */
 public class UserServiceAdvancedTest extends UserServiceAbstractTestBase {
 	
-	@Test(expectedExceptions = EntityExistsException.class)
+	@Test(expectedExceptions = SoccerManagerServiceException.class)
 	public void registerExistingUser() {
 		User user = fabricatedUsers.get(0);
 
@@ -32,7 +34,7 @@ public class UserServiceAdvancedTest extends UserServiceAbstractTestBase {
 		userService.registerNewUser(user, "abcd");
 	}
 
-	@Test(expectedExceptions = PersistenceException.class)
+	@Test(expectedExceptions = SoccerManagerServiceException.class)
 	public void registerNonUniqueUser() {
 		User existing = fabricatedUsers.get(2);
 		User user = user(null, existing.getUserName(), "newPass", false, null);
@@ -45,7 +47,9 @@ public class UserServiceAdvancedTest extends UserServiceAbstractTestBase {
 
 	@Test(expectedExceptions = SoccerManagerServiceException.class)
 	public void authenticateNonExistingUser() {
-		User user = user(null, "abcdef", "aaa", false, null);
+		User user = user(null, "abcdef", "pass", false, null);
+		
+		Mockito.doThrow(NoResultException.class).when(userDAO).findByUserName(user.getUserName());
 
 		userService.authenticateUser(user.getUserName(), "pass");
 	}
@@ -72,6 +76,32 @@ public class UserServiceAdvancedTest extends UserServiceAbstractTestBase {
 		Mockito.when(userDAO.isTeamAlreadyAssignedToUser(team.getId())).thenReturn(true);
 
 		userService.pickTeamForUser(user.getUserName(), team.getId());
+	}
+	
+	
+	@Test
+	public void takeAdminRightsFromNonAdmin() {
+		User user = fabricatedUsers.get(0);
+		
+		mockFindForUser(user);
+		Mockito.when(userDAO.getNumberOfAdministrators()).thenReturn(1000l);
+
+		Assert.assertFalse(user.isAdmin());
+		userService.takeAdministratorRights(user.getUserName());
+		Assert.assertFalse(user.isAdmin());
+	}
+	
+	
+	@Test(expectedExceptions = SoccerManagerServiceException.class)
+	public void takeAdminRightsFromAllUsers() {
+		User user = fabricatedUsers.get(1);
+		
+		mockFindForUser(user);
+		Assert.assertTrue(user.isAdmin());
+		
+		Mockito.when(userDAO.getNumberOfAdministrators()).thenReturn(1l);
+		
+		userService.takeAdministratorRights(user.getUserName());
 	}
 
 }
