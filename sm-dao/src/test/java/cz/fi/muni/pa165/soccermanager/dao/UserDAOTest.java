@@ -103,6 +103,13 @@ public class UserDAOTest extends AbstractTestNGSpringContextTests {
 		Assert.assertEquals(user3.isAdmin(), false);
 	}
 
+	@Test
+	public void getNumberOfAdministrators() {
+		Long n = userDAO.getNumberOfAdministrators();
+
+		Assert.assertTrue(n.equals(1L));
+	}
+
 
 	@Test(expectedExceptions = PersistenceException.class)
 	public void createUserWithoutPassword() {

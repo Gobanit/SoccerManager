@@ -57,5 +57,17 @@ public interface UserDAO {
      */
     public List<User> findAll();
 
+    /**
+     * Chceck if team is already assigned to some user or not.
+     *
+     * @param teamId id of team to be checked
+     * @return  true if team is already assigned, false otherwise
+     */
     public boolean isTeamAlreadyAssignedToUser(Long teamId);
+    /**
+     * Gets number of administrators in system.
+     *
+     * @return  number of administrators
+     */
+    public Long getNumberOfAdministrators();
 }

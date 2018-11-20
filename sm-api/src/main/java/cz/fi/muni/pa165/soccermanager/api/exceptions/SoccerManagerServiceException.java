@@ -12,33 +12,29 @@ public class SoccerManagerServiceException extends RuntimeException {
 
 	private static final long serialVersionUID = 8297057445621104136L;
 
-	/**
-	 * see {@link RuntimeException}
-	 */
-	public SoccerManagerServiceException(String message, Throwable cause, boolean enableSuppression,
-			boolean writableStackTrace) {
-		super(message, cause, enableSuppression, writableStackTrace);
+	private final ErrorStatus status;
+
+	public SoccerManagerServiceException(ErrorStatus status) {
+		this.status = status;
 	}
 
-	/**
-	 * see {@link RuntimeException}
-	 */
-	public SoccerManagerServiceException(String message, Throwable cause) {
-		super(message, cause);
-	}
-
-	/**
-	 * see {@link RuntimeException}
-	 */
-	public SoccerManagerServiceException(String message) {
+	public SoccerManagerServiceException(String message, ErrorStatus status) {
 		super(message);
+		this.status = status;
 	}
 
-	/**
-	 * see {@link RuntimeException}
-	 */
-	public SoccerManagerServiceException(Throwable cause) {
-		super(cause);
+	public SoccerManagerServiceException(String message, Throwable ex, ErrorStatus status) {
+		super(message, ex);
+		this.status = status;
+	}
+
+	public SoccerManagerServiceException(Throwable ex, ErrorStatus status) {
+		super(ex);
+		this.status = status;
+	}
+
+	public ErrorStatus getCode() {
+		return status;
 	}
 
 	
