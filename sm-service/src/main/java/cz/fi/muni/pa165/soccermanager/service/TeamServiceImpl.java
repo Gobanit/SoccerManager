@@ -1,8 +1,10 @@
 package cz.fi.muni.pa165.soccermanager.service;
 
+import cz.fi.muni.pa165.soccermanager.api.exceptions.SoccerManagerServiceException;
 import cz.fi.muni.pa165.soccermanager.dao.TeamDAO;
 import cz.fi.muni.pa165.soccermanager.data.SoccerPlayer;
 import cz.fi.muni.pa165.soccermanager.data.Team;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
@@ -34,12 +36,6 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public Team update(Team team) {
-        teamDAO.update(team);
-        return team;
-    }
-
-    @Override
     public Team findById(Long id) {
         return teamDAO.findById(id);
     }
@@ -50,7 +46,7 @@ public class TeamServiceImpl implements TeamService {
     }
     
     @Override
-    public List<Team> FindByCountry(String country) {
+    public List<Team> findByCountry(String country) {
         List<Team> teamsInCountry = new ArrayList<>();
         
         for (Team team : this.findAll()) {
@@ -69,7 +65,7 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public Integer AverageTeamRating(Team team) {
+    public Integer averageTeamRating(Team team) {
         Integer teamRating = 0;
         Integer numberOfPlayers = 0;
         List<SoccerPlayer> teamPlayers = this.findAllPlayersInTeam(team);
@@ -79,6 +75,38 @@ public class TeamServiceImpl implements TeamService {
             numberOfPlayers++;
         }
         
+        if (numberOfPlayers == 0) {
+            throw new SoccerManagerServiceException("Team can not be empty"
+                    + "for evaluation of average team rating");
+        }
+        
         return (teamRating / numberOfPlayers);
+    }
+
+    @Override
+    public void addPlayerToTeam(Team team, SoccerPlayer player) {
+        if (player.getTeam() != null) {
+            throw new SoccerManagerServiceException("Can not add player that is already "
+                    + "belonging to another team");
+        }
+        
+        if (team.getPlayers().size() > 30) {
+            throw new SoccerManagerServiceException("Can not add player to "
+                    + "the team, where is more than 30 players");
+        }
+        team.addPlayer(player);
+        teamDAO.update(team);
+    }
+
+    @Override
+    public void removePlayerFromTeam(Team team, SoccerPlayer player) {
+        team.removePlayer(player);
+        teamDAO.update(team);
+    }
+
+    @Override
+    public void changeBudgetBy(Team team, BigDecimal budget) {
+        team.setBudget(budget);
+        teamDAO.update(team);
     }
 }

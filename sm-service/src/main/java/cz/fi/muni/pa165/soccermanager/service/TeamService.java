@@ -2,7 +2,9 @@ package cz.fi.muni.pa165.soccermanager.service;
 
 import cz.fi.muni.pa165.soccermanager.data.SoccerPlayer;
 import cz.fi.muni.pa165.soccermanager.data.Team;
+import java.math.BigDecimal;
 import java.util.List;
+import cz.fi.muni.pa165.soccermanager.api.exceptions.SoccerManagerServiceException;
 
 /**
  * Interface for service layer of Team 
@@ -26,14 +28,6 @@ public interface TeamService {
     public void remove(Team team);
     
     /**
-     * Update specific Team.
-     *
-     * @param team a team to be updated
-     * @return updated team
-     */
-    public Team update(Team team);
-    
-    /**
      * Finds a team by its ID.
      *
      * @param id an ID of a team to be find
@@ -55,7 +49,7 @@ public interface TeamService {
      * @param country a country where teams to be found.
      * @return  a list of all teams in specified country
      */
-    public List<Team> FindByCountry(String country);
+    public List<Team> findByCountry(String country);
     
     /**
      * Finds all Players that are playing for the specified Team.
@@ -71,6 +65,33 @@ public interface TeamService {
      *
      * @param team a team for average rating evaluation
      * @return  an integer represents average team rating
+     * @throws SoccerManagerServiceException if number of players is 0
      */
-    public Integer AverageTeamRating(Team team);
+    public Integer averageTeamRating(Team team);
+    
+    /**
+     * Adds player to team
+     *
+     * @param team a team for a new player
+     * @param player a new player to the team
+     * @throws SoccerManagerServiceException if player already exists in another team 
+     * or the team is already have enough players (30)
+     */
+    public void addPlayerToTeam(Team team, SoccerPlayer player);
+    
+    /**
+     * Remove player from a team
+     *
+     * @param team a team from which a specified player is going to be removed
+     * @param player a player to remove
+     */
+    public void removePlayerFromTeam(Team team, SoccerPlayer player);
+    
+    /**
+     * Change budget of the team
+     *
+     * @param team a team which budget is going to change
+     * @param budget a new team budget
+     */
+    public void changeBudgetBy(Team team, BigDecimal budget);
 }
