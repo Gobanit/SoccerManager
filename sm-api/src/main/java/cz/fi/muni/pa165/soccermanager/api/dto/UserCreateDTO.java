@@ -3,7 +3,7 @@
  */
 package cz.fi.muni.pa165.soccermanager.api.dto;
 
-//import javax.validation.constraints.NotNull;
+import javax.validation.constraints.NotNull;
 
 /**
  * Class serves to group fields needed for creating new user.

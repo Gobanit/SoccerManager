@@ -10,7 +10,6 @@ import java.util.List;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 
 import cz.fi.muni.pa165.soccermanager.dao.TeamDAO;
@@ -37,13 +36,13 @@ public abstract class UserServiceAbstractTestBase {
 	protected List<User> fabricatedUsers;
 	protected Team fabricatedTeam;
 	
-	@BeforeClass
+	@BeforeMethod
     public void setup() {
         MockitoAnnotations.initMocks(this);
         userService = new UserServiceImpl(userDAO, teamDAO);
+		fabricateObjects();
     }
 	
-	@BeforeMethod
 	public void fabricateObjects() {
 		// create new objects before every test method
 		

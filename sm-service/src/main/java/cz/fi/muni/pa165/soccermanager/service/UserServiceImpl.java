@@ -71,7 +71,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean authenticateUser(String userName, String password) {
-        return BCrypt.checkpw(password,  getUserByUsername(userName).getPasswordHash());
+    	User user = getUserByUsername(userName);
+    	if(user == null) throw new SoccerManagerServiceException("User with user name " + userName + " not exists.", ErrorStatus.RESOURCE_NOT_FOUND);
+    	return BCrypt.checkpw(password, user.getPasswordHash());
     }
 
     @Override

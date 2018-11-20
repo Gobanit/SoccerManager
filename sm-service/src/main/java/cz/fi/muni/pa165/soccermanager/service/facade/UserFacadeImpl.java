@@ -85,8 +85,8 @@ public class UserFacadeImpl implements UserFacade {
 
 	@Override
 	public void changeAdminRights(String userName, boolean adminRights) {
-		//TODO implement
-		throw new UnsupportedOperationException("Not implemented yet");
+		if(adminRights) userService.giveAdministratorRights(userName);
+		else userService.takeAdministratorRights(userName);
 	}
 
 }
