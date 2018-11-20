@@ -63,19 +63,28 @@ public interface UserFacade {
 	/**
 	 * Removes user from application
 	 * 
-	 * @param id
-	 *            - id of user to be deleted
+	 * @param name
+	 *            - name of user to be deleted
 	 */
-	public void deleteUser(Long id);
+	public void deleteUser(String name);
 
 	/**
 	 * Pick team for specified user
 	 * 
-	 * @param userId
-	 *            - id of user
+	 * @param userName
+	 *            - name of user
 	 * @param teamId
 	 *            - id of team
 	 */
-	public void pickTeamForUser(Long userId, Long teamId);
+	public void pickTeamForUser(String userName, Long teamId);
 
+	/**
+	 * Sets admin rights based on specified value
+	 * 
+	 * @param userName
+	 *            - name of user to be changed
+	 * @param admin
+	 *            - whether user should have admin rights
+	 */
+	public void changeAdminRights(String userName, boolean adminRights);
 }

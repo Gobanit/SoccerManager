@@ -6,12 +6,13 @@ import cz.fi.muni.pa165.soccermanager.dao.TeamDAO;
 import cz.fi.muni.pa165.soccermanager.dao.UserDAO;
 import cz.fi.muni.pa165.soccermanager.data.Team;
 import cz.fi.muni.pa165.soccermanager.data.User;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
-import java.util.List;
 /**
  * implementation of service layer for user
  * @author Dominik Pilar
