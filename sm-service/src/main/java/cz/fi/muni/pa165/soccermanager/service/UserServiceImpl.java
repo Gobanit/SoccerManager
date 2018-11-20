@@ -6,11 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import cz.fi.muni.pa165.soccermanager.api.exceptions.SoccerManagerServiceException;
 import cz.fi.muni.pa165.soccermanager.dao.TeamDAO;
 import cz.fi.muni.pa165.soccermanager.dao.UserDAO;
 import cz.fi.muni.pa165.soccermanager.data.Team;
 import cz.fi.muni.pa165.soccermanager.data.User;
-import cz.fi.muni.pa165.soccermanager.service.exceptions.ServiceLayerException;
 /**
  * implementation of service layer for user
  * @author Dominik Pilar
@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
     public User getUserById(Long userId) {
         User u = userDAO.findById(userId);
         if(u == null) {
-            throw new ServiceLayerException("User with id " + userId + " not found.");
+            throw new SoccerManagerServiceException("User with id " + userId + " not found.");
         }
         return u;
     }
@@ -52,7 +52,7 @@ public class UserServiceImpl implements UserService {
     public User getUserByUsername(String userName) {
         User u = userDAO.findByUserName(userName);
         if(u == null) {
-            throw new ServiceLayerException("User with user name " + userName + " not found.");
+            throw new SoccerManagerServiceException("User with user name " + userName + " not found.");
         }
         return u;
     }
@@ -81,11 +81,11 @@ public class UserServiceImpl implements UserService {
         User u = getUserByUsername(userName);
         Team t = teamDAO.findById(teamId);
         if(t == null) {
-            throw new ServiceLayerException("Team with id " + teamId + " not found.");
+            throw new SoccerManagerServiceException("Team with id " + teamId + " not found.");
 
         }
         if (userDAO.isTeamAlreadyAssignedToUser(teamId)) {
-            throw new ServiceLayerException("Team with id " + teamId + " is already assigned to other user.");
+            throw new SoccerManagerServiceException("Team with id " + teamId + " is already assigned to other user.");
         }
         u.setTeam(t);
         userDAO.update(u);

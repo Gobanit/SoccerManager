@@ -11,12 +11,7 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
-	<properties>
-		<springframework.version>5.1.0.RELEASE</springframework.version>
-	</properties>
-
 	<dependencies>
-
 		<dependency>
 			<groupId>cz.fi.muni.pa165.soccermanager</groupId>
 			<artifactId>sm-api</artifactId>
