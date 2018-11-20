@@ -3,6 +3,8 @@
  */
 package cz.fi.muni.pa165.soccermanager.api.dto;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Class used for user authentication.
  * 
@@ -11,7 +13,10 @@ package cz.fi.muni.pa165.soccermanager.api.dto;
  */
 public class UserAuthenticateDTO {
 
+	@NotNull
 	private String username;
+	
+	@NotNull
 	private String rawPassword;
 
 	public String getUsername() {

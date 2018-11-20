@@ -5,12 +5,17 @@ package cz.fi.muni.pa165.soccermanager.service.facade;
 
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.inject.Named;
+import javax.transaction.Transactional;
 
 import cz.fi.muni.pa165.soccermanager.api.dto.UserAuthenticateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserCreateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserDTO;
 import cz.fi.muni.pa165.soccermanager.api.facade.UserFacade;
+import cz.fi.muni.pa165.soccermanager.data.User;
+import cz.fi.muni.pa165.soccermanager.service.BeanMapping;
+import cz.fi.muni.pa165.soccermanager.service.UserService;
 
 /**
  * Implementation of {@link UserFacade}
@@ -18,42 +23,70 @@ import cz.fi.muni.pa165.soccermanager.api.facade.UserFacade;
  * @author Michal Randak
  *
  */
+
+@Transactional
 @Named
 public class UserFacadeImpl implements UserFacade {
 
+	private UserService userService;
+	private BeanMapping beanMapping;
+	
+	
+	/**
+	 * @param userService
+	 * @param beanMapping
+	 */
+	@Inject
+	public UserFacadeImpl(UserService userService, BeanMapping beanMapping) {
+		super();
+		this.userService = userService;
+		this.beanMapping = beanMapping;
+	}
+
 	@Override
 	public List<UserDTO> getAllUsers() {
-		throw new UnsupportedOperationException();
+		List<User> users = userService.getAllUsers(); 
+		return beanMapping.mapTo(users, UserDTO.class);
 	}
 
 	@Override
 	public UserDTO getUserById(Long userId) {
-		throw new UnsupportedOperationException();
+		User user = userService.getUserById(userId);
+		return beanMapping.mapTo(user, UserDTO.class);
 	}
 
 	@Override
 	public UserDTO getUserByUsername(String username) {
-		throw new UnsupportedOperationException();
+		User user = userService.getUserByUsername(username);
+		return beanMapping.mapTo(user, UserDTO.class);
 	}
 
 	@Override
-	public Long registerNewUser(UserCreateDTO user) {
-		throw new UnsupportedOperationException();
+	public Long registerNewUser(UserCreateDTO userDTO) {
+		User user = beanMapping.mapTo(userDTO, User.class);
+		user = userService.registerNewUser(user, userDTO.getRawPassword());
+		return user.getId();
 	}
 
 	@Override
 	public boolean authenticateUser(UserAuthenticateDTO userAuth) {
-		throw new UnsupportedOperationException();
+		return userService.authenticateUser(userAuth.getUsername(), userAuth.getRawPassword());
 	}
 
 	@Override
-	public void deleteUser(Long id) {
-		throw new UnsupportedOperationException();
+	public void deleteUser(String userName) {
+		userService.deleteUser(userName);
 	}
 
 	@Override
-	public void pickTeamForUser(Long userId, Long teamId) {
-		throw new UnsupportedOperationException();
+	public void pickTeamForUser(String userName, Long teamId) {
+		userService.pickTeamForUser(userName, teamId);
+	}
+
+	@Override
+	public void changeAdminRights(String userName, boolean adminRights) {
+		//TODO implement
+		throw new UnsupportedOperationException("Not implemented yet");
 	}
 
 }
