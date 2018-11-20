@@ -88,10 +88,11 @@ public interface TeamService {
     public void removePlayerFromTeam(Team team, SoccerPlayer player);
     
     /**
-     * Change budget of the team
+     * Change budget of the team by specified number
      *
      * @param team a team which budget is going to change
-     * @param budget a new team budget
+     * @param budgetChange a number that will change the budget (negative number
+     * for lowering, positive for adjusting)
      */
-    public void changeBudgetBy(Team team, BigDecimal budget);
+    public void changeBudgetBy(Team team, BigDecimal budgetChange);
 }

@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class TeamServiceImpl implements TeamService {
 
     private final TeamDAO teamDAO;
+    private final Integer maximalTeamSize = 30;
 
     @Inject
     public TeamServiceImpl(TeamDAO teamDAO) {
@@ -90,9 +91,9 @@ public class TeamServiceImpl implements TeamService {
                     + "belonging to another team");
         }
         
-        if (team.getPlayers().size() > 30) {
-            throw new SoccerManagerServiceException("Can not add player to "
-                    + "the team, where is more than 30 players");
+        if (team.getPlayers().size() > maximalTeamSize) {
+            throw new SoccerManagerServiceException("Can not add player to the"
+                    + "full team.");
         }
         team.addPlayer(player);
         teamDAO.update(team);
@@ -105,8 +106,8 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void changeBudgetBy(Team team, BigDecimal budget) {
-        team.setBudget(budget);
+    public void changeBudgetBy(Team team, BigDecimal budgetChange) {
+        team.setBudget(team.getBudget().add(budgetChange));
         teamDAO.update(team);
     }
 }
