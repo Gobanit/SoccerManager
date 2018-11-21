@@ -53,6 +53,20 @@ public interface MatchService {
     List<Match> findByTeam(Team team);
 
     /**
+     * Find all matches that have already taken place but haven't got set result.
+     *
+     * @return  a list of all matches awaiting for their results
+     */
+    List<Match> findAwaitingMatches();
+
+    /**
+     * Simulates a match by assigning a result of it.
+     *
+     * @param match a match to be simulated
+     */
+    void simulateMatch(Match match);
+
+    /**
      * Gets a winner of a specified match.
      *
      * @param match a match to get a winner of
@@ -68,7 +82,4 @@ public interface MatchService {
      * @return      a number of team's victories
      */
     int getVictoriesOfTeam(Team team);
-
-
-
 }
