@@ -65,4 +65,9 @@ public class UserDAOImpl implements UserDAO {
         }
 
     }
+
+    @Override
+    public Long getNumberOfAdministrators() {
+        return (Long) entityManager.createQuery("SELECT count(*) FROM User u WHERE u.admin = true").getSingleResult();
+    }
 }

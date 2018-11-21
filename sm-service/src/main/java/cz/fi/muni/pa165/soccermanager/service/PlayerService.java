@@ -57,8 +57,7 @@ public interface PlayerService {
 	public List<SoccerPlayer> findFreePlayers();
 	
 	/**
-	 * Changes attributes of player not yet belonging to team. 
-	 * In case player already has a team {@link SoccerManagerServiceException} is thrown.
+	 * Changes attributes of player. 
 	 * 
 	 * @param player - player to update
 	 * @param pos - player positition

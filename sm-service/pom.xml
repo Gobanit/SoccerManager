@@ -11,6 +11,7 @@
 	<name>Soccer Manager Service Module</name>
 	<description>Module containing implementation of Facade layer and also interfaces and implementation of service layer.</description>
 
+
 	<dependencies>
 		<dependency>
 			<groupId>cz.fi.muni.pa165.soccermanager</groupId>
@@ -25,7 +26,7 @@
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-core</artifactId>
-			<version>5.1.1.RELEASE</version>
+			<version>${springframework.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.modelmapper</groupId>
