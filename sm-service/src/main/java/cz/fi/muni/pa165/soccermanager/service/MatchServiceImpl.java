@@ -1,12 +1,14 @@
 package cz.fi.muni.pa165.soccermanager.service;
 
+import cz.fi.muni.pa165.soccermanager.api.exceptions.ErrorStatus;
+import cz.fi.muni.pa165.soccermanager.api.exceptions.SoccerManagerServiceException;
 import cz.fi.muni.pa165.soccermanager.dao.MatchDAO;
 import cz.fi.muni.pa165.soccermanager.data.Match;
 import cz.fi.muni.pa165.soccermanager.data.SoccerPlayer;
 import cz.fi.muni.pa165.soccermanager.data.Team;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.inject.Inject;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +21,12 @@ import java.util.List;
 @Service
 public class MatchServiceImpl implements MatchService {
 
-    @Autowired
-    private MatchDAO matchDAO;
+    private final MatchDAO matchDAO;
+
+    @Inject
+    public MatchServiceImpl(MatchDAO matchDAO) {
+        this.matchDAO = matchDAO;
+    }
 
     @Override
     public void create(Match match) {
@@ -29,12 +35,17 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public void remove(Match match) {
-        matchDAO.delete(match);
+        Match matchToBeDeleted = this.findById(match.getId());
+        matchDAO.delete(matchToBeDeleted);
     }
 
     @Override
     public Match findById(Long id) {
-        return matchDAO.findById(id);
+        Match foundMatch = matchDAO.findById(id);
+        if (foundMatch == null) {
+            throw new SoccerManagerServiceException("No match found with an ID: " + id, ErrorStatus.RESOURCE_NOT_FOUND);
+        }
+        return foundMatch;
     }
 
     @Override
@@ -69,6 +80,20 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public void simulateMatch(Match match) {
+        if (match.getAwayTeamGoals() != null || match.getHomeTeamGoals() != null) {
+            throw new SoccerManagerServiceException(
+                    "A match with an ID \"" + match.getId() + "\" has already been simulated!",
+                    ErrorStatus.MATCH_ALREADY_SIMULATED
+            );
+        }
+
+        if (LocalDateTime.now().isBefore(match.getDate())) {
+            throw new SoccerManagerServiceException(
+                    "A match with an ID \"" + match.getId() + "\" has not taken place yet!",
+                    ErrorStatus.MATCH_DATE_IN_THE_FUTURE
+            );
+        }
+
         int awayTeamChance = 0;
         int homeTeamChance = 0;
 
@@ -118,6 +143,13 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public Team getWinner(Match match) {
+        if (match.getAwayTeamGoals() == null || match.getHomeTeamGoals() == null) {
+            throw new SoccerManagerServiceException(
+                    "A match with an ID \"" + match.getId() + "\" has not been simulated yet!",
+                    ErrorStatus.MATCH_NOT_SIMULATED
+            );
+        }
+
         if (match.getHomeTeamGoals() > match.getAwayTeamGoals()) {
             return match.getHomeTeam();
         } else if (match.getHomeTeamGoals() < match.getAwayTeamGoals()) {
