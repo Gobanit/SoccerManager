@@ -1,19 +1,25 @@
 package cz.fi.muni.pa165.soccermanager.data;
 
-import org.apache.commons.lang.time.DateUtils;
+import static javax.persistence.GenerationType.IDENTITY;
 
-import cz.fi.muni.pa165.soccermanager.api.enums.Footed;
-import cz.fi.muni.pa165.soccermanager.api.enums.Position;
+import java.time.LocalDate;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
-import java.time.LocalDate;
-import java.util.Date;
-
-import static javax.persistence.GenerationType.IDENTITY;
+import cz.fi.muni.pa165.soccermanager.api.enums.Footed;
+import cz.fi.muni.pa165.soccermanager.api.enums.Position;
 @Entity(name = "SoccerPlayer")
 @Table(name = "soccer_player")
 public class SoccerPlayer {
