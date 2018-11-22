@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * DTO class for Team entity.
+ * DTO class for a list of Team entities.
  *
  * @author Lenka Horvathova
  */
@@ -26,12 +26,12 @@ public class TeamListDTO {
         return teams;
     }
 
-    public long getCount() {
-        return count;
-    }
-
     public void setTeams(List<TeamDTO> teams) {
         this.teams = teams;
+    }
+
+    public long getCount() {
+        return count;
     }
 
     public void setCount(long count) {
@@ -61,14 +61,13 @@ public class TeamListDTO {
 
         final TeamListDTO other = (TeamListDTO) object;
 
-        if (!Objects.equals(getCount(), other.count)) {
+        if (!Objects.equals(getCount(), other.getCount())) {
             return false;
         }
-        if (!Objects.equals(getTeams(), other.teams)) {
+        if (!Objects.equals(getTeams(), other.getTeams())) {
             return false;
         }
 
         return true;
     }
-
 }
