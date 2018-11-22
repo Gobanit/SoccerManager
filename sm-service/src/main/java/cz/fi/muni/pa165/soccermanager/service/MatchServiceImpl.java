@@ -162,9 +162,11 @@ public class MatchServiceImpl implements MatchService {
     public int getVictoriesOfTeam(Team team) {
         int victories = 0;
 
-        for (Match match : this.findAll()) {
-            if (this.getWinner(match).equals(team)) {
-                victories += 1;
+        for (Match match : this.findByTeam(team)) {
+            if (!(match.getAwayTeamGoals() == null || match.getHomeTeamGoals() == null)) {
+                if (this.getWinner(match).equals(team)) {
+                    victories += 1;
+                }
             }
         }
         return victories;
