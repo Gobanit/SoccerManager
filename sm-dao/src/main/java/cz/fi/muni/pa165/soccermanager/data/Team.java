@@ -77,7 +77,7 @@ public class Team {
 	}
 	
 	public void addPlayer(SoccerPlayer p) {
-		getPlayers().add(p);
+		players.add(p);
 		p.setTeam(this);
 	}
 	

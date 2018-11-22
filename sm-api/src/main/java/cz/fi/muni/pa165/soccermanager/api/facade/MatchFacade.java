@@ -1,32 +1,31 @@
-package cz.fi.muni.pa165.soccermanager.service;
+package cz.fi.muni.pa165.soccermanager.api.facade;
 
-import cz.fi.muni.pa165.soccermanager.data.Match;
-import cz.fi.muni.pa165.soccermanager.data.Team;
-import org.springframework.stereotype.Service;
+import cz.fi.muni.pa165.soccermanager.api.dto.MatchAwaitingDTO;
+import cz.fi.muni.pa165.soccermanager.api.dto.MatchCreateDTO;
+import cz.fi.muni.pa165.soccermanager.api.dto.MatchDTO;
+import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
 
 import java.util.List;
-
 /**
- * Service for operations with Match entity.
+ * interface of facade layer for match
+ * @author Dominik Pilar
  *
- * @author Lenka Horvathova
  */
-@Service
-public interface MatchService {
+public interface MatchFacade {
 
     /**
      * Creates an instance of a match.
      *
      * @param match a match to be created
      */
-    void create(Match match);
+    void create(MatchCreateDTO match);
 
     /**
      * Removes an instance of match.
      *
-     * @param match a match to be removed
+     * @param matchId if of match to be removed
      */
-    void remove(Match match);
+    void remove(Long matchId);
 
     /**
      * Finds a match by its ID.
@@ -35,51 +34,51 @@ public interface MatchService {
      * @return      an instance of a match;
      *              null, if not found
      */
-    Match findById(Long id);
+    MatchDTO findById(Long id);
 
     /**
      * Finds all matches.
      *
      * @return  a list of all matches
      */
-    List<Match> findAll();
+    List<MatchDTO> findAll();
 
     /**
      * Finds all matches that a specified team participated in.
      *
-     * @param team  a team to filter all matches by
+     * @param teamId  id of team to filter all matches by
      * @return      a list of all matches played by such a team
      */
-    List<Match> findByTeam(Team team);
+    List<MatchDTO> findByTeam(Long teamId);
 
     /**
      * Find all matches that have already taken place but haven't got set result.
      *
      * @return  a list of all matches awaiting for their results
      */
-    List<Match> findNotSimulatedMatches();
+    List<MatchAwaitingDTO> findAwaitingMatches();
 
     /**
      * Simulates a match by assigning a result of it.
      *
-     * @param match a match to be simulated
+     * @param matchId if of match to be simulated
      */
-    void simulateMatch(Match match);
+    void simulateMatch(Long matchId);
 
     /**
      * Gets a winner of a specified match.
      *
-     * @param match a match to get a winner of
+     * @param matchId id of match to get a winner of
      * @return      a team that won;
      *              null, if it was a draw
      */
-    Team getWinner(Match match);
+    TeamDTO getWinner(Long matchId);
 
     /**
      * Gets a number of team victories so far.
      *
-     * @param team  a team to count victories of
+     * @param teamId  id of team to count victories of
      * @return      a number of team's victories
      */
-    int getVictoriesOfTeam(Team team);
+    int getVictoriesOfTeam(Long teamId);
 }

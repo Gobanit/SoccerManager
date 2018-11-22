@@ -10,6 +10,7 @@ import javax.inject.Named;
 
 import cz.fi.muni.pa165.soccermanager.api.enums.Footed;
 import cz.fi.muni.pa165.soccermanager.api.enums.Position;
+import cz.fi.muni.pa165.soccermanager.api.exceptions.ErrorStatus;
 import cz.fi.muni.pa165.soccermanager.api.exceptions.SoccerManagerServiceException;
 import cz.fi.muni.pa165.soccermanager.dao.SoccerPlayerDAO;
 import cz.fi.muni.pa165.soccermanager.data.SoccerPlayer;
@@ -41,8 +42,7 @@ public class PlayerServiceImpl implements PlayerService {
 	@Override
 	public void removePlayer(SoccerPlayer player) {
 		if (player.getTeam() != null) {
-			// TODO consider remove from team here instead of exception throw
-			throw new SoccerManagerServiceException("Can not delete player belonging to existing team!");
+			throw new SoccerManagerServiceException("Can not delete player belonging to existing team!", ErrorStatus.PLAYER_IS_IN_TEAM);
 		}
 
 		playerDAO.delete(player);
@@ -65,9 +65,6 @@ public class PlayerServiceImpl implements PlayerService {
 
 	@Override
 	public void changePlayerAttributes(SoccerPlayer player, Position pos, Footed foot, Integer rating) {
-		if(player.getTeam() != null) 
-			throw new SoccerManagerServiceException("Cannot change attributes of player already in team!");
-		
 		player.setPosition(pos);
 		player.setFooted(foot);
 		player.setRating(rating);

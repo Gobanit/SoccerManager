@@ -1,11 +1,12 @@
 package cz.fi.muni.pa165.soccermanager.dao;
 
-import cz.fi.muni.pa165.soccermanager.dao.config.DAOBeansConfig;
-import cz.fi.muni.pa165.soccermanager.dao.config.PersistenceBeansConfig;
-import cz.fi.muni.pa165.soccermanager.data.Team;
-import cz.fi.muni.pa165.soccermanager.data.User;
+import java.math.BigDecimal;
+import java.util.List;
 
-import org.hibernate.exception.ConstraintViolationException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
@@ -14,14 +15,11 @@ import org.springframework.test.context.transaction.TransactionalTestExecutionLi
 import org.springframework.transaction.annotation.Transactional;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
-import java.math.BigDecimal;
-import java.util.List;
+import cz.fi.muni.pa165.soccermanager.dao.config.DAOBeansConfig;
+import cz.fi.muni.pa165.soccermanager.data.Team;
+import cz.fi.muni.pa165.soccermanager.data.User;
 
 /**
  * Test for UserDAO implementation class.
@@ -101,6 +99,13 @@ public class UserDAOTest extends AbstractTestNGSpringContextTests {
 
 		Assert.assertNotNull(user3.getId());
 		Assert.assertEquals(user3.isAdmin(), false);
+	}
+
+	@Test
+	public void getNumberOfAdministrators() {
+		Long n = userDAO.getNumberOfAdministrators();
+
+		Assert.assertTrue(n.equals(1L));
 	}
 
 

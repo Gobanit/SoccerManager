@@ -3,15 +3,20 @@
  */
 package cz.fi.muni.pa165.soccermanager.api.dto;
 
+import javax.validation.constraints.NotNull;
+
 /**
- * Class used for user authentication.
+ * Class used for holding user authentication data.
  * 
  * @author Michal Randak
  *
  */
 public class UserAuthenticateDTO {
 
+	@NotNull
 	private String username;
+	
+	@NotNull
 	private String rawPassword;
 
 	public String getUsername() {
