@@ -66,7 +66,7 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public List<Match> findAwaitingMatches() {
+    public List<Match> findNotSimulatedMatches() {
         List<Match> awaitingMatches = new ArrayList<>();
 
         for (Match match : this.findAll()) {

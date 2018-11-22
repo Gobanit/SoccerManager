@@ -64,7 +64,7 @@ public class MatchFacadeImpl implements MatchFacade {
 
     @Override
     public List<MatchAwaitingDTO> findAwaitingMatches() {
-        return beanMapping.mapTo(matchService.findAwaitingMatches(), MatchAwaitingDTO.class);
+        return beanMapping.mapTo(matchService.findNotSimulatedMatches(), MatchAwaitingDTO.class);
     }
 
     @Override
