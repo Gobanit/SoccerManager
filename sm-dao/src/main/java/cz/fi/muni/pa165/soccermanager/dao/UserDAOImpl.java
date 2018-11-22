@@ -55,10 +55,10 @@ public class UserDAOImpl implements UserDAO {
     @Override
     public boolean isTeamAlreadyAssignedToUser(Long teamId) {
         try {
-            User u = entityManager
-                    .createQuery("SELECT u FROM User u INNER JOIN u.team t WHERE t.id = :teamId", User.class)
-                    .setParameter("teamId", teamId)
-                    .getSingleResult();
+            entityManager
+            	.createQuery("SELECT u FROM User u INNER JOIN u.team t WHERE t.id = :teamId", User.class)
+            	.setParameter("teamId", teamId)
+            	.getSingleResult();
             return true;
         } catch (NoResultException ex) {
             return false;

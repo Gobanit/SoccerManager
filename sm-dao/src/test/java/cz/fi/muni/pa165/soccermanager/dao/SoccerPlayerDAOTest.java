@@ -4,7 +4,6 @@
 package cz.fi.muni.pa165.soccermanager.dao;
 
 import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.List;
 
 import javax.inject.Inject;
