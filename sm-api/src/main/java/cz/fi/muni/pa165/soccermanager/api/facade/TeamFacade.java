@@ -3,7 +3,6 @@ package cz.fi.muni.pa165.soccermanager.api.facade;
 import cz.fi.muni.pa165.soccermanager.api.dto.PlayerDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.TeamCreateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
-import cz.fi.muni.pa165.soccermanager.api.dto.TeamListDTO;
 
 import java.util.List;
 
@@ -33,7 +32,7 @@ public interface TeamFacade {
      *
      * @return a list of all teams
      */
-    TeamListDTO findAll();
+    List<TeamDTO> findAll();
 
     /**
      * Finds a team by its ID.
@@ -49,7 +48,7 @@ public interface TeamFacade {
      * @param country   a country to search by
      * @return          a list of teams from such a country
      */
-    TeamListDTO findByCountry(String country);
+    List<TeamDTO> findByCountry(String country);
 
     /**
      * Gets all players in a specified team.
