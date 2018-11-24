@@ -6,11 +6,6 @@ import cz.fi.muni.pa165.soccermanager.api.enums.Position;
 import java.time.LocalDate;
 import java.util.Objects;
 
-/**
- * DTO class for Player entity.
- *
- * @author Lenka Horvathova
- */
 public class PlayerDTO {
     private Long id;
     private String playerName;
