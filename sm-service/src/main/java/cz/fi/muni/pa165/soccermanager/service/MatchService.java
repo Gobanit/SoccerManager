@@ -57,7 +57,7 @@ public interface MatchService {
      *
      * @return  a list of all matches awaiting for their results
      */
-    List<Match> findAwaitingMatches();
+    List<Match> findNotSimulatedMatches();
 
     /**
      * Simulates a match by assigning a result of it.

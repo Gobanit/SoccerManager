@@ -151,7 +151,7 @@ public class MatchServiceTest {
     @Test
     public void findAwaitingMatches() {
         given(matchDAO.findAll()).willReturn(Arrays.asList(match2, match1));
-        List<Match> matches = matchService.findAwaitingMatches();
+        List<Match> matches = matchService.findNotSimulatedMatches();
 
         Assert.assertEquals(1, matches.size());
         Assert.assertTrue(matches.contains(match2));
