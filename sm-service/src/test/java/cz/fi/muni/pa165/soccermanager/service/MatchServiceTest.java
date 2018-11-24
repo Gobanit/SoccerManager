@@ -23,7 +23,10 @@ import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-
+/**
+ * @author Dominik Pilar
+ *
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class MatchServiceTest {
 
