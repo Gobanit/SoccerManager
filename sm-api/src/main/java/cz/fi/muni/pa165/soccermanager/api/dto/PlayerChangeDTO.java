@@ -22,5 +22,39 @@ public class PlayerChangeDTO {
     
     @NotNull
     private Integer rating;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Position getPosition() {
+        return position;
+    }
+
+    public void setPosition(Position position) {
+        this.position = position;
+    }
+
+    public Footed getFooted() {
+        return footed;
+    }
+
+    public void setFooted(Footed footed) {
+        this.footed = footed;
+    }
+
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+    
+    
     
 }

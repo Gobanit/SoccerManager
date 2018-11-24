@@ -14,20 +14,6 @@ public class PlayerDTO {
     private Position position;
     private Footed footed;
     
-    public PlayerDTO() {
-    }
-    
-    public PlayerDTO(Long id, String playerName, String nationality, LocalDate birthday, Integer rating, TeamDTO teamDTO, Position position, Footed footed) {
-        this.id = id;
-        this.playerName = playerName;
-        this.nationality = nationality;
-        this.birthday = birthday;
-        this.rating = rating;
-        this.teamDTO = teamDTO;
-        this.position = position;
-        this.footed = footed;
-    }
-    
     public Long getId() {
         return id;
     }
