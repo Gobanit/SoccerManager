@@ -1,38 +1,31 @@
 package cz.fi.muni.pa165.soccermanager.api.dto;
 
-import java.math.BigDecimal;
+import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
- * DTO class for Team entity.
+ * DTO class for a creation of Team entity.
  *
  * @author Lenka Horvathova
  */
-public class TeamDTO {
+public class TeamCreateDTO {
 
-    private Long id;
+    @NotNull
     private String clubName;
-    private String championshipName;
-    private String country;
-    private BigDecimal budget;
 
-    public TeamDTO() {
+    @NotNull
+    private String championshipName;
+
+    @NotNull
+    private String country;
+
+    public TeamCreateDTO() {
     }
 
-    public TeamDTO(Long id, String clubName, String championshipName, String country, BigDecimal budget) {
-        this.id = id;
+    public TeamCreateDTO(String clubName, String championshipName, String country) {
         this.clubName = clubName;
         this.championshipName = championshipName;
         this.country = country;
-        this.budget = budget;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getClubName() {
@@ -59,21 +52,12 @@ public class TeamDTO {
         this.country = country;
     }
 
-    public BigDecimal getBudget() {
-        return budget;
-    }
-
-    public void setBudget(BigDecimal budget) {
-        this.budget = budget;
-    }
-
     @Override
     public int hashCode() {
         int hash = 7;
         hash = 37 * hash + Objects.hashCode(getClubName());
         hash = 37 * hash + Objects.hashCode(getChampionshipName());
         hash = 37 * hash + Objects.hashCode(getCountry());
-        hash = 37 * hash + Objects.hashCode(getBudget());
 
         return hash;
     }
@@ -86,11 +70,11 @@ public class TeamDTO {
         if (object == null) {
             return false;
         }
-        if (!(object instanceof TeamDTO)) {
+        if (!(object instanceof TeamCreateDTO)) {
             return false;
         }
 
-        final TeamDTO other = (TeamDTO) object;
+        final TeamCreateDTO other = (TeamCreateDTO) object;
 
         if (!Objects.equals(getClubName(), other.getClubName())) {
             return false;
@@ -99,9 +83,6 @@ public class TeamDTO {
             return false;
         }
         if (!Objects.equals(getCountry(), other.getCountry())) {
-            return false;
-        }
-        if (!Objects.equals(getBudget(), other.getBudget())) {
             return false;
         }
 
