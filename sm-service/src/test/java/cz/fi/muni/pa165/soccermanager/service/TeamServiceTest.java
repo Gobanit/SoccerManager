@@ -33,10 +33,10 @@ public class TeamServiceTest {
     private TeamService teamService;
 
     @Rule
-    public ExpectedException thrown = ExpectedException.none();
+    private ExpectedException thrown = ExpectedException.none();
 
     @Mock
-    TeamDAO teamDAO;
+    private TeamDAO teamDAO;
 
     @Mock
     private Team fcb;
