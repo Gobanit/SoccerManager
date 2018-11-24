@@ -1,5 +1,6 @@
 package cz.fi.muni.pa165.soccermanager.service.facade;
 
+import cz.fi.muni.pa165.soccermanager.api.dto.PlayerChangeDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.PlayerCreateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.PlayerDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.PlayerFreeDTO;
@@ -59,9 +60,9 @@ public class PlayerFacadeImpl implements PlayerFacade {
     }
 
     @Override
-    public void changePlayerAttributes(PlayerDTO player, Position pos, Footed foot, Integer rating) {
-        playerService.changePlayerAttributes(beanMapping.mapTo(player, SoccerPlayer.class), 
-                pos, foot, rating);
+    public void changePlayerAttributes(PlayerChangeDTO player) {
+        playerService.changePlayerAttributes(playerService.findPlayerById(player.getId()), 
+                player.getPosition(), player.getFooted(), player.getRating());
     }
     
 }

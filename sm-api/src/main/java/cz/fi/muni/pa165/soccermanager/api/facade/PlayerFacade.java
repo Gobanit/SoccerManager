@@ -5,6 +5,7 @@
  */
 package cz.fi.muni.pa165.soccermanager.api.facade;
 
+import cz.fi.muni.pa165.soccermanager.api.dto.PlayerChangeDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.PlayerCreateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.PlayerDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.PlayerFreeDTO;
@@ -58,11 +59,7 @@ public interface PlayerFacade {
 	 * Changes attributes of player. 
 	 * 
 	 * @param player - player to update
-	 * @param pos - player position
-	 * @param foot - player stronger foot
-	 * @param rating - player rating
 	 */
-	public void changePlayerAttributes(PlayerDTO player, Position pos, 
-			Footed foot, Integer rating);
+	public void changePlayerAttributes(PlayerChangeDTO player);
 
 }
