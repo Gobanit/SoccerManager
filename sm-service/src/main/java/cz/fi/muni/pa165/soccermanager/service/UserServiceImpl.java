@@ -47,21 +47,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserByUsername(String userName) {
-        try {
-            return userDAO.findByUserName(userName);
-        } catch (NoResultException ex) {
+        User u = userDAO.findByUserName(userName);
+        if(u == null) {
             throw new SoccerManagerServiceException("User with user name " + userName + " not found.", ErrorStatus.RESOURCE_NOT_FOUND);
-
         }
+        return u;
+
     }
 
     @Override
     public User registerNewUser(User user, String unencryptedPassword) {
-        try {
-            userDAO.findByUserName(user.getUserName());
+        if(userDAO.findByUserName(user.getUserName()) != null) {
             throw new SoccerManagerServiceException("User with user name " + user.getUserName() + " already exists.", ErrorStatus.RESOURCE_ALREADY_EXISTS);
-        } catch (NoResultException ex) {
-            //OK
         }
         String hashedPassword = BCrypt.hashpw(unencryptedPassword, BCrypt.gensalt(12));
         user.setPasswordHash(hashedPassword);
@@ -72,7 +69,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean authenticateUser(String userName, String password) {
     	User user = getUserByUsername(userName);
-    	if(user == null) throw new SoccerManagerServiceException("User with user name " + userName + " not exists.", ErrorStatus.RESOURCE_NOT_FOUND);
     	return BCrypt.checkpw(password, user.getPasswordHash());
     }
 
