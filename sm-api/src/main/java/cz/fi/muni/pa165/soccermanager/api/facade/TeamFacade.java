@@ -24,9 +24,9 @@ public interface TeamFacade {
     /**
      * Removes a specified team.
      *
-     * @param teamDTO a team to be removed
+     * @param id an ID of a team to be removed
      */
-    void remove(TeamDTO teamDTO);
+    void remove(Long id);
 
     /**
      * Finds all teams.
@@ -54,25 +54,25 @@ public interface TeamFacade {
     /**
      * Gets all players in a specified team.
      *
-     * @param teamDTO   a team to get its players from
-     * @return          a list of all team's players
+     * @param id    an ID of a team to get its players from
+     * @return      a list of all team's players
      */
-    List<PlayerDTO> getAllPlayersInTeam(TeamDTO teamDTO);
+    List<PlayerDTO> getAllPlayersInTeam(Long id);
 
     /**
      * Adds a player to a team.
      *
-     * @param playerDTO a player to be added
-     * @param teamDTO   a team to be added to
+     * @param playerId an ID of a player to be added
+     * @param teamId   an ID of a team to be added to
      */
-    void addPlayerToTeam(PlayerDTO playerDTO, TeamDTO teamDTO);
+    void addPlayerToTeam(Long playerId, Long teamId);
 
     /**
      * Removed a player from a team.
      *
-     * @param playerDTO a player to be removed
-     * @param teamDTO   a team to be removed from
+     * @param playerId an ID of a  player to be removed
+     * @param teamId   an ID of a team to be removed from
      */
-    void removePlayerFromTeam(PlayerDTO playerDTO, TeamDTO teamDTO);
+    void removePlayerFromTeam(Long playerId, Long teamId);
 
 }
