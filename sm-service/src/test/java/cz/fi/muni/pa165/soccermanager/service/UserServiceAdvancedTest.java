@@ -47,11 +47,10 @@ public class UserServiceAdvancedTest extends UserServiceAbstractTestBase {
 
 	@Test(expectedExceptions = SoccerManagerServiceException.class)
 	public void authenticateNonExistingUser() {
-		User user = user(null, "abcdef", "pass", false, null);
-		
-		Mockito.doThrow(NoResultException.class).when(userDAO).findByUserName(user.getUserName());
 
-		userService.authenticateUser(user.getUserName(), "pass");
+		Mockito.when(userDAO.findByUserName("name")).thenReturn(null);
+
+		userService.authenticateUser("name", "pass");
 	}
 
 	@Test(expectedExceptions = SoccerManagerServiceException.class)
