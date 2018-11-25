@@ -2,18 +2,19 @@ package cz.fi.muni.pa165.soccermanager.dao.config;
 
 import java.sql.SQLException;
 
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import javax.sql.DataSource;
 
+import org.hibernate.jpa.HibernatePersistenceProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
@@ -45,18 +46,22 @@ public class PersistenceBeansConfig {
 		LOG.debug("Username: " + db.getConnection().getMetaData().getUserName());
 		return db;
 	}
-
+	
 	/**
-	 * Creates an instance of EntityManagerFactory based on 'default' persistence
+	 * Creates an instance of LocalContainerEntityManagerFactoryBean based on 'default' persistence
 	 * unit
 	 * 
-	 * @return create entity manager factory instance
+	 * @return create spring entity manager factory instance
 	 * @throws SQLException
 	 */
-	@Bean(destroyMethod = "close")
-	public EntityManagerFactory entityManagerFactory() throws SQLException {
-		return Persistence.createEntityManagerFactory("default");
-	}
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory() throws SQLException {
+        LocalContainerEntityManagerFactoryBean jpaFactoryBean = new LocalContainerEntityManagerFactoryBean();
+        jpaFactoryBean.setPersistenceUnitName("default");
+        jpaFactoryBean.setDataSource(dataSource());
+        jpaFactoryBean.setPersistenceProviderClass(HibernatePersistenceProvider.class);
+        return jpaFactoryBean;
+}
 
 	/**
 	 * Creates transaction manager based on EntityManagerFactory
@@ -66,7 +71,15 @@ public class PersistenceBeansConfig {
 	 */
 	@Bean
 	public JpaTransactionManager transactionManager() throws SQLException {
-		return new JpaTransactionManager(entityManagerFactory());
+		return new JpaTransactionManager(entityManagerFactory().getObject());
 	}
+	
+	/**
+     * Enables automatic translation of exceptions to DataAccessExceptions.
+     */
+    @Bean
+    public PersistenceExceptionTranslationPostProcessor postProcessor() {
+        return new PersistenceExceptionTranslationPostProcessor();
+}
 
 }

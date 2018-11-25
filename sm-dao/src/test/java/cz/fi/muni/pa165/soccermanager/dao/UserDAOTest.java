@@ -5,9 +5,9 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
@@ -109,14 +109,14 @@ public class UserDAOTest extends AbstractTestNGSpringContextTests {
 	}
 
 
-	@Test(expectedExceptions = PersistenceException.class)
+	@Test(expectedExceptions = DataAccessException.class)
 	public void createUserWithoutPassword() {
 		User u = new User();
 		u.setUserName("user4");
 		userDAO.save(u);
 	}
 
-	@Test(expectedExceptions = PersistenceException.class)
+	@Test(expectedExceptions = DataAccessException.class)
 	public void createUserWithoutName() {
 		User u = new User();
 		u.setPasswordHash("hash");
