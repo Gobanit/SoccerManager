@@ -5,16 +5,11 @@ import cz.fi.muni.pa165.soccermanager.dao.TeamDAO;
 import cz.fi.muni.pa165.soccermanager.data.SoccerPlayer;
 import cz.fi.muni.pa165.soccermanager.data.Team;
 import org.hibernate.service.spi.ServiceException;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
-import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -22,18 +17,15 @@ import java.util.List;
 
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.testng.Assert.assertEquals;
 
 /**
  * Unit tests for {@link TeamService}.
  *
  * @author Lenka Horvathova
  */
-@RunWith(MockitoJUnitRunner.class)
 public class TeamServiceTest {
     private TeamService teamService;
-
-    @Rule
-    private ExpectedException thrown = ExpectedException.none();
 
     @Mock
     private TeamDAO teamDAO;
@@ -50,7 +42,7 @@ public class TeamServiceTest {
     private List<Team> teams;
     private List<Team> slovakian;
 
-    @Before
+    @BeforeMethod
     public void setup() throws ServiceException {
         MockitoAnnotations.initMocks(this);
         teamService = new TeamServiceImpl(teamDAO);
@@ -95,39 +87,37 @@ public class TeamServiceTest {
     public void findByIdTest() {
         when(teamDAO.findById(fcb.getId())).thenReturn(fcb);
         Team found = teamService.findById(fcb.getId());
-        Assert.assertEquals(found, fcb);
+        assertEquals(found, fcb);
     }
 
     @Test
     public void findAllTest() {
         when(teamDAO.findAll()).thenReturn(teams);
         List<Team> found = teamService.findAll();
-        Assert.assertEquals(found, teams);
+        assertEquals(found, teams);
     }
 
     @Test
     public void findByCountryTest() {
         when(teamDAO.findAll()).thenReturn(teams);
         List<Team> found = teamService.findByCountry("Slovakia");
-        Assert.assertEquals(found, slovakian);
+        assertEquals(found, slovakian);
     }
 
     @Test
     public void findAllPlayersInTeamTest() {
         List<SoccerPlayer> found = teamService.findAllPlayersInTeam(fcb);
-        Assert.assertEquals(found, fcb.getPlayers());
+        assertEquals(found, fcb.getPlayers());
     }
 
     @Test
     public void averageTeamRatingTest() {
         Integer result = teamService.averageTeamRating(fcb);
-        Assert.assertEquals(result, (Integer) 9);
+        assertEquals(result, (Integer) 9);
     }
 
-    @Test
+    @Test(expectedExceptions = SoccerManagerServiceException.class)
     public void averageTeamRatingNoPlayersTest() {
-        thrown.expect(SoccerManagerServiceException.class);
-        thrown.expectMessage("Team can not be empty for evaluation of average team rating");
         teamService.averageTeamRating(mfks);
     }
 
@@ -142,18 +132,15 @@ public class TeamServiceTest {
         verify(teamDAO).update(mfks);
     }
 
-    @Test
+    @Test(expectedExceptions = SoccerManagerServiceException.class)
     public void addAlreadyAssignedPlayerToDifferentTeamTest() {
         SoccerPlayer mockPlayer = Mockito.mock(SoccerPlayer.class);
         when(mockPlayer.getTeam()).thenReturn(mfks);
 
-        thrown.expect(SoccerManagerServiceException.class);
-        thrown.expectMessage("Can not add player that is already belonging to another team");
-
         teamService.addPlayerToTeam(Mockito.mock(Team.class), mockPlayer);
     }
 
-    @Test
+    @Test(expectedExceptions = SoccerManagerServiceException.class)
     public void addPlayerToFullTeamTest() {
         Team mockTeam = Mockito.mock(Team.class);
         ArrayList<SoccerPlayer> mockPlayers = new ArrayList<>();
@@ -164,9 +151,6 @@ public class TeamServiceTest {
 
         SoccerPlayer mockPlayer = Mockito.mock(SoccerPlayer.class);
         when(mockPlayer.getTeam()).thenReturn(null);
-
-        thrown.expect(SoccerManagerServiceException.class);
-        thrown.expectMessage("Can not add player to the full team.");
 
         teamService.addPlayerToTeam(mockTeam, mockPlayer);
     }
