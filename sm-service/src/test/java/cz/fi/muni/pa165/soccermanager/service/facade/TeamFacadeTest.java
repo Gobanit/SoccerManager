@@ -144,19 +144,19 @@ public class TeamFacadeTest {
     @Test
     public void findAll() {
         given(teamService.findAll()).willReturn(Arrays.asList(slovan, senica));
-        TeamListDTO teamListDTO = teamFacade.findAll();
-        teamEqualsWithDTO(slovan, teamListDTO.getTeams().get(0));
-        teamEqualsWithDTO(senica, teamListDTO.getTeams().get(1));
-        Assert.assertTrue(teamListDTO.getCount() == 2);
+        List<TeamDTO> teamListDTO = teamFacade.findAll();
+        teamEqualsWithDTO(slovan, teamListDTO.get(0));
+        teamEqualsWithDTO(senica, teamListDTO.get(1));
+        Assert.assertTrue(teamListDTO.size() == 2);
     }
 
     @Test
     public void findByCountry() {
         given(teamService.findByCountry("Slovakia")).willReturn(Arrays.asList(slovan, senica));
-        TeamListDTO teamListDTO = teamFacade.findByCountry("Slovakia");
-        teamEqualsWithDTO(slovan, teamListDTO.getTeams().get(0));
-        teamEqualsWithDTO(senica, teamListDTO.getTeams().get(1));
-        Assert.assertTrue(teamListDTO.getCount() == 2);
+        List<TeamDTO> teamListDTO = teamFacade.findByCountry("Slovakia");
+        teamEqualsWithDTO(slovan, teamListDTO.get(0));
+        teamEqualsWithDTO(senica, teamListDTO.get(1));
+        Assert.assertTrue(teamListDTO.size() == 2);
     }
 
     private void teamEqualsWithDTO(Team t, TeamDTO tDTO) {
