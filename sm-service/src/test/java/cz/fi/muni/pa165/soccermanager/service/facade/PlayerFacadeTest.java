@@ -11,13 +11,11 @@ import cz.fi.muni.pa165.soccermanager.data.SoccerPlayer;
 import cz.fi.muni.pa165.soccermanager.service.BeanMapping;
 import cz.fi.muni.pa165.soccermanager.service.PlayerService;
 import org.hibernate.service.spi.ServiceException;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +29,6 @@ import static org.testng.Assert.assertEquals;
  *
  * @author Lenka Horvathova
  */
-@RunWith(MockitoJUnitRunner.class)
 public class PlayerFacadeTest {
     private PlayerFacade playerFacade;
 
@@ -41,7 +38,7 @@ public class PlayerFacadeTest {
     @Mock
     private BeanMapping beanMapping;
 
-    @Before
+    @BeforeMethod
     public void setup() throws ServiceException {
         MockitoAnnotations.initMocks(this);
         playerFacade = new PlayerFacadeImpl(beanMapping, playerService);
