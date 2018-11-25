@@ -4,16 +4,15 @@ import cz.fi.muni.pa165.soccermanager.api.dto.PlayerChangeDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.PlayerCreateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.PlayerDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.PlayerFreeDTO;
-import cz.fi.muni.pa165.soccermanager.api.enums.Footed;
-import cz.fi.muni.pa165.soccermanager.api.enums.Position;
 import cz.fi.muni.pa165.soccermanager.api.facade.PlayerFacade;
 import cz.fi.muni.pa165.soccermanager.data.SoccerPlayer;
 import cz.fi.muni.pa165.soccermanager.service.BeanMapping;
 import cz.fi.muni.pa165.soccermanager.service.PlayerService;
-import java.util.List;
-import javax.inject.Inject;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import javax.inject.Inject;
+import java.util.List;
 
 /**
  * Implementation of facade layer for Player
@@ -64,5 +63,4 @@ public class PlayerFacadeImpl implements PlayerFacade {
         playerService.changePlayerAttributes(playerService.findPlayerById(player.getId()), 
                 player.getPosition(), player.getFooted(), player.getRating());
     }
-    
 }
