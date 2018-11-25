@@ -10,13 +10,12 @@ import cz.fi.muni.pa165.soccermanager.service.BeanMapping;
 import cz.fi.muni.pa165.soccermanager.service.BeanMappingImpl;
 import cz.fi.muni.pa165.soccermanager.service.UserService;
 import java.math.BigDecimal;
-import cz.fi.muni.pa165.soccermanager.dao.TeamDAO;
-import cz.fi.muni.pa165.soccermanager.dao.TeamDAOImpl;
 import java.util.Arrays;
 import java.util.List;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.bcrypt.BCrypt;
@@ -32,7 +31,6 @@ public class UserFacadeTest {
     
     private UserFacade userFacade;
     
-    @Mock
     private BeanMapping beanMapping;
     
     @Mock
@@ -61,6 +59,7 @@ public class UserFacadeTest {
         createDTO.setRawPassword("pass");
         createDTO.setAdmin(true);
         
+        userAuth = new UserAuthenticateDTO();
         userAuth.setUsername("Admin");
         userAuth.setRawPassword("pass");
     }
@@ -87,6 +86,10 @@ public class UserFacadeTest {
     
     @Test
     public void registrateNewUserTest() {
+        BeanMapping mockBM = Mockito.mock(BeanMapping.class);
+        given(mockBM.mapTo(createDTO, User.class)).willReturn(user1);
+        given(userService.registerNewUser(user1, "pass")).willReturn(user1);
+        
         userFacade.registerNewUser(createDTO);
         then(userService).should().registerNewUser(user1, "pass");
     }
@@ -144,22 +147,18 @@ public class UserFacadeTest {
     }
     
     @Test
-    public void pickTeamForUserTest() {
-        TeamDAO teamDAO = new TeamDAOImpl();
-        given(userService.getUserByUsername(user2.getUserName())).willReturn(user2);
-        given(teamDAO.findById(team1.getId())).willReturn(team1);
-        
+    public void pickTeamForUserTest() {        
         userFacade.pickTeamForUser(user2.getUserName(), team1.getId());
         
-        Assert.assertEquals(user2.getTeam(), team1);
+        then(userService).should().pickTeamForUser(user2.getUserName(), team1.getId());
     }
     
     @Test
-    public void changeAdminRightsTest() {
-        given(userService.getUserByUsername(user3.getUserName())).willReturn(user3);
-        
+    public void changeAdminRightsTest() {        
         userFacade.changeAdminRights(user3.getUserName(), true);
+        then(userService).should().giveAdministratorRights(user3.getUserName());
         
-        Assert.assertEquals(user3.isAdmin(), true);
+        userFacade.changeAdminRights(user1.getUserName(), false);
+        then(userService).should().takeAdministratorRights(user1.getUserName());
     }
 }
