@@ -3,9 +3,8 @@
  */
 package cz.fi.muni.pa165.soccermanager.service;
 
-import javax.persistence.PersistenceException;
-
 import org.mockito.Mockito;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -27,6 +26,7 @@ public class UserServiceAdvancedTest extends UserServiceAbstractTestBase {
 		User user = fabricatedUsers.get(0);
 
 		mockFindForUser(user);
+		Mockito.doThrow(DataIntegrityViolationException.class).when(userDAO).save(user);
 
 		userService.registerNewUser(user, "abcd");
 	}
@@ -37,7 +37,7 @@ public class UserServiceAdvancedTest extends UserServiceAbstractTestBase {
 		User user = user(null, existing.getUserName(), "newPass", false, null);
 				
 		mockFindForUser(existing);
-		Mockito.doThrow(PersistenceException.class).when(userDAO).save(user);
+		Mockito.doThrow(DataIntegrityViolationException.class).when(userDAO).save(user);
 
 		userService.registerNewUser(user, "abcd");
 	}
