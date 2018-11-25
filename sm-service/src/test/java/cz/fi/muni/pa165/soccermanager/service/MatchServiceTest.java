@@ -8,6 +8,7 @@ import cz.fi.muni.pa165.soccermanager.data.Team;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
@@ -36,7 +37,7 @@ public class MatchServiceTest {
     private Team slovan, senica;
     private SoccerPlayer player1, player2;
 
-    @BeforeTest
+    @BeforeClass
     public void init() {
         MockitoAnnotations.initMocks(this);
         matchService = new MatchServiceImpl(matchDAO);
