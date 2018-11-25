@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class TeamServiceImpl implements TeamService {
-    private static final int MAXIMUM_TEAM_SIZE = 30;
+    static final int MAXIMUM_TEAM_SIZE = 30;
 
     private final TeamDAO teamDAO;
 
@@ -78,7 +78,7 @@ public class TeamServiceImpl implements TeamService {
         }
         
         if (numberOfPlayers == 0) {
-            throw new SoccerManagerServiceException("Team can not be empty"
+            throw new SoccerManagerServiceException("Team can not be empty "
                     + "for evaluation of average team rating", ErrorStatus.NO_PLAYER_IN_TEAM);
         }
         
@@ -93,7 +93,7 @@ public class TeamServiceImpl implements TeamService {
         }
         
         if (team.getPlayers().size() > MAXIMUM_TEAM_SIZE) {
-            throw new SoccerManagerServiceException("Can not add player to the"
+            throw new SoccerManagerServiceException("Can not add player to the "
                     + "full team.", ErrorStatus.TOO_MANY_PLAYERS_IN_TEAM);
         }
         team.addPlayer(player);
