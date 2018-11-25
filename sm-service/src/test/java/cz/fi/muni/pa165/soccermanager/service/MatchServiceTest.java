@@ -5,15 +5,13 @@ import cz.fi.muni.pa165.soccermanager.dao.MatchDAO;
 import cz.fi.muni.pa165.soccermanager.data.Match;
 import cz.fi.muni.pa165.soccermanager.data.SoccerPlayer;
 import cz.fi.muni.pa165.soccermanager.data.Team;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -23,12 +21,12 @@ import java.util.List;
 
 import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
-
-@RunWith(MockitoJUnitRunner.class)
+/**
+ * @author Dominik Pilar
+ *
+ */
 public class MatchServiceTest {
 
-    @Rule
-    public ExpectedException thrown = ExpectedException.none();
 
     private MatchService matchService;
 
@@ -39,11 +37,13 @@ public class MatchServiceTest {
     private Team slovan, senica;
     private SoccerPlayer player1, player2;
 
-    @Before
+    @BeforeClass
     public void init() {
         MockitoAnnotations.initMocks(this);
         matchService = new MatchServiceImpl(matchDAO);
-
+    }
+    @BeforeMethod
+    public void setup() {
         senica = new Team();
         senica.setId(1L);
         senica.setBudget(BigDecimal.valueOf(200000));
@@ -108,11 +108,9 @@ public class MatchServiceTest {
         Assert.assertEquals(match1, m);
     }
 
-    @Test
+    @Test(expectedExceptions = SoccerManagerServiceException.class, expectedExceptionsMessageRegExp = "No match found with an ID: " + 1L )
     public void findByIdReturnNull() {
         given(matchDAO.findById(1L)).willReturn(null);
-        thrown.expect(SoccerManagerServiceException.class);
-        thrown.expectMessage("No match found with an ID: " + 1L );
         matchService.findById(1L);
     }
 
@@ -147,6 +145,7 @@ public class MatchServiceTest {
 
     @Test
     public void findAwaitingMatches() {
+        match2.setDate(LocalDateTime.now().minusHours(1));
         given(matchDAO.findAll()).willReturn(Arrays.asList(match2, match1));
         List<Match> matches = matchService.findNotSimulatedMatches();
 
@@ -165,17 +164,13 @@ public class MatchServiceTest {
 
     }
 
-    @Test
+    @Test(expectedExceptions = SoccerManagerServiceException.class, expectedExceptionsMessageRegExp = "A match with an ID \"" + "[0-9]+" + "\" has already been simulated!")
     public void alreadySimulatedMatch() {
-        thrown.expect(SoccerManagerServiceException.class);
-        thrown.expectMessage("A match with an ID \"" + match1.getId() + "\" has already been simulated!");
         matchService.simulateMatch(match1);
     }
 
-    @Test
+    @Test(expectedExceptions = SoccerManagerServiceException.class, expectedExceptionsMessageRegExp = "A match with an ID \"" + "[0-9]+" + "\" has not taken place yet!")
     public void simulateMatchInFuture() {
-        thrown.expect(SoccerManagerServiceException.class);
-        thrown.expectMessage("A match with an ID \"" + match2.getId() + "\" has not taken place yet!");
         matchService.simulateMatch(match2);
     }
 
@@ -186,10 +181,8 @@ public class MatchServiceTest {
         Assert.assertEquals(senica, winner);
     }
 
-    @Test
+    @Test(expectedExceptions = SoccerManagerServiceException.class, expectedExceptionsMessageRegExp = "A match with an ID \"" + "[0-9]+" + "\" has not been simulated yet!")
     public void getWinnerOfNonSimulatedMatch() {
-        thrown.expect(SoccerManagerServiceException.class);
-        thrown.expectMessage("A match with an ID \"" + match2.getId() + "\" has not been simulated yet!");
         matchService.getWinner(match2);
     }
 

@@ -31,8 +31,7 @@ public class UserServiceBasicTest extends UserServiceAbstractTestBase {
 		user.setAdmin(false);
 		String rawPassword = "mojeHeslo";
 
-		Mockito.doThrow(NoResultException.class).when(userDAO).findByUserName(user.getUserName());
-		
+		Mockito.when(userDAO.findByUserName(user.getUserName())).thenReturn(null);
 		User createdUser = userService.registerNewUser(user, rawPassword);
 		Mockito.verify(userDAO).save(user);
 		Assert.assertNotNull(createdUser.getPasswordHash());
