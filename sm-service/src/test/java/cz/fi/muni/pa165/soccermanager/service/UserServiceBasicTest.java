@@ -5,8 +5,6 @@ package cz.fi.muni.pa165.soccermanager.service;
 
 import java.util.List;
 
-import javax.persistence.NoResultException;
-
 import org.mockito.Mockito;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.testng.Assert;

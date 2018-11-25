@@ -5,13 +5,12 @@
  */
 package cz.fi.muni.pa165.soccermanager.api.facade;
 
+import java.util.List;
+
 import cz.fi.muni.pa165.soccermanager.api.dto.PlayerChangeDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.PlayerCreateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.PlayerDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.PlayerFreeDTO;
-import cz.fi.muni.pa165.soccermanager.api.enums.Footed;
-import cz.fi.muni.pa165.soccermanager.api.enums.Position;
-import java.util.List;
 
 /**
  *

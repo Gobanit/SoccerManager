@@ -1,17 +1,7 @@
 package cz.fi.muni.pa165.soccermanager.service;
 
-import cz.fi.muni.pa165.soccermanager.api.exceptions.SoccerManagerServiceException;
-import cz.fi.muni.pa165.soccermanager.dao.MatchDAO;
-import cz.fi.muni.pa165.soccermanager.data.Match;
-import cz.fi.muni.pa165.soccermanager.data.SoccerPlayer;
-import cz.fi.muni.pa165.soccermanager.data.Team;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.testng.Assert;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
-import org.testng.annotations.Test;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -19,8 +9,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.testng.Assert;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import cz.fi.muni.pa165.soccermanager.api.exceptions.SoccerManagerServiceException;
+import cz.fi.muni.pa165.soccermanager.dao.MatchDAO;
+import cz.fi.muni.pa165.soccermanager.data.Match;
+import cz.fi.muni.pa165.soccermanager.data.SoccerPlayer;
+import cz.fi.muni.pa165.soccermanager.data.Team;
 /**
  * @author Dominik Pilar
  *

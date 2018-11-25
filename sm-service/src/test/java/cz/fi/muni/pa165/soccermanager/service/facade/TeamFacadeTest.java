@@ -1,29 +1,32 @@
 package cz.fi.muni.pa165.soccermanager.service.facade;
 
-import cz.fi.muni.pa165.soccermanager.api.dto.*;
-import cz.fi.muni.pa165.soccermanager.api.facade.MatchFacade;
-import cz.fi.muni.pa165.soccermanager.api.facade.TeamFacade;
-import cz.fi.muni.pa165.soccermanager.dao.MatchDAO;
-import cz.fi.muni.pa165.soccermanager.data.Match;
-import cz.fi.muni.pa165.soccermanager.data.SoccerPlayer;
-import cz.fi.muni.pa165.soccermanager.data.Team;
-import cz.fi.muni.pa165.soccermanager.service.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.BDDMockito.then;
+
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.modelmapper.ModelMapper;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import cz.fi.muni.pa165.soccermanager.api.dto.MatchCreateDTO;
+import cz.fi.muni.pa165.soccermanager.api.dto.PlayerDTO;
+import cz.fi.muni.pa165.soccermanager.api.dto.TeamCreateDTO;
+import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
+import cz.fi.muni.pa165.soccermanager.api.facade.TeamFacade;
+import cz.fi.muni.pa165.soccermanager.data.SoccerPlayer;
+import cz.fi.muni.pa165.soccermanager.data.Team;
+import cz.fi.muni.pa165.soccermanager.service.BeanMapping;
+import cz.fi.muni.pa165.soccermanager.service.BeanMappingImpl;
+import cz.fi.muni.pa165.soccermanager.service.PlayerService;
+import cz.fi.muni.pa165.soccermanager.service.TeamService;
 
 /**
  * @author Dominik Pilar

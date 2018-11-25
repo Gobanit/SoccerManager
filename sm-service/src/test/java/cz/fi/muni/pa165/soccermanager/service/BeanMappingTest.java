@@ -3,21 +3,25 @@
  */
 package cz.fi.muni.pa165.soccermanager.service;
 
-import cz.fi.muni.pa165.soccermanager.api.dto.*;
-import cz.fi.muni.pa165.soccermanager.dao.SoccerPlayerDAO;
-import cz.fi.muni.pa165.soccermanager.data.Match;
-import cz.fi.muni.pa165.soccermanager.data.SoccerPlayer;
-import cz.fi.muni.pa165.soccermanager.data.Team;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
 import org.modelmapper.ModelMapper;
 import org.testng.Assert;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import cz.fi.muni.pa165.soccermanager.api.dto.MatchAwaitingDTO;
+import cz.fi.muni.pa165.soccermanager.api.dto.MatchCreateDTO;
+import cz.fi.muni.pa165.soccermanager.api.dto.MatchDTO;
+import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
+import cz.fi.muni.pa165.soccermanager.api.dto.UserCreateDTO;
+import cz.fi.muni.pa165.soccermanager.api.dto.UserDTO;
+import cz.fi.muni.pa165.soccermanager.data.Match;
+import cz.fi.muni.pa165.soccermanager.data.SoccerPlayer;
+import cz.fi.muni.pa165.soccermanager.data.Team;
 import cz.fi.muni.pa165.soccermanager.data.User;
-
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 /**
  * @author Michal Randak
@@ -29,8 +33,7 @@ public class BeanMappingTest {
 	private BeanMapping beanMapping;
 	private Team slovan, senica;
 	private SoccerPlayer player1, player2;
-	private Match match;
-	
+
 	@BeforeTest
 	public void init() {
 		mapper = new ModelMapper();
@@ -166,7 +169,4 @@ public class BeanMappingTest {
 
 	}
 
-	private void assertEqualsPlayerAndPlayerDTO(SoccerPlayer player, PlayerDTO playerDTO) {
-
-	}
 }
