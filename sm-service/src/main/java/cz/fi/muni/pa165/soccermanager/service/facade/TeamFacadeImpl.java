@@ -11,6 +11,9 @@ import cz.fi.muni.pa165.soccermanager.service.PlayerService;
 import cz.fi.muni.pa165.soccermanager.service.TeamService;
 
 import javax.inject.Inject;
+import javax.inject.Named;
+import javax.transaction.Transactional;
+
 import java.util.List;
 
 /**
@@ -18,6 +21,8 @@ import java.util.List;
  *
  * @author Lenka Horvathova
  */
+@Transactional
+@Named
 public class TeamFacadeImpl implements TeamFacade {
 
     private TeamService teamService;
