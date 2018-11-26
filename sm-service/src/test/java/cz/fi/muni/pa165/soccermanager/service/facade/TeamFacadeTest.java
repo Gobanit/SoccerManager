@@ -16,7 +16,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import cz.fi.muni.pa165.soccermanager.api.dto.MatchCreateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.PlayerDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.TeamCreateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
@@ -46,9 +45,7 @@ public class TeamFacadeTest {
 
     private Team slovan, senica;
     private SoccerPlayer player1, player2;
-    private TeamDTO teamDTO;
     private TeamCreateDTO teamCreateDTO;
-    private MatchCreateDTO matchCreateDTO;
 
     @BeforeClass
     public void init() {
@@ -58,32 +55,11 @@ public class TeamFacadeTest {
     }
     @BeforeMethod
     public void setup() {
-        senica = new Team();
-        senica.setId(1L);
-        senica.setBudget(BigDecimal.valueOf(200000));
-        senica.setChampionshipName("Fortuna liga");
-        senica.setClubName("Senica");
-        senica.setCountry("Slovakia");
-        senica.setPlayers(new ArrayList<>());
+        senica = getTeam(1L, "Slovakia", "Senica", "Fortuna liga", BigDecimal.valueOf(200000));
+        slovan = getTeam(2L, "Slovakia", "Slovan", "Fortuna liga", BigDecimal.valueOf(500000));
 
-
-        slovan = new Team();
-        slovan.setId(2L);
-        slovan.setBudget(BigDecimal.valueOf(500000));
-        slovan.setChampionshipName("Fortuna liga");
-        slovan.setClubName("Slovan");
-        slovan.setCountry("Slovakia");
-        slovan.setPlayers(new ArrayList<>());
-
-        player1 = new SoccerPlayer();
-        player1.setId(1L);
-        player1.setRating(50);
-        player1.setTeam(slovan);
-        player2 = new SoccerPlayer();
-        player2.setId(2L);
-        player2.setRating(55);
-        player2.setTeam(senica);
-
+        player1 = getPlayer(1L, 50, slovan);
+        player2 = getPlayer(2L, 55, senica);
         slovan.addPlayer(player1);
         senica.addPlayer(player2);
 
@@ -96,11 +72,11 @@ public class TeamFacadeTest {
 
     @Test
     public void createTeam() {
-        teamFacade.create(teamCreateDTO);
         Team plainTeam = new Team();
         plainTeam.setChampionshipName("Fortuna liga");
         plainTeam.setClubName("Slovan");
         plainTeam.setCountry("Slovakia");
+        teamFacade.create(teamCreateDTO);
         then(teamService).should().create(slovan);
     }
 
@@ -115,7 +91,7 @@ public class TeamFacadeTest {
     public void findTeamById() {
         given(teamService.findById(slovan.getId())).willReturn(slovan);
         TeamDTO t = teamFacade.findById(slovan.getId());
-        teamEqualsWithDTO(slovan, t);
+        assertEqualsTeamWithTeamDTO(slovan, t);
     }
 
     @Test
@@ -148,8 +124,8 @@ public class TeamFacadeTest {
     public void findAll() {
         given(teamService.findAll()).willReturn(Arrays.asList(slovan, senica));
         List<TeamDTO> teamListDTO = teamFacade.findAll();
-        teamEqualsWithDTO(slovan, teamListDTO.get(0));
-        teamEqualsWithDTO(senica, teamListDTO.get(1));
+        assertEqualsTeamWithTeamDTO(slovan, teamListDTO.get(0));
+        assertEqualsTeamWithTeamDTO(senica, teamListDTO.get(1));
         Assert.assertTrue(teamListDTO.size() == 2);
     }
 
@@ -157,18 +133,38 @@ public class TeamFacadeTest {
     public void findByCountry() {
         given(teamService.findByCountry("Slovakia")).willReturn(Arrays.asList(slovan, senica));
         List<TeamDTO> teamListDTO = teamFacade.findByCountry("Slovakia");
-        teamEqualsWithDTO(slovan, teamListDTO.get(0));
-        teamEqualsWithDTO(senica, teamListDTO.get(1));
+        assertEqualsTeamWithTeamDTO(slovan, teamListDTO.get(0));
+        assertEqualsTeamWithTeamDTO(senica, teamListDTO.get(1));
         Assert.assertTrue(teamListDTO.size() == 2);
     }
 
-    private void teamEqualsWithDTO(Team t, TeamDTO tDTO) {
+    private void assertEqualsTeamWithTeamDTO(Team t, TeamDTO tDTO) {
         Assert.assertEquals(t.getId(), tDTO.getId());
         Assert.assertEquals(t.getBudget(), tDTO.getBudget());
         Assert.assertEquals(t.getChampionshipName(), tDTO.getChampionshipName());
         Assert.assertEquals(t.getClubName(), tDTO.getClubName());
         Assert.assertEquals(t.getCountry(), tDTO.getCountry());
 
+    }
+
+
+    private Team getTeam(Long id, String country, String clubName, String championShip, BigDecimal budget) {
+        Team t = new Team();
+        t.setId(id);
+        t.setCountry(country);
+        t.setClubName(clubName);
+        t.setChampionshipName(championShip);
+        t.setBudget(budget);
+        t.setPlayers(new ArrayList<>());
+        return t;
+    }
+
+    private SoccerPlayer getPlayer(Long id, Integer rating, Team team) {
+        SoccerPlayer p = new SoccerPlayer();
+        p.setId(id);
+        p.setRating(rating);
+        p.setTeam(team);
+        return p;
     }
 
 }

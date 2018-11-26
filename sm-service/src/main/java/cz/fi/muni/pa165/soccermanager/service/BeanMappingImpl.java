@@ -36,8 +36,4 @@ public class BeanMappingImpl implements BeanMapping {
         return modelMapper.map(u, mapToClass);
     }
 
-    public boolean isCollection(Object obj) {
-        return (obj instanceof Collection) || (obj instanceof Map);
-    }
-
 }
