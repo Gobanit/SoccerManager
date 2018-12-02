@@ -10,6 +10,10 @@
 	<artifactId>sm-rest</artifactId>
 	<name>Soccer Manager REST Module</name>
 	<description>Module containing classes responsible for REST API.</description>
+
+	<properties>
+		<jackson.version>2.9.7</jackson.version>
+	</properties>
 	<dependencies>
 
 		<dependency>
@@ -22,6 +26,22 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${springframework.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
 		</dependency>
 
 
