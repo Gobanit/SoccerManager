@@ -12,6 +12,7 @@
 		<module>sm-dao</module>
 		<module>sm-service</module>
 		<module>sm-api</module>
+		<module>sm-rest</module>
 	</modules>
 
 	<properties>
