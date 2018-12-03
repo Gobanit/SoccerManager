@@ -17,7 +17,7 @@ import cz.fi.muni.pa165.soccermanager.service.config.ServiceBeansConfig;
  */
 @EnableWebMvc
 @Configuration
-@Import({ServiceBeansConfig.class})
+@Import({ServiceBeansConfig.class, SampleDataConfig.class})
 @ComponentScan(basePackages = {"cz.fi.muni.pa165.soccermanager.rest.controllers", "cz.fi.muni.pa165.soccermanager.rest.assemblers"})
 public class RestBeansConfig implements WebMvcConfigurer {
 

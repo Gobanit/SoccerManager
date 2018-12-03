@@ -13,6 +13,7 @@
 		<module>sm-service</module>
 		<module>sm-api</module>
 		<module>sm-rest</module>
+		<module>sm-sample-data</module>
 	</modules>
 
 	<properties>
