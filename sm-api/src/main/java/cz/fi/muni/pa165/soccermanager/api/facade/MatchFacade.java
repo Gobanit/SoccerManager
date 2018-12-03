@@ -18,7 +18,7 @@ public interface MatchFacade {
      *
      * @param match a match to be created
      */
-    void create(MatchCreateDTO match);
+    Long create(MatchCreateDTO match);
 
     /**
      * Removes an instance of match.

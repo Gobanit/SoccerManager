@@ -37,11 +37,12 @@ public class MatchFacadeImpl implements MatchFacade {
     }
 
     @Override
-    public void create(MatchCreateDTO match) {
+    public Long create(MatchCreateDTO match) {
         Match m = beanMapping.mapTo(match, Match.class);
         m.setHomeTeam(teamService.findById(match.getHomeTeam()));
         m.setAwayTeam(teamService.findById(match.getAwayTeam()));
-        matchService.create(m);
+        m = matchService.create(m);
+        return m.getId();
     }
 
 

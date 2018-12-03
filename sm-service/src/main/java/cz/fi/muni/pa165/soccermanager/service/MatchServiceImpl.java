@@ -29,8 +29,9 @@ public class MatchServiceImpl implements MatchService {
     }
 
     @Override
-    public void create(Match match) {
+    public Match create(Match match) {
         matchDAO.save(match);
+        return match;
     }
 
     @Override
