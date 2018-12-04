@@ -6,19 +6,19 @@ import cz.fi.muni.pa165.soccermanager.api.exceptions.SoccerManagerServiceExcepti
 import cz.fi.muni.pa165.soccermanager.api.facade.TeamFacade;
 import cz.fi.muni.pa165.soccermanager.rest.ExceptionSorter;
 import cz.fi.muni.pa165.soccermanager.rest.exceptions.InvalidRequestException;
-import cz.fi.muni.pa165.soccermanager.rest.hateoas.TeamResource;
-import cz.fi.muni.pa165.soccermanager.rest.hateoas.TeamResourceAssembler;
+import cz.fi.muni.pa165.soccermanager.rest.assemblers.TeamResourceAssembler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.EntityLinks;
 import org.springframework.hateoas.ExposesResourceFor;
+import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.*;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -37,35 +37,37 @@ public class TeamRestController {
 
     private TeamFacade teamFacade;
     private TeamResourceAssembler teamResourceAssembler;
-    @SuppressWarnings("SpringJavaAutowiringInspection")
-    private EntityLinks entityLinks;
+
 
     @Autowired
-    public TeamRestController(TeamFacade teamFacade, TeamResourceAssembler teamResourceAssembler, EntityLinks entityLinks) {
+    @SuppressWarnings("SpringJavaAutowiringInspection")
+    public TeamRestController(TeamFacade teamFacade, TeamResourceAssembler teamResourceAssembler) {
         this.teamFacade = teamFacade;
         this.teamResourceAssembler = teamResourceAssembler;
-        this.entityLinks = entityLinks;
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public HttpEntity<Resources<TeamResource>> teams() {
+    public HttpEntity<Resources<Resource<TeamDTO>>> teams() {
 
         logger.debug("rest getTeams()");
         List<TeamDTO> allTeams = teamFacade.findAll();
-        Resources<TeamResource> teamsResources = new Resources<>(
-                teamResourceAssembler.toResources(allTeams),
-                linkTo(TeamRestController.class).withSelfRel(),
-                linkTo(TeamRestController.class).slash("/create").withRel("create"));
+        List<Resource<TeamDTO>> teamResourceList = new ArrayList<>();
+
+        for (TeamDTO teamDTO : allTeams) {
+            teamResourceList.add(teamResourceAssembler.toResource(teamDTO));
+        }
+        Resources<Resource<TeamDTO>> teamsResources = new Resources<>(teamResourceList);
+        teamsResources.add(linkTo(TeamRestController.class).withSelfRel().withType("GET"));
         return new ResponseEntity<>(teamsResources  , HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<TeamResource> getTeamById(@PathVariable("id") long id) {
+    public final HttpEntity<Resource<TeamDTO>> getTeamById(@PathVariable("id") long id) {
 
         logger.debug("rest getTeamById()");
         try {
             TeamDTO teamDTO = teamFacade.findById(id);
-            TeamResource resource = teamResourceAssembler.toResource(teamDTO);
+            Resource<TeamDTO> resource = teamResourceAssembler.toResource(teamDTO);
             return new ResponseEntity<>(resource, HttpStatus.OK);
         } catch (Exception ex) {
             throw ExceptionSorter.throwException(ex);
@@ -117,14 +119,18 @@ public class TeamRestController {
 //    }
 
     @RequestMapping(value = "/{country}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<Resources<TeamResource>> findByCountry(@PathVariable("country") String country) {
+    public final HttpEntity<Resources<Resource<TeamDTO>>> findByCountry(@PathVariable("country") String country) {
 
         logger.debug("rest findByCountry()");
         try {
-            List<TeamResource> resourceCollection = teamResourceAssembler.toResources(teamFacade.findByCountry(country));
-            Resources<TeamResource> teamsResources = new Resources<>(resourceCollection,
-                    linkTo(TeamRestController.class).withSelfRel(),
-                    linkTo(TeamRestController.class).slash("/create").withRel("create"));
+            List<TeamDTO> allTeams = teamFacade.findByCountry(country);
+            List<Resource<TeamDTO>> teamResourceList = new ArrayList<>();
+
+            for (TeamDTO teamDTO : allTeams) {
+                teamResourceList.add(teamResourceAssembler.toResource(teamDTO));
+            }
+            Resources<Resource<TeamDTO>> teamsResources = new Resources<>(teamResourceList);
+            teamsResources.add(linkTo(TeamRestController.class).withSelfRel().withType("GET"));
             return new ResponseEntity<>(teamsResources, HttpStatus.OK);
         } catch (SoccerManagerServiceException ex) {
             throw ExceptionSorter.throwException(ex);
