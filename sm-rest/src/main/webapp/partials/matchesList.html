@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Matches</title>
+</head>
+<body>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th scope="col">#</th>
+				<th scope="col">Home Team</th>
+				<th scope="col">Away Team</th>
+				<th scope="col">Date</th>
+				<th scope="col">Result</th>
+				<th scope="col"></th>
+			</tr>
+		</thead>
+		<tbody ng-repeat="match in matches">
+			<tr>
+				<td>
+					<span>{{ match.id }}</span>
+				</td>
+				<td>
+					<span>{{ match.homeTeam.clubName }}</span>
+				</td>
+				<td>
+					<span>{{ match.awayTeam.clubName }}</span>
+				</td>
+				<td>
+					<span>{{ match.date }}</span>
+				</td>
+				<td>
+					<span ng-hide="!alreadyPlayed(match)">{{ match.homeTeamGoals }}  : {{ match.awayTeamGoals }}</span>
+					<span ng-hide="alreadyPlayed(match)">-</span>
+				</td>
+				<td>
+					<button type="button" ng-hide="!canBeSimulated(match)" ng-click="simulateMatch(match)" class="btn btn-primary">Simulate</button>	
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</body>
+</html>
