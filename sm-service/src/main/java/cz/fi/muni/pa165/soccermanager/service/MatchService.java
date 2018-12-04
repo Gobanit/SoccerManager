@@ -18,8 +18,9 @@ public interface MatchService {
      * Creates an instance of a match.
      *
      * @param match a match to be created
+     * @return 
      */
-    void create(Match match);
+    Match create(Match match);
 
     /**
      * Removes an instance of match.

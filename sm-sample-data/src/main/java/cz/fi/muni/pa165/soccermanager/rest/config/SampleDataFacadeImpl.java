@@ -58,9 +58,11 @@ public class SampleDataFacadeImpl implements SampleDataFacade {
 		// Teams
 		Team arsenal = createTeam("Arsenal", "England", "Premier League", "1000000", Arrays.asList(henry, hleb));
 		Team barcelona = createTeam("Barcelona", "Spain", "Primera División", "2000000", Arrays.asList(ronald));
-				
+		Team liverpool = createTeam("Liverpool", "England", "Premier League", "1100000", Arrays.asList());
+
 		// Matches
-		Match match1 = createMatch(arsenal, barcelona, LocalDateTime.now().plusDays(3), null, null);
+		Match match0 = createMatch(liverpool, arsenal, LocalDateTime.of(2018, 6, 2, 17, 30, 00), null, null);
+		Match match1 = createMatch(arsenal, barcelona, LocalDateTime.now().plusDays(4), null, null);
 		Match match2 = createMatch(barcelona, arsenal, LocalDateTime.now().plusDays(8), null, null);
 	}
 

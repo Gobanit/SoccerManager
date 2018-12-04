@@ -17,8 +17,9 @@ public class TeamResourceAssembler extends ResourceAssemblerSupport<TeamDTO, Tea
 
     private final static Logger log = LoggerFactory.getLogger(TeamResourceAssembler.class);
 
+    @Autowired
     public TeamResourceAssembler(@SuppressWarnings("SpringJavaAutowiringInspection")
-                                     @Autowired EntityLinks entityLinks) {
+                                      EntityLinks entityLinks) {
         super(TeamRestController.class, TeamResource.class);
         this.entityLinks = entityLinks;
     }

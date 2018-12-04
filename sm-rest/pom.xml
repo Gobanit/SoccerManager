@@ -27,29 +27,23 @@
 			<artifactId>sm-sample-data</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+
 		<dependency>
-			<groupId>org.springframework.hateoas</groupId>
-			<artifactId>spring-hateoas</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.plugin</groupId>
-			<artifactId>spring-plugin-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.jayway.jsonpath</groupId>
-			<artifactId>json-path</artifactId>
-			<version>${json-path.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${springframework.version}</version>
 		</dependency>
 
-		<!-- must provide logging implementation, this is a runnable project -->
-		<!-- see viz http://docs.spring.io/platform/docs/1.1.4.RELEASE/reference/htmlsingle/#getting-started-logging -->
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.hateoas</groupId>
+			<artifactId>spring-hateoas</artifactId>
+			<version>0.25.0.RELEASE</version>
 		</dependency>
 
 		<dependency>
@@ -68,19 +62,29 @@
 			<version>${jackson.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.tomcat</groupId>
-			<artifactId>tomcat-api</artifactId>
-			<version>${tomcat.version}</version>
-			<scope>provided</scope>
+			<groupId>com.fasterxml.jackson.module</groupId>
+			<artifactId>jackson-modules-java8</artifactId>
+			<version>${jackson.version}</version>
+			<type>pom</type>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+			<version>${jackson.version}</version>
 		</dependency>
 
+
+
+
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-api</artifactId>
+			<version>9.0.13</version>
+		</dependency>
 	</dependencies>
 
 
 	<build>
-		<defaultGoal>cargo:run</defaultGoal>
-		<!-- name of the produced war and the context path in URL -->
-		<finalName>soccer-manager</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.cargo</groupId>
