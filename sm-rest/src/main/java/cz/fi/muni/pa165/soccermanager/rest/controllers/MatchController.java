@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 import cz.fi.muni.pa165.soccermanager.api.dto.MatchCreateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.MatchDTO;
 import cz.fi.muni.pa165.soccermanager.api.facade.MatchFacade;
+import cz.fi.muni.pa165.soccermanager.rest.ExceptionSorter;
 import cz.fi.muni.pa165.soccermanager.rest.assemblers.MatchesResourceAssembler;
 
 /**
@@ -52,44 +53,62 @@ public class MatchController {
 	
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Resources<Resource<MatchDTO>>> getAll() {
-        Collection<MatchDTO> matchDTOs = matchFacade.findAll();
-        Collection<Resource<MatchDTO>> matchResourceCollection = new ArrayList<>();
-
-        for (MatchDTO m : matchDTOs) {
-        	matchResourceCollection.add(matchResourceAssembler.toResource(m));
-        }
-
-        Resources<Resource<MatchDTO>> matchResources = new Resources<Resource<MatchDTO>>(matchResourceCollection);
-        matchResources.add(linkTo(MatchController.class).withSelfRel().withType("GET"));
-
-        return new ResponseEntity<Resources<Resource<MatchDTO>>>(matchResources, HttpStatus.OK);
-	}
+		try {
+			Collection<MatchDTO> matchDTOs = matchFacade.findAll();
+	        Collection<Resource<MatchDTO>> matchResourceCollection = new ArrayList<>();
 	
+	        for (MatchDTO m : matchDTOs) {
+	        	matchResourceCollection.add(matchResourceAssembler.toResource(m));
+	        }
+	
+	        Resources<Resource<MatchDTO>> matchResources = new Resources<Resource<MatchDTO>>(matchResourceCollection);
+	        matchResources.add(linkTo(MatchController.class).withSelfRel().withType("GET"));
+	
+	        return new ResponseEntity<Resources<Resource<MatchDTO>>>(matchResources, HttpStatus.OK);
+		} catch(Exception ex) {
+			throw ExceptionSorter.throwException(ex);
+		}
+	}
 
 
 	@RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Resource<MatchDTO> create(@RequestBody MatchCreateDTO body) {
-		Long id = matchFacade.create(body);
-		MatchDTO match = matchFacade.findById(id);
-		return matchResourceAssembler.toResource(match);
+		try {
+			Long id = matchFacade.create(body);
+			MatchDTO match = matchFacade.findById(id);
+			return matchResourceAssembler.toResource(match);
+		} catch(Exception ex) {
+			throw ExceptionSorter.throwException(ex);
+		}
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Resource<MatchDTO> getById(@PathVariable Long id) {
-		MatchDTO match = matchFacade.findById(id);		
-		return matchResourceAssembler.toResource(match);
+		try {
+			MatchDTO match = matchFacade.findById(id);		
+			return matchResourceAssembler.toResource(match);
+		} catch(Exception ex) {
+			throw ExceptionSorter.throwException(ex);
+		}
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void delete(@PathVariable Long id) {
-		matchFacade.remove(id);
-		//TODO catch exception
+		try {
+			matchFacade.remove(id);
+		} catch(Exception ex) {
+			throw ExceptionSorter.throwException(ex);
+		}
 	}	
 	
 	@RequestMapping(value = "/simulate/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Resource<MatchDTO> simulateMatches(@PathVariable Long id) {
-		matchFacade.simulateMatch(id);
-		MatchDTO match = matchFacade.findById(id);
-		return matchResourceAssembler.toResource(match);
+		try {
+			matchFacade.simulateMatch(id);
+			MatchDTO match = matchFacade.findById(id);
+			return matchResourceAssembler.toResource(match);
+		} catch(Exception ex) {
+			throw ExceptionSorter.throwException(ex);
+		}
 	}
 }
