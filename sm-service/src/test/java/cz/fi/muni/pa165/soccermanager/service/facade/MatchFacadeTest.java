@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.mockito.ArgumentMatcher;
+import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -116,9 +117,10 @@ public class MatchFacadeTest {
 		Mockito.when(teamService.findById(arsenal.getId())).thenReturn(arsenal);
 		Mockito.when(teamService.findById(barcelona.getId())).thenReturn(barcelona);
 		Mockito.when(beanMapping.mapTo(createDTO, Match.class)).thenReturn(match);
-
-		matchFacade.create(createDTO);
+		Mockito.when(matchService.create(ArgumentMatchers.any())).thenReturn(fabricatedMatch);
+		Long id = matchFacade.create(createDTO);
 		Mockito.verify(matchService).create(Mockito.argThat(new MatchArgumentChecker(arsenal, barcelona, createDTO.getDate())));		
+		Assert.assertEquals(id, fabricatedMatch.getId());
 	}
 	
 	@Test

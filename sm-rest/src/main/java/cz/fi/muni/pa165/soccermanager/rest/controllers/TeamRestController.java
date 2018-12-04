@@ -1,27 +1,36 @@
 package cz.fi.muni.pa165.soccermanager.rest.controllers;
 
-import cz.fi.muni.pa165.soccermanager.api.dto.TeamCreateDTO;
-import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
-import cz.fi.muni.pa165.soccermanager.api.exceptions.SoccerManagerServiceException;
-import cz.fi.muni.pa165.soccermanager.api.facade.TeamFacade;
-import cz.fi.muni.pa165.soccermanager.rest.ExceptionSorter;
-import cz.fi.muni.pa165.soccermanager.rest.exceptions.InvalidRequestException;
-import cz.fi.muni.pa165.soccermanager.rest.assemblers.TeamResourceAssembler;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.validation.Valid;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
-import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import cz.fi.muni.pa165.soccermanager.api.dto.TeamCreateDTO;
+import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
+import cz.fi.muni.pa165.soccermanager.api.exceptions.SoccerManagerServiceException;
+import cz.fi.muni.pa165.soccermanager.api.facade.TeamFacade;
+import cz.fi.muni.pa165.soccermanager.rest.ExceptionSorter;
+import cz.fi.muni.pa165.soccermanager.rest.assemblers.TeamResourceAssembler;
+import cz.fi.muni.pa165.soccermanager.rest.exceptions.InvalidRequestException;
 
 /**
  * @author Dominik Pilar
@@ -40,7 +49,6 @@ public class TeamRestController {
 
 
     @Autowired
-    @SuppressWarnings("SpringJavaAutowiringInspection")
     public TeamRestController(TeamFacade teamFacade, TeamResourceAssembler teamResourceAssembler) {
         this.teamFacade = teamFacade;
         this.teamResourceAssembler = teamResourceAssembler;

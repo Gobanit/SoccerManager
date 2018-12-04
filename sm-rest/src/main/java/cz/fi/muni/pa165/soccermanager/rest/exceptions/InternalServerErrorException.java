@@ -6,8 +6,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR,
         reason = "A generic error message, given when an unexpected condition was encountered and no more specific message is suitable.")
 public class InternalServerErrorException extends RuntimeException {
+	private static final long serialVersionUID = -8967346280767911183L;
 
-    public InternalServerErrorException(String message) {
+	public InternalServerErrorException(String message) {
         super(message);
     }
 

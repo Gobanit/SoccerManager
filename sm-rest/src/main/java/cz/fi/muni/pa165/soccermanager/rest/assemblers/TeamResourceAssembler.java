@@ -1,15 +1,15 @@
 package cz.fi.muni.pa165.soccermanager.rest.assemblers;
 
-import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
-import cz.fi.muni.pa165.soccermanager.rest.controllers.TeamRestController;
-import cz.fi.muni.pa165.soccermanager.rest.hateoas.TeamResource;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.stereotype.Component;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
+import cz.fi.muni.pa165.soccermanager.rest.controllers.TeamRestController;
 
 @Component
 public class TeamResourceAssembler implements ResourceAssembler<TeamDTO, Resource<TeamDTO>> {

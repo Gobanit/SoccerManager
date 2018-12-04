@@ -1,10 +1,11 @@
 package cz.fi.muni.pa165.soccermanager.rest;
 
 import cz.fi.muni.pa165.soccermanager.api.exceptions.SoccerManagerServiceException;
-import cz.fi.muni.pa165.soccermanager.rest.exceptions.*;
-
-import static cz.fi.muni.pa165.soccermanager.api.exceptions.ErrorStatus.RESOURCE_NOT_FOUND;
-import static cz.fi.muni.pa165.soccermanager.api.exceptions.ErrorStatus.TEAM_ALREADY_ASSIGNED;
+import cz.fi.muni.pa165.soccermanager.rest.exceptions.ConflictException;
+import cz.fi.muni.pa165.soccermanager.rest.exceptions.InternalServerErrorException;
+import cz.fi.muni.pa165.soccermanager.rest.exceptions.MethodNotAllowedException;
+import cz.fi.muni.pa165.soccermanager.rest.exceptions.ResourceNotFoundException;
+import cz.fi.muni.pa165.soccermanager.rest.exceptions.ResourceNotModifiedException;
 
 
 public class ExceptionSorter {
