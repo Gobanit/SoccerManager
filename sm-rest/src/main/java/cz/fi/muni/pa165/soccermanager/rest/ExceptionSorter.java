@@ -1,0 +1,43 @@
+package cz.fi.muni.pa165.soccermanager.rest;
+
+import cz.fi.muni.pa165.soccermanager.api.exceptions.SoccerManagerServiceException;
+import cz.fi.muni.pa165.soccermanager.rest.exceptions.*;
+
+import static cz.fi.muni.pa165.soccermanager.api.exceptions.ErrorStatus.RESOURCE_NOT_FOUND;
+import static cz.fi.muni.pa165.soccermanager.api.exceptions.ErrorStatus.TEAM_ALREADY_ASSIGNED;
+
+
+public class ExceptionSorter {
+    private ExceptionSorter() {
+        throw new IllegalStateException("Util class");
+    }
+
+    public static RuntimeException throwException(Exception ex) {
+        if(ex instanceof SoccerManagerServiceException) {
+            switch (((SoccerManagerServiceException) ex).getStatus()) {
+                case RESOURCE_NOT_FOUND:
+                    return new ResourceNotFoundException(ex.getLocalizedMessage());
+                case TEAM_ALREADY_ASSIGNED:
+                    return new ConflictException(ex.getLocalizedMessage());
+                case NO_MORE_ADMINISTRATOR:
+                    return new MethodNotAllowedException(ex.getLocalizedMessage());
+                case PLAYER_IS_IN_TEAM:
+                    return new ConflictException(ex.getLocalizedMessage());
+                case NO_PLAYER_IN_TEAM:
+                    return new MethodNotAllowedException(ex.getLocalizedMessage());
+                case TOO_MANY_PLAYERS_IN_TEAM:
+                    return new ConflictException(ex.getLocalizedMessage());
+                case MATCH_ALREADY_SIMULATED:
+                    return new ConflictException(ex.getLocalizedMessage());
+                case MATCH_NOT_SIMULATED:
+                    return new ResourceNotModifiedException(ex.getLocalizedMessage());
+                case MATCH_DATE_IN_THE_FUTURE:
+                    return new ConflictException(ex.getLocalizedMessage());
+                default:
+                    return new InternalServerErrorException(ex.getLocalizedMessage());
+            }
+
+        }
+        return new InternalServerErrorException(ex);
+    }
+}

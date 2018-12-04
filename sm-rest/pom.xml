@@ -10,6 +10,7 @@
 	<artifactId>sm-rest</artifactId>
 	<name>Soccer Manager REST Module</name>
 	<description>Module containing classes responsible for REST API.</description>
+	<packaging>war</packaging>
 
 	<properties>
 		<jackson.version>2.9.7</jackson.version>
@@ -26,11 +27,29 @@
 			<artifactId>sm-sample-data</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.hateoas</groupId>
+			<artifactId>spring-hateoas</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.plugin</groupId>
+			<artifactId>spring-plugin-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.jayway.jsonpath</groupId>
+			<artifactId>json-path</artifactId>
+			<version>${json-path.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+		</dependency>
 
+		<!-- must provide logging implementation, this is a runnable project -->
+		<!-- see viz http://docs.spring.io/platform/docs/1.1.4.RELEASE/reference/htmlsingle/#getting-started-logging -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
-			<version>${springframework.version}</version>
 		</dependency>
 
 		<dependency>
@@ -48,17 +67,20 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>${jackson.version}</version>
 		</dependency>
-
-
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-api</artifactId>
-			<version>9.0.13</version>
+			<version>${tomcat.version}</version>
+			<scope>provided</scope>
 		</dependency>
+
 	</dependencies>
 
 
 	<build>
+		<defaultGoal>cargo:run</defaultGoal>
+		<!-- name of the produced war and the context path in URL -->
+		<finalName>soccer-manager</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.cargo</groupId>
@@ -73,5 +95,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	<packaging>war</packaging>
+
 </project>

@@ -33,7 +33,7 @@ public class SoccerManagerServiceException extends RuntimeException {
 		this.status = status;
 	}
 
-	public ErrorStatus getCode() {
+	public ErrorStatus getStatus() {
 		return status;
 	}
 
