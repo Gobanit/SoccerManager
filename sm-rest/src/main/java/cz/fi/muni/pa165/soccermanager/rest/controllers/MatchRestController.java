@@ -34,7 +34,7 @@ import cz.fi.muni.pa165.soccermanager.rest.assemblers.MatchesResourceAssembler;
 
 @RestController
 @RequestMapping("/matches")
-public class MatchController {
+public class MatchRestController {
 
 	private MatchFacade matchFacade;
 	private MatchesResourceAssembler matchResourceAssembler;
@@ -45,7 +45,7 @@ public class MatchController {
 	 * @param matchResourceAssembler
 	 */
 	@Inject
-	public MatchController(MatchFacade matchFacade, MatchesResourceAssembler matchResourceAssembler) {
+	public MatchRestController(MatchFacade matchFacade, MatchesResourceAssembler matchResourceAssembler) {
 		super();
 		this.matchFacade = matchFacade;
 		this.matchResourceAssembler = matchResourceAssembler;
@@ -62,7 +62,7 @@ public class MatchController {
 	        }
 	
 	        Resources<Resource<MatchDTO>> matchResources = new Resources<Resource<MatchDTO>>(matchResourceCollection);
-	        matchResources.add(linkTo(MatchController.class).withSelfRel().withType("GET"));
+	        matchResources.add(linkTo(MatchRestController.class).withSelfRel().withType("GET"));
 	
 	        return new ResponseEntity<Resources<Resource<MatchDTO>>>(matchResources, HttpStatus.OK);
 		} catch(Exception ex) {

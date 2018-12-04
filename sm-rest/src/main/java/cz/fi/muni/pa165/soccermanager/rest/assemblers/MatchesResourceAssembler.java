@@ -13,7 +13,7 @@ import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.stereotype.Component;
 
 import cz.fi.muni.pa165.soccermanager.api.dto.MatchDTO;
-import cz.fi.muni.pa165.soccermanager.rest.controllers.MatchController;
+import cz.fi.muni.pa165.soccermanager.rest.controllers.MatchRestController;
 
 /**
  * @author Michal Randak
@@ -28,9 +28,9 @@ public class MatchesResourceAssembler implements ResourceAssembler<MatchDTO, Res
         Resource<MatchDTO> matchResource = new Resource<MatchDTO>(match);
 
         try {
-            matchResource.add(linkTo(MatchController.class).slash(match.getId()).withSelfRel().withType("GET"));
-            matchResource.add(linkTo(MatchController.class).slash(match.getId()).withRel("delete").withType("DELETE"));
-            matchResource.add(linkTo(MatchController.class).slash("simulate").slash(match.getId()).withRel("simulate").withType("POST"));
+            matchResource.add(linkTo(MatchRestController.class).slash(match.getId()).withSelfRel().withType("GET"));
+            matchResource.add(linkTo(MatchRestController.class).slash(match.getId()).withRel("delete").withType("DELETE"));
+            matchResource.add(linkTo(MatchRestController.class).slash("simulate").slash(match.getId()).withRel("simulate").withType("POST"));
 
         } catch (Exception ex) {
             Logger.getLogger(MatchesResourceAssembler.class.getName()).log(Level.SEVERE, "could not link resource from MatchController", ex);
