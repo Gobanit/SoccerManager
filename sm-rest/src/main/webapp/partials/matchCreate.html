@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Match Create</title>
+</head>
+<body>
+	<div class="container">
+		<form name="form" novalidate class="form-horizontal">
+			<div class="row">
+				<div class="form-group col-sm-4" ng-class="{'has-error': !(form.homeTeamSelect.$valid)}">
+					<label for="homeTeamSelect">Home Team</label> 
+					<select	class="form-control" id="homeTeamSelect" name="homeTeamSelect" ng-model="match.homeTeam" required>
+						<option ng-repeat="team in teams" value="{{ team.id }}">{{ team.clubName }}</option>
+					</select>
+					<p class="help-block" ng-show="form.homeTeamSelect.$error.required">homeTeam is required</p>
+				</div>
+			</div>
+			<div class="row">			
+				<div class="form-group col-sm-4" ng-class="{'has-error': !(form.awayTeamSelect.$valid)}">
+					<label for="awayTeamSelect">Away Team</label> 
+					<select	class="form-control" id="awayTeamSelect" name="awayTeamSelect" ng-model="match.awayTeam" required>
+						<option ng-repeat="team in teams" value="{{ team.id }}">{{ team.clubName }}</option>
+					</select>
+					<p class="help-block" ng-show="form.awayTeamSelect.$error.required">AwayTeam is required</p>
+				</div>
+			</div>
+			<div class="row">
+				<div class="form-group col-sm-4" ng-class="{'has-error': !(form.dateTime.$valid)}">
+					<label for="dateTime">Pick a date</label>
+					<input type="datetime-local" class="form-control" id="dateTime" name="dateTime" ng-model="match.date"
+					      placeholder="yyyy-MM-ddTHH:mm:ss" min="{{ minMatchDate }}" max="{{ maxMatchDate }}" required />
+					<p class="help-block" ng-show="form.dateTime.$error.required">Required!</p>
+					<p class="help-block" ng-show="form.dateTime.$error.datetimelocal">Not a valid date!</span>
+					<p class="help-block" ng-show="form.dateTime.$error.min">Cannot be before {{ minMatchDate }}</span>
+					<p class="help-block" ng-show="form.dateTime.$error.max">Cannot be after {{ maxMatchDate }}</span>					
+				</div>
+			</div>
+
+
+			<button ng-disabled="!form.$valid" class="btn btn-primary" type="submit"
+				ng-click="create(match)">Create</button>
+		</form>
+	</div>
+	
+</body>
+</html>

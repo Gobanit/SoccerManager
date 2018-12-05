@@ -23,10 +23,10 @@
 					<span>{{ match.id }}</span>
 				</td>
 				<td>
-					<span>{{ match.homeTeam.clubName }}</span>
+					<a href="#!/teams/{{match.homeTeam.id}}">{{ match.homeTeam.clubName }}</a>
 				</td>
 				<td>
-					<span>{{ match.awayTeam.clubName }}</span>
+					<a href="#!/teams/{{match.awayTeam.id}}">{{ match.awayTeam.clubName }}</a>
 				</td>
 				<td>
 					<span>{{ match.date }}</span>
@@ -41,5 +41,7 @@
 			</tr>
 		</tbody>
 	</table>
+	
+	<a href="#!/matches/create" class="btn btn-primary" role="button">Plan match</a>
 </body>
 </html>
