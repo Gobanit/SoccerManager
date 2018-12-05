@@ -15,6 +15,7 @@
 				<th scope="col">Date</th>
 				<th scope="col">Result</th>
 				<th scope="col"></th>
+				<th scope="col"></th>
 			</tr>
 		</thead>
 		<tbody ng-repeat="match in matches">
@@ -37,6 +38,9 @@
 				</td>
 				<td>
 					<button type="button" ng-hide="!canBeSimulated(match)" ng-click="simulateMatch(match)" class="btn btn-primary">Simulate</button>	
+				</td>
+				<td>
+					<button type="button" ng-hide="alreadyPlayed(match)" ng-click="deleteMatch(match)" class="btn btn-primary">Delete</button>	
 				</td>
 			</tr>
 		</tbody>

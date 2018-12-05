@@ -85,6 +85,26 @@ soccerManagerControllers.controller('MatchesCtrl',
 					$rootScope.errorAlert = 'Cannot simulate match "'+match.id+'"!';
 				});
 			};
+			
+			//define method delete
+			$scope.deleteMatch = function(match) {
+				console.log('deleteMatch: matchId = '+match.id);
+			    $http.delete(findHrefFromLinks(match.links, 'delete')).then(
+					function success(response) {
+						console.log('delete match ' + match.id + ' on server');
+
+						$rootScope.successAlert = 'Deleted match "'+match.id+'"';
+						$rootScope.errorAlert = null;
+						
+						//load new list of all products
+						loadMatches($scope, $http);
+					},
+					function error(response) {
+						console.log('server returned error');
+					    $rootScope.successAlert = null;
+						$rootScope.errorAlert = 'Cannot delete match "'+match.id+'"!';
+					});
+				};
 });
 
 soccerManagerControllers.controller('MatchCreateCtrl',
@@ -123,7 +143,7 @@ soccerManagerControllers.controller('MatchCreateCtrl',
 	                $location.path("/matches");
 	            }, function error(response) {
 	                //display error
-	                $scope.errorAlert = 'Cannot create match !';
+	            	$rootScope.errorAlert = 'Cannot create match !';
 	            });
 	        };
 	    });

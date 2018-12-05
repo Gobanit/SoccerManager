@@ -39,6 +39,12 @@ public class ExceptionSorter {
             }
 
         }
+        
+        if(ex instanceof IllegalArgumentException) {
+        	return new ConflictException(ex.getLocalizedMessage());
+        }
+        
+        
         return new InternalServerErrorException(ex);
     }
 }
