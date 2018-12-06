@@ -6,8 +6,6 @@
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootswatch/3.3.7/yeti/bootstrap.min.css" />
     <script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    <%--<script src="//code.angularjs.org/1.3.14/angular.js"></script>--%>
-    <%--<script src="//code.angularjs.org/1.3.14/angular-route.js"></script>--%>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.5/angular-resource.min.js"></script>

@@ -1,13 +1,5 @@
 package cz.fi.muni.pa165.soccermanager.rest.controllers;
 
-import cz.fi.muni.pa165.soccermanager.api.dto.PlayerDTO;
-import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
-import cz.fi.muni.pa165.soccermanager.api.facade.PlayerFacade;
-import cz.fi.muni.pa165.soccermanager.api.facade.TeamFacade;
-import cz.fi.muni.pa165.soccermanager.api.facade.UserFacade;
-import cz.fi.muni.pa165.soccermanager.rest.ExceptionSorter;
-import cz.fi.muni.pa165.soccermanager.rest.assemblers.PlayerResourceAssembler;
-import cz.fi.muni.pa165.soccermanager.rest.assemblers.TeamResourceAssembler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +13,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import cz.fi.muni.pa165.soccermanager.api.dto.PlayerDTO;
+import cz.fi.muni.pa165.soccermanager.api.facade.PlayerFacade;
+import cz.fi.muni.pa165.soccermanager.rest.ExceptionSorter;
+import cz.fi.muni.pa165.soccermanager.rest.assemblers.PlayerResourceAssembler;
 
 @RestController
 @ExposesResourceFor(PlayerDTO.class)

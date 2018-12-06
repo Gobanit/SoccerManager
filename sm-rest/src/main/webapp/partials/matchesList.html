@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Matches</title>
+</head>
+<body>
+
+	<table class="table">
+		<thead>
+			<tr>
+				<th scope="col">#</th>
+				<th scope="col">Home Team</th>
+				<th scope="col">Away Team</th>
+				<th scope="col">Date</th>
+				<th scope="col">Result</th>
+				<th scope="col"></th>
+				<th scope="col"></th>
+			</tr>
+		</thead>
+		<tbody ng-repeat="match in matches">
+			<tr>
+				<td>
+					<span>{{ match.id }}</span>
+				</td>
+				<td>
+					<a href="#!/teams/{{match.homeTeam.id}}">{{ match.homeTeam.clubName }}</a>
+				</td>
+				<td>
+					<a href="#!/teams/{{match.awayTeam.id}}">{{ match.awayTeam.clubName }}</a>
+				</td>
+				<td>
+					<span>{{ match.date }}</span>
+				</td>
+				<td>
+					<span ng-hide="!alreadyPlayed(match)">{{ match.homeTeamGoals }}  : {{ match.awayTeamGoals }}</span>
+					<span ng-hide="alreadyPlayed(match)">-</span>
+				</td>
+				<td>
+					<button type="button" ng-hide="!canBeSimulated(match)" ng-click="simulateMatch(match)" class="btn btn-primary">Simulate</button>	
+				</td>
+				<td>
+					<button type="button" ng-hide="alreadyPlayed(match)" ng-click="deleteMatch(match)" class="btn btn-primary">Delete</button>	
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<a href="#!/matches/create" class="btn btn-primary" role="button">Plan match</a>
+</body>
+</html>

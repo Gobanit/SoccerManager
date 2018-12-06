@@ -30,7 +30,12 @@ public class MatchServiceImpl implements MatchService {
 
     @Override
     public Match create(Match match) {
-        matchDAO.save(match);
+    	if(match.getHomeTeam() == null) throw new IllegalArgumentException("Home team is null");
+    	if(match.getAwayTeam() == null) throw new IllegalArgumentException("Away team is null");
+    	if(match.getHomeTeam().equals(match.getAwayTeam())) 
+    		throw new IllegalArgumentException("Home team and away team is the same!");
+        
+    	matchDAO.save(match);
         return match;
     }
 
