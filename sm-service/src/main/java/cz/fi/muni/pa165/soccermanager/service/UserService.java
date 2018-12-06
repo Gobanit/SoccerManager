@@ -1,5 +1,6 @@
 package cz.fi.muni.pa165.soccermanager.service;
 
+import cz.fi.muni.pa165.soccermanager.data.Team;
 import cz.fi.muni.pa165.soccermanager.data.User;
 import cz.fi.muni.pa165.soccermanager.api.exceptions.SoccerManagerServiceException;
 import java.util.List;
@@ -89,4 +90,12 @@ public interface UserService {
      *                                                         NO_MORE_ADMINISTRATORS - if there is no more administrators in system so this rights cannot be taken from user
      */
     void takeAdministratorRights(String userName);
+
+    /**
+     * Get team of the given user.
+     *
+     * @param userName name of the user to get his team
+     * @throws SoccerManagerServiceException with error status RESOURCE_NOT_FOUND - if user with user name was not found or user has no team
+     */
+    Team getTeamOfUser(String userName);
 }

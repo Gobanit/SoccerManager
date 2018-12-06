@@ -113,4 +113,13 @@ public class UserServiceImpl implements UserService {
           }
         }
     }
+
+    @Override
+    public Team getTeamOfUser(String userName) {
+        User u = getUserByUsername(userName);
+        if(u.getTeam() == null) {
+            throw new SoccerManagerServiceException("User has no team.", ErrorStatus.RESOURCE_NOT_FOUND);
+        }
+        return u.getTeam();
+    }
 }

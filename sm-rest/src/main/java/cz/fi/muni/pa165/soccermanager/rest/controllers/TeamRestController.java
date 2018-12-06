@@ -7,10 +7,14 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import cz.fi.muni.pa165.soccermanager.api.dto.PlayerDTO;
+import cz.fi.muni.pa165.soccermanager.api.facade.UserFacade;
+import cz.fi.muni.pa165.soccermanager.rest.assemblers.PlayerResourceAssembler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ExposesResourceFor;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpEntity;
@@ -18,11 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import cz.fi.muni.pa165.soccermanager.api.dto.TeamCreateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
@@ -45,13 +45,17 @@ public class TeamRestController {
     final static Logger logger = LoggerFactory.getLogger(TeamRestController.class);
 
     private TeamFacade teamFacade;
+    private UserFacade userFacade;
     private TeamResourceAssembler teamResourceAssembler;
+    private PlayerResourceAssembler playerResourceAssembler;
 
 
     @Autowired
-    public TeamRestController(TeamFacade teamFacade, TeamResourceAssembler teamResourceAssembler) {
+    public TeamRestController(TeamFacade teamFacade, TeamResourceAssembler teamResourceAssembler, UserFacade userFacade, PlayerResourceAssembler playerResourceAssembler) {
         this.teamFacade = teamFacade;
         this.teamResourceAssembler = teamResourceAssembler;
+        this.userFacade = userFacade;
+        this.playerResourceAssembler = playerResourceAssembler;
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -69,6 +73,20 @@ public class TeamRestController {
         return new ResponseEntity<>(teamsResources  , HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/{id}/players" ,method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public HttpEntity<Resources<Resource<PlayerDTO>>> getPlayersOfTeam(@PathVariable("id") long id) {
+
+        logger.debug("rest getPlayersOfTeam()");
+        List<PlayerDTO> allPlayers = teamFacade.getAllPlayersInTeam(id);
+        List<Resource<PlayerDTO>> playerResourceList= new ArrayList<>();
+
+        for (PlayerDTO playerDTO: allPlayers) {
+            playerResourceList.add(playerResourceAssembler.toResource(playerDTO));
+        }
+        Link selfLink = linkTo(TeamRestController.class).slash(id).slash("/players").withSelfRel();
+        return new ResponseEntity<>(new Resources<>(playerResourceList, selfLink)  , HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public final HttpEntity<Resource<TeamDTO>> getTeamById(@PathVariable("id") long id) {
 
@@ -82,23 +100,25 @@ public class TeamRestController {
         }
     }
 
-    @RequestMapping(value = "/{teamId}/players/{playerId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final void removePlayerFromTeam(@PathVariable("teamId") long teamId, @PathVariable("playerId") long playerId) {
+    @RequestMapping(value = "/{teamId}/players/{playerId}", method = RequestMethod.DELETE)
+    public final HttpEntity<Void> removePlayerFromTeam(@PathVariable("teamId") long teamId, @PathVariable("playerId") long playerId) {
 
         logger.debug("rest removePlayerFromTeam()");
         try {
             teamFacade.removePlayerFromTeam(playerId, teamId);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception ex) {
             throw ExceptionSorter.throwException(ex);
         }
     }
 
-    @RequestMapping(value = "/{teamId}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final void deleteTeam(@PathVariable("teamId") long teamId) {
+    @RequestMapping(value = "/{teamId}", method = RequestMethod.DELETE)
+    public final HttpEntity<Void> deleteTeam(@PathVariable("teamId") long teamId) {
 
-        logger.debug("rest getTeamById()");
+        logger.debug("rest deleteTeam()");
         try {
             teamFacade.remove(teamId);
+            return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception ex) {
             throw ExceptionSorter.throwException(ex);
         }
@@ -115,16 +135,19 @@ public class TeamRestController {
         }
     }
 
-//    @RequestMapping(value = "/{teamId}/players", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-//    public final List<PlayerDTO> getAllPlayersInTeam(@PathVariable("teamId") long teamId) {
-//
-//        logger.debug("rest getAllPlayersInTeam()");
-//        try {
-//            return teamFacade.getAllPlayersInTeam(teamId);
-//        } catch (SoccerManagerServiceException ex) {
-//            throw ExceptionSorter.throwException(ex);
-//        }
-//    }
+    @RequestMapping(value = "/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public final HttpEntity<Resource<TeamDTO>> getTeamOfUser(@RequestParam("userName") String userName) {
+
+        logger.debug("rest getTeamOfUser()");
+        try {
+            TeamDTO teamDTO = userFacade.getTeamOfUser(userName);
+            logger.debug(teamDTO.getClubName());
+            Resource<TeamDTO> resource = teamResourceAssembler.toResource(teamDTO);
+            return new ResponseEntity<>(resource, HttpStatus.OK);
+        } catch (SoccerManagerServiceException ex) {
+            throw ExceptionSorter.throwException(ex);
+        }
+    }
 
     @RequestMapping(value = "/{country}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public final HttpEntity<Resources<Resource<TeamDTO>>> findByCountry(@PathVariable("country") String country) {
@@ -146,7 +169,7 @@ public class TeamRestController {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<Void> createProduct(@RequestBody @Valid TeamCreateDTO teamCreateDTO, BindingResult bindingResult) {
+    public final HttpEntity<Void> createTeam(@RequestBody @Valid TeamCreateDTO teamCreateDTO, BindingResult bindingResult) {
 
         logger.debug("rest createTeam()");
         if (bindingResult.hasErrors()) {

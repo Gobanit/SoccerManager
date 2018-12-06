@@ -39,6 +39,6 @@ public class ExceptionSorter {
             }
 
         }
-        return new InternalServerErrorException(ex);
+        return new InternalServerErrorException(ex.getLocalizedMessage());
     }
 }

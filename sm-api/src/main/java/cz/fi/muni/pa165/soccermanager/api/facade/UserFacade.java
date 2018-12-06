@@ -5,6 +5,7 @@ package cz.fi.muni.pa165.soccermanager.api.facade;
 
 import java.util.List;
 
+import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserAuthenticateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserCreateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserDTO;
@@ -87,4 +88,6 @@ public interface UserFacade {
 	 *            - whether user should have admin rights
 	 */
 	public void changeAdminRights(String userName, boolean adminRights);
+
+	TeamDTO getTeamOfUser(String userName);
 }

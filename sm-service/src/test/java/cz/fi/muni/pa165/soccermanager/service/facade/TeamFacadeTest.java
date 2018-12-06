@@ -102,7 +102,7 @@ public class TeamFacadeTest {
         Assert.assertTrue(players.size() == 1);
         Assert.assertEquals(players.get(0).getId(), player1.getId());
         Assert.assertEquals(players.get(0).getPlayerName(), player1.getPlayerName());
-        Assert.assertEquals(players.get(0).getBirthday(), player1.getBirthDate());
+        Assert.assertEquals(players.get(0).getBirthDate(), player1.getBirthDate());
     }
     @Test
     public void removePlayerFromTeam() {

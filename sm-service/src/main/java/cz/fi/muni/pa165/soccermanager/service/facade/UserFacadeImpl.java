@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
+import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserAuthenticateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserCreateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserDTO;
@@ -16,6 +17,8 @@ import cz.fi.muni.pa165.soccermanager.api.facade.UserFacade;
 import cz.fi.muni.pa165.soccermanager.data.User;
 import cz.fi.muni.pa165.soccermanager.service.BeanMapping;
 import cz.fi.muni.pa165.soccermanager.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of {@link UserFacade}
@@ -30,7 +33,7 @@ public class UserFacadeImpl implements UserFacade {
 
 	private UserService userService;
 	private BeanMapping beanMapping;
-	
+	private final Logger logger = LoggerFactory.getLogger(UserFacadeImpl.class);
 	
 	/**
 	 * @param userService
@@ -87,6 +90,11 @@ public class UserFacadeImpl implements UserFacade {
 	public void changeAdminRights(String userName, boolean adminRights) {
 		if(adminRights) userService.giveAdministratorRights(userName);
 		else userService.takeAdministratorRights(userName);
+	}
+
+	@Override
+	public TeamDTO getTeamOfUser(String userName) {
+		return  beanMapping.mapTo(userService.getTeamOfUser(userName), TeamDTO.class);
 	}
 
 }

@@ -1,0 +1,31 @@
+<h1>Administration of teams</h1>
+<!-- button for adding a new category -->
+<a href="#!/admin/newteam" class="btn btn-primary">
+    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+    New team
+</a>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>club name</th>
+        <th>championship name</th>
+        <th>country</th>
+        <th>budget</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="team in teams track by $index">
+        <td>{{team.id}}</td>
+        <td>{{team.clubName}}</td>
+        <td>{{team.championshipName}}</td>
+        <td>{{team.country}}</td>
+        <td>{{team.budget}}</td>
+        <td>
+            <button ng-click="deleteTeam(team)" type="button" class="btn btn-primary">Delete</button>
+        </td>
+
+    </tr>
+    </tbody>
+</table>

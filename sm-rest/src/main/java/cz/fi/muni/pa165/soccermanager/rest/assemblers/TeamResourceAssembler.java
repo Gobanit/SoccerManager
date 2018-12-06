@@ -1,6 +1,7 @@
 package cz.fi.muni.pa165.soccermanager.rest.assemblers;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ public class TeamResourceAssembler implements ResourceAssembler<TeamDTO, Resourc
         Resource<TeamDTO> teamResource= new Resource<TeamDTO>(teamDTO);
         try {
             teamResource.add(linkTo(TeamRestController.class).slash(teamDTO.getId()).withSelfRel());
+            teamResource.add(linkTo(methodOn(TeamRestController.class).getPlayersOfTeam(teamDTO.getId())).withRel("allPlayers"));
 
         } catch (Exception ex) {
             log.error("cannot link HATEOAS", ex);

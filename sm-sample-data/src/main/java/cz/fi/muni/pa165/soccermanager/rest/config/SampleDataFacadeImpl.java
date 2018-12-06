@@ -47,8 +47,7 @@ public class SampleDataFacadeImpl implements SampleDataFacade {
 
 	@Override
 	public void initData() {
-		// Users
-		User admin = createUser("admin", "pass", true);				
+
 		
 		// Players
 		SoccerPlayer henry = createPlayer("Thierry Henry", "France", LocalDate.of(1977,  8,  17),Position.OFFENSE, Footed.RIGHT, 9);
@@ -59,17 +58,22 @@ public class SampleDataFacadeImpl implements SampleDataFacade {
 		Team arsenal = createTeam("Arsenal", "England", "Premier League", "1000000", Arrays.asList(henry, hleb));
 		Team barcelona = createTeam("Barcelona", "Spain", "Primera División", "2000000", Arrays.asList(ronald));
 		Team liverpool = createTeam("Liverpool", "England", "Premier League", "1100000", Arrays.asList());
+		Team realmadrid = createTeam("Real Madrid", "Spain", "Primera División", "12300000", Arrays.asList());
 
 		// Matches
 		Match match0 = createMatch(liverpool, arsenal, LocalDateTime.of(2018, 6, 2, 17, 30, 00), null, null);
 		Match match1 = createMatch(arsenal, barcelona, LocalDateTime.now().plusDays(4), null, null);
 		Match match2 = createMatch(barcelona, arsenal, LocalDateTime.now().plusDays(8), null, null);
+
+		// Users
+		User admin = createUser("admin", "pass", true, arsenal);
 	}
 
-	private User createUser(String name, String pass, boolean admin) {
+	private User createUser(String name, String pass, boolean admin, Team team) {
 		User u = new User();
 		u.setUserName(name);
 		u.setAdmin(admin);
+		u.setTeam(team);
 		userService.registerNewUser(u, pass);
 		return u;
 	}

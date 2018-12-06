@@ -82,7 +82,7 @@ public class Team {
 	}
 	
 	public void removePlayer(SoccerPlayer p) {
-		getPlayers().remove(p);
+		players.remove(p);
 		p.setTeam(null);
 	}
 

@@ -1,6 +1,8 @@
 package cz.fi.muni.pa165.soccermanager.api.dto;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
@@ -18,6 +20,10 @@ public class TeamCreateDTO {
 
     @NotNull
     private String country;
+
+    @NotNull
+    @Min(1)
+    private BigDecimal budget;
 
     public TeamCreateDTO() {
     }
@@ -50,6 +56,14 @@ public class TeamCreateDTO {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public BigDecimal getBudget() {
+        return budget;
+    }
+
+    public void setBudget(BigDecimal budget) {
+        this.budget = budget;
     }
 
     @Override

@@ -10,7 +10,7 @@ public class PlayerDTO {
     private Long id;
     private String playerName;
     private String nationality;
-    private LocalDate birthday;
+    private LocalDate birthDate;
     private Integer rating;
     private TeamDTO teamDTO;
     private Position position;
@@ -23,7 +23,7 @@ public class PlayerDTO {
         this.id = id;
         this.playerName = playerName;
         this.nationality = nationality;
-        this.birthday = birthday;
+        this.birthDate = birthday;
         this.rating = rating;
         this.teamDTO = teamDTO;
         this.position = position;
@@ -54,12 +54,12 @@ public class PlayerDTO {
         this.nationality = nationality;
     }
 
-    public LocalDate getBirthday() {
-        return birthday;
+    public LocalDate getBirthDate() {
+        return birthDate;
     }
 
-    public void setBirthday(LocalDate birthday) {
-        this.birthday = birthday;
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 
     public Integer getRating() {
@@ -100,7 +100,7 @@ public class PlayerDTO {
         int hash = 7;
         hash = 37 * hash + Objects.hashCode(getPlayerName());
         hash = 37 * hash + Objects.hashCode(getNationality());
-        hash = 37 * hash + Objects.hashCode(getBirthday());
+        hash = 37 * hash + Objects.hashCode(getBirthDate());
 
         return hash;
     }
@@ -125,7 +125,7 @@ public class PlayerDTO {
         if (!Objects.equals(getNationality(), other.getNationality())) {
             return false;
         }
-        if (!Objects.equals(getBirthday(), other.getBirthday())) {
+        if (!Objects.equals(getBirthDate(), other.getBirthDate())) {
             return false;
         }
 

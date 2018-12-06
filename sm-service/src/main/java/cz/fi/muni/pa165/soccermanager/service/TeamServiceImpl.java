@@ -9,6 +9,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -19,7 +22,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class TeamServiceImpl implements TeamService {
     static final int MAXIMUM_TEAM_SIZE = 30;
-
+    private final Logger logger = LoggerFactory.getLogger(TeamServiceImpl.class);
     private final TeamDAO teamDAO;
 
     @Inject
@@ -102,6 +105,9 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public void removePlayerFromTeam(Team team, SoccerPlayer player) {
+        logger.debug("Remove player from team SERVICE");
+        logger.debug(team.toString());
+        logger.debug(player.toString());
         team.removePlayer(player);
         teamDAO.update(team);
     }
