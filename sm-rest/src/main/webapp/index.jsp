@@ -34,7 +34,7 @@
                 <li><a href="#!/players">List of players</a></li>
                 <li><a href="#!/teams/pick">Pick team</a></li>
                 <li><a href="#!/matches">List of matches</a></li>
-                <li><a href="#!/teams/:teamId">Manage my team</a></li>
+                <li><a href="#!/userteam">Manage my team</a></li>
                 <li class="dropdown">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown">Admin<b class="caret"></b></a>
                     <ul class="dropdown-menu">

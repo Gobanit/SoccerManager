@@ -6,7 +6,8 @@ app.config(['$routeProvider', function($routeProvider) {
         .when('/login', {controller: 'LoginController', templateUrl: 'partials/login.html', showMenu: false})
         .when('/home', {templateUrl: 'partials/home.html'})
         .when('/admin/teams', {templateUrl: 'partials/admin_teams.html', controller: 'AdminTeamsCtrl'})
-        .when('/teams/:teamId', {templateUrl: 'partials/team_detail.html', controller: 'TeamDetailCtrl'})
+        .when('/team/:teamId', {templateUrl: 'partials/team_detail.html', controller: 'TeamDetailCtrl'})
+        .when('/userteam', {templateUrl: 'partials/user_team_detail.html', controller: 'UserTeamDetailCtrl'})
         .when('/matches', {templateUrl: 'partials/matchesList.html', controller: 'MatchesCtrl'})
         .when('/matches/create', {templateUrl: 'partials/matchCreate.html', controller: 'MatchCreateCtrl'})
         .when('/admin/newteam', {templateUrl: 'partials/admin_new_team.html', controller: 'AdminNewTeamCtrl'})
@@ -94,9 +95,22 @@ function loadTeamPlayers($http, team, prodLink) {
     });
 }
 
+
 soccerManagerControllers.controller('TeamDetailCtrl',
+	    function ($scope, $rootScope, $http, $route, $routeParams) {
+    		var teamId = $routeParams.teamId;
+
+	        $http.get('/pa165/teams/'+teamId).then(function (response) {
+	            var team = response.data;
+	            $scope.team = team;
+	            console.log('AJAX loaded detail of team ' + $scope.team.clubName);
+	            console.log(team.links[1].href);
+	            loadTeamPlayers($http, team, team.links[1].href);
+	        });
+	    });
+
+soccerManagerControllers.controller('UserTeamDetailCtrl',
     function ($scope, $rootScope, $http, $route) {
-        // get product id from URL fragment #/product/:productId
         var userName = $rootScope.globals.currentUser.username;
         $http.get('/pa165/teams/users/' , {
             params: { userName: userName }}).then(function (response) {
