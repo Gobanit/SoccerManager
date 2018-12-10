@@ -40,3 +40,6 @@ curl -i -X GET http://localhost:8080/pa165/users/user1/team
 
 # Change admin rights
 curl -X PUT http://localhost:8080/pa165/users/user1/True
+
+# Authenticate User
+curl -X GET -i -H "Content-Type: application/json" --data '{"username": "user1","rawPassword": "1234"}' http://localhost:8080/pa165/users/auth

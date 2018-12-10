@@ -1,6 +1,7 @@
 package cz.fi.muni.pa165.soccermanager.rest.controllers;
 
 import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
+import cz.fi.muni.pa165.soccermanager.api.dto.UserAuthenticateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserCreateDTO;
 import cz.fi.muni.pa165.soccermanager.api.facade.UserFacade;
 import cz.fi.muni.pa165.soccermanager.rest.ExceptionSorter;
@@ -24,7 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  *
@@ -155,6 +156,20 @@ public class UserRestController {
         try {
             userFacade.changeAdminRights(name, admin);
         } catch (Exception ex) {
+            throw ExceptionSorter.throwException(ex);
+        }
+    }
+    
+    @RequestMapping(value = "/auth", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public boolean authenticateUser(@RequestBody UserAuthenticateDTO body) {
+                
+        logger.debug("rest authenticateUser()");
+        
+        try {
+            boolean auth = userFacade.authenticateUser(body);
+            return auth;
+        } catch(Exception ex) {
             throw ExceptionSorter.throwException(ex);
         }
     }
