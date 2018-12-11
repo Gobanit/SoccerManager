@@ -1,3 +1,5 @@
+/* global $scope */
+
 //  Authentication service. Wrapped in an IIFE to avoid global variables
 //  Purpose: To handle all user authentication methods
 
@@ -7,12 +9,27 @@ var AuthenticationService = function($http, $cookies, $rootScope, $timeout) {
 
     //  Function defined for when the user login is initiate
     var Login = function (username, password, callback) {
-        //  (The following code will be replaced by a real service you'd hope!)
-        var response = { success: username === 'admin' && password === 'admin' };
-        if(!response.success) {
-            response.message = 'Username or password is incorrect, try "iain" & "password"';
-        }
-        callback(response);
+        var user = {
+            'username': username,
+            'rawPassword': password
+        };
+        
+        $http({
+            method: 'POST',
+            url: 'http://localhost:8080/pa165/users/auth',
+            data: user
+        }).then(function success(response) {
+            if (response.body === null) {
+                console.log('Error auth!');
+                callback(response);
+            }
+            console.log('Success!');
+            callback(response);
+        }, function error(response) {
+            console.log('Error throw!');
+            callback(response);
+        });
+
     };
 
     //  Sets the cookie and the state to logged in

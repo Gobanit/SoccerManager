@@ -9,6 +9,7 @@ import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserAuthenticateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserCreateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserDTO;
+import cz.fi.muni.pa165.soccermanager.api.dto.UserSessionDTO;
 
 /**
  * Interface for accessing users related use cases.
@@ -57,9 +58,9 @@ public interface UserFacade {
 	 * 
 	 * @param userAuth
 	 *            - authentication data
-	 * @return true if user was successfully authenticated or false otherwise
+	 * @return UserSessionDTO representing user with token
 	 */
-	public boolean authenticateUser(UserAuthenticateDTO userAuth);
+	public UserSessionDTO authenticateUser(UserAuthenticateDTO userAuth);
 
 	/**
 	 * Removes user from application

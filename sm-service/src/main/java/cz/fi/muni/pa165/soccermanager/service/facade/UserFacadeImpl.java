@@ -13,6 +13,7 @@ import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserAuthenticateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserCreateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserDTO;
+import cz.fi.muni.pa165.soccermanager.api.dto.UserSessionDTO;
 import cz.fi.muni.pa165.soccermanager.api.facade.UserFacade;
 import cz.fi.muni.pa165.soccermanager.data.User;
 import cz.fi.muni.pa165.soccermanager.service.BeanMapping;
@@ -72,9 +73,18 @@ public class UserFacadeImpl implements UserFacade {
 	}
 
 	@Override
-	public boolean authenticateUser(UserAuthenticateDTO userAuth) {
-		return userService.authenticateUser(userAuth.getUsername(), userAuth.getRawPassword());
-	}
+	public UserSessionDTO authenticateUser(UserAuthenticateDTO userAuth) {
+            boolean auth = userService.authenticateUser(userAuth.getUsername(), userAuth.getRawPassword());
+		if (auth) {
+                    User user = userService.getUserByUsername(userAuth.getUsername());
+                    String token = userService.createSessionToken(user);
+                    UserSessionDTO session = new UserSessionDTO();
+                    session.setToken(token);
+                    session.setUser(beanMapping.mapTo(user, UserDTO.class));
+                    return session;
+                }
+                return null;
+        }
 
 	@Override
 	public void deleteUser(String userName) {

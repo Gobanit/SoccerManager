@@ -12,6 +12,8 @@ import cz.fi.muni.pa165.soccermanager.dao.TeamDAO;
 import cz.fi.muni.pa165.soccermanager.dao.UserDAO;
 import cz.fi.muni.pa165.soccermanager.data.Team;
 import cz.fi.muni.pa165.soccermanager.data.User;
+import java.util.HashMap;
+import java.util.Map;
 /**
  * implementation of service layer for user
  * @author Dominik Pilar
@@ -22,6 +24,8 @@ public class UserServiceImpl implements UserService {
 
     private UserDAO userDAO;
     private TeamDAO teamDAO;
+    
+    private final Map<String, Long> sessions = new HashMap<>();
 
     @Autowired
     public UserServiceImpl(UserDAO userDAO, TeamDAO teamDAO) {
@@ -121,5 +125,18 @@ public class UserServiceImpl implements UserService {
             throw new SoccerManagerServiceException("User has no team.", ErrorStatus.RESOURCE_NOT_FOUND);
         }
         return u.getTeam();
+    }
+
+    @Override
+    public String createSessionToken(User user) {
+        String token = "bnbs"; //generovat
+        sessions.put(token, user.getId());
+        return token;
+    }
+
+    @Override
+    public User getUserByToken(String token) {
+        Long id = sessions.get(token);
+        return this.getUserById(id);
     }
 }

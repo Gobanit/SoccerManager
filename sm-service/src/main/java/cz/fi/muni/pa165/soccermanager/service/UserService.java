@@ -98,4 +98,8 @@ public interface UserService {
      * @throws SoccerManagerServiceException with error status RESOURCE_NOT_FOUND - if user with user name was not found or user has no team
      */
     Team getTeamOfUser(String userName);
+    
+    String createSessionToken(User user);
+    
+    User getUserByToken(String token);
 }

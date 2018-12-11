@@ -138,15 +138,6 @@ public class UserFacadeTest {
     }
     
     @Test
-    public void authenticateUserTest() {
-        given(userService.authenticateUser(user1.getUserName(), 
-                "pass")).willReturn(Boolean.TRUE);
-
-        boolean auth = userFacade.authenticateUser(userAuth);
-        Assert.assertTrue(auth);
-    }
-    
-    @Test
     public void pickTeamForUserTest() {        
         userFacade.pickTeamForUser(user2.getUserName(), team1.getId());
         

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserDTO;
+import cz.fi.muni.pa165.soccermanager.api.dto.UserSessionDTO;
 import cz.fi.muni.pa165.soccermanager.rest.assemblers.TeamResourceAssembler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -160,15 +161,15 @@ public class UserRestController {
         }
     }
     
-    @RequestMapping(value = "/auth", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/auth", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public boolean authenticateUser(@RequestBody UserAuthenticateDTO body) {
+    public UserSessionDTO authenticateUser(@RequestBody UserAuthenticateDTO body) {
                 
         logger.debug("rest authenticateUser()");
         
         try {
-            boolean auth = userFacade.authenticateUser(body);
-            return auth;
+            UserSessionDTO session = userFacade.authenticateUser(body);
+            return session;
         } catch(Exception ex) {
             throw ExceptionSorter.throwException(ex);
         }
