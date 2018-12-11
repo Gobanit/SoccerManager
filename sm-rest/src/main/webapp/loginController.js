@@ -11,18 +11,18 @@ var LoginController = function($scope, $rootScope, $location, AuthenticationServ
     $rootScope.showMenu = false;
     $scope.login = function (username, password) {
         $scope.dataLoading = true;
-        var status = AuthenticationService.Login(username, password);
-        
-            if(status.success) {
-                AuthenticationService.SetCredentials(username, password); //plus token
+        AuthenticationService.Login(username, password, function(response) {
+            if(response.success) {
+                AuthenticationService.SetCredentials(username, response);
                 $rootScope.showMenu = true;
                 $location.path('/');
             } else {
-                $scope.error = status.message;
+                $scope.error = response.message;
                 $scope.dataLoading = false;
             }
-        };
+            $scope.dataLoading = false;
+        });
     };
-
+};
 
 app.controller("LoginController", LoginController);

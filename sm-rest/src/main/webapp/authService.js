@@ -1,5 +1,3 @@
-/* global $scope */
-
 //  Authentication service. Wrapped in an IIFE to avoid global variables
 //  Purpose: To handle all user authentication methods
 
@@ -19,13 +17,18 @@ var AuthenticationService = function($http, $cookies, $rootScope, $timeout) {
             url: 'http://localhost:8080/pa165/users/auth',
             data: user
         }).then(function success(response) {
-            if (response.body === null) {
+            if (response.data === "") {
                 console.log('Error auth!');
+                response.message = 'Password is incorrect';
                 callback(response);
+            } else {
+                console.log('Success!');
+                var status = { success: response };
+                callback(status);
             }
-            console.log('Success!');
-            callback(response);
+
         }, function error(response) {
+            response.message = 'Username is incorrect';
             console.log('Error throw!');
             callback(response);
         });
@@ -33,16 +36,15 @@ var AuthenticationService = function($http, $cookies, $rootScope, $timeout) {
     };
 
     //  Sets the cookie and the state to logged in
-    var SetCredentials = function (username, password) {
-        var authdata = username + ':' + password; // We shoud really encrypt this, but this is left clear case for this example :)
+    var SetCredentials = function (username, data) {
         $rootScope.globals = {
             currentUser: {
                 username: username,
-                authdata: authdata
+                data: data
             }
         };
 
-        $http.defaults.headers.common['Authorization'] = 'Basic ' + authdata;
+        $http.defaults.headers.common['Authorization'] = 'Basic ' + data;
         $cookies.put('globals', $rootScope.globals);
     };
 
