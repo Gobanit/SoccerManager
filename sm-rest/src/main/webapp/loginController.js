@@ -7,17 +7,18 @@ var app = angular.module("SoccerManagerApp");
 var LoginController = function($scope, $rootScope, $location, AuthenticationService) {
 
     // Reset the login status before we start
-    AuthenticationService.ClearCredentials();
+    AuthenticationService.ClearSessionInfo();
     $rootScope.showMenu = false;
     $scope.login = function (username, password) {
         $scope.dataLoading = true;
-        AuthenticationService.Login(username, password, function(response) {
-            if(response.success) {
-                AuthenticationService.SetCredentials(username, response);
+        AuthenticationService.Login(username, password, function(status) {
+            if(status.success) {
+                AuthenticationService.SetSessionInfo(status.token, status.username, status.admin);
                 $rootScope.showMenu = true;
+                console.log('currentUser: '+JSON.stringify($rootScope.globals.currentUser));
                 $location.path('/');
             } else {
-                $scope.error = response.message;
+                $scope.error = status.message;
                 $scope.dataLoading = false;
             }
             $scope.dataLoading = false;

@@ -1,5 +1,11 @@
 package cz.fi.muni.pa165.soccermanager.service.facade;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import cz.fi.muni.pa165.soccermanager.api.dto.MatchAwaitingDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.MatchCreateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.MatchDTO;
@@ -9,11 +15,6 @@ import cz.fi.muni.pa165.soccermanager.data.Match;
 import cz.fi.muni.pa165.soccermanager.service.BeanMapping;
 import cz.fi.muni.pa165.soccermanager.service.MatchService;
 import cz.fi.muni.pa165.soccermanager.service.TeamService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * implementation of facade layer for match

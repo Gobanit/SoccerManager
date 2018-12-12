@@ -42,8 +42,8 @@
                         <li><a href="#!/admin/teams">Teams</a></li>
                     </ul>
                 </li>
-                <li><a href="#!/login">Logout</a></li>
-            </ul>
+                <li><a href="#!/login">{{ globals.currentUser.username }} - Logout</a></span> </li>
+           </ul>
         </div><!--/.nav-collapse -->
     </div>
 </nav>

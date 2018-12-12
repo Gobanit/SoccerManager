@@ -43,6 +43,13 @@ public interface UserFacade {
 	 * @return found user or null if not existing
 	 */
 	public UserDTO getUserByUsername(String username);
+	
+	/**
+	 * Finds user by session token
+	 * @param token - id of session
+	 * @return found user or null if none found
+	 */
+	public UserDTO getBySessionToken(String token);
 
 	/**
 	 * Registers new user

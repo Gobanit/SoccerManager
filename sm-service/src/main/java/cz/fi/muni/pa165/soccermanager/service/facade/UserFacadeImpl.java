@@ -107,4 +107,9 @@ public class UserFacadeImpl implements UserFacade {
 		return  beanMapping.mapTo(userService.getTeamOfUser(userName), TeamDTO.class);
 	}
 
+	@Override
+	public UserDTO getBySessionToken(String token) {
+		return beanMapping.mapTo(userService.getUserByToken(token), UserDTO.class);
+	}
+
 }

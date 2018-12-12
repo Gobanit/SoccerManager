@@ -19,47 +19,60 @@ var AuthenticationService = function($http, $cookies, $rootScope, $timeout) {
         }).then(function success(response) {
             if (response.data === "") {
                 console.log('Error auth!');
-                response.message = 'Password is incorrect';
-                callback(response);
+                var status = {
+               		success: false,
+                   	message: 'Password is incorrect'
+                };
+                callback(status);                 	
             } else {
                 console.log('Success!');
-                var status = { success: response };
-                callback(status);
+                var status = { 
+                	success: true,
+                	message: 'Successfully logged in',
+                	token: response.data.token,
+                	username: response.data.user.username,
+                	admin: response.data.user.admin
+                };
+                callback(status);                 	
             }
 
         }, function error(response) {
-            response.message = 'Username is incorrect';
             console.log('Error throw!');
-            callback(response);
+            var status = {
+               	success: false,
+                message: 'Username is incorrect'
+            };
+            callback(status);                 	
         });
 
     };
 
-    //  Sets the cookie and the state to logged in
-    var SetCredentials = function (username, data) {
-        $rootScope.globals = {
-            currentUser: {
-                username: username,
-                data: data
-            }
-        };
-
-        $http.defaults.headers.common['Authorization'] = 'Basic ' + data;
+    
+    var SetSessionInfo = function(token, username, admin) {
+    	$rootScope.globals = {
+           currentUser: {
+        	   'username': username,
+               'sessionToken': token,
+               'admin': admin
+           }
+    	};
+    	console.log('token: '+token);
+    	$http.defaults.headers.common['Authorization'] = 'Bearer ' + token;
         $cookies.put('globals', $rootScope.globals);
     };
 
     //  Clears the cookie and the state for the application to recognise a logged out state
-    var ClearCredentials = function () {
+    var ClearSessionInfo = function () {
         $rootScope.globals = {};
         $cookies.remove('globals');
-        $http.defaults.headers.common.Authorization = 'Basic ';
+        $http.defaults.headers.common.Authorization = 'Bearer ';
     };
 
 
     return {
         Login: Login,
-        SetCredentials: SetCredentials,
-        ClearCredentials: ClearCredentials
+        SetSessionInfo: SetSessionInfo,
+        ClearSessionInfo: ClearSessionInfo
     };
 
 };

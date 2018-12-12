@@ -46,6 +46,15 @@ app.run(function($rootScope, $location, $cookies, $http) {
             $location.path('/login');
         }
     });
+    
+    $rootScope.hasBasicRights = function() {
+    	return $rootScope.globals.currentUser != null;
+    };
+    
+    $rootScope.hasAdminRights = function() {
+    	if(!$rootScope.hasBasicRights()) return false;
+    	return $rootScope.globals.currentUser.admin;
+    };
 });
 
 
