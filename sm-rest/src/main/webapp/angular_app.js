@@ -9,6 +9,7 @@ app.config(['$routeProvider', function($routeProvider) {
         .when('/team/:teamId', {templateUrl: 'partials/team_detail.html', controller: 'TeamDetailCtrl'})
         .when('/userteam', {templateUrl: 'partials/user_team_detail.html', controller: 'UserTeamDetailCtrl'})
         .when('/matches', {templateUrl: 'partials/matchesList.html', controller: 'MatchesCtrl'})
+        .when('/teams/pick', {templateUrl: 'partials/pickTeam.html', controller: 'PickTeamCtrl'})
         .when('/matches/create', {templateUrl: 'partials/matchCreate.html', controller: 'MatchCreateCtrl'})
         .when('/admin/newteam', {templateUrl: 'partials/admin_new_team.html', controller: 'AdminNewTeamCtrl'})
 
@@ -79,6 +80,42 @@ soccerManagerControllers.controller('AdminTeamsCtrl', function ($scope, $http, $
                         break;
                     default:
                         $rootScope.errorAlert = 'Cannot remove team ! Reason given by the server: '+response.data.message;
+                        break;
+                }
+            });
+        };
+
+    });
+});
+
+soccerManagerControllers.controller('PickTeamCtrl', function ($scope, $http, $rootScope, $route) {
+    console.log('calling  /teams/pick');
+    $http.get('/pa165/teams/').then(function (response) {
+        var teams = response.data.content;
+        var userName = $rootScope.globals.currentUser.username;
+        $scope.teams = teams;
+        console.log('AJAX loaded all teams');
+        $scope.pickTeam = function (team) {
+            $http({
+                method: 'PUT',
+                url: '/pa165/users/' + userName + '/team/' + team.id
+            }).then(function success() {
+                console.log('team picked');
+                //display confirmation alert
+                $rootScope.successAlert = 'A team was picked: "' + team.clubName;
+                //change view to list of products
+                window.location = 'http://localhost:8080/pa165/#!/userteam';
+
+            }, function error(response) {
+                //display error
+                console.log("error when picking team");
+                console.log(response);
+                switch (response.data.code) {
+                    case 'InvalidRequestException':
+                        $rootScope.errorAlert = 'Sent data were found to be invalid by server ! ';
+                        break;
+                    default:
+                        $rootScope.errorAlert = 'Cannot pick a team ! Reason given by the server: '+response.data.message;
                         break;
                 }
             });
