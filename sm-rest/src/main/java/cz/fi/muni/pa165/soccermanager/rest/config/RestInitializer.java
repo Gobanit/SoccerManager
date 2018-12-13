@@ -17,7 +17,7 @@ public class RestInitializer extends AbstractAnnotationConfigDispatcherServletIn
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class[] { RestBeansConfig.class };
+		return new Class[] { RestBeansConfig.class,  WebSecurityConfig.class };
 	}
 
 	@Override
