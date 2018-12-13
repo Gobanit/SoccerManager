@@ -8,8 +8,11 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
 import org.springframework.http.HttpStatus;
@@ -35,6 +38,7 @@ import cz.fi.muni.pa165.soccermanager.rest.assemblers.MatchesResourceAssembler;
 @RestController
 @RequestMapping("/matches")
 public class MatchRestController {
+	private static final Logger LOG = LoggerFactory.getLogger(MatchRestController.class);
 
 	private MatchFacade matchFacade;
 	private MatchesResourceAssembler matchResourceAssembler;
@@ -50,7 +54,9 @@ public class MatchRestController {
 		this.matchFacade = matchFacade;
 		this.matchResourceAssembler = matchResourceAssembler;
 	}
-	
+
+
+	@RolesAllowed("ROLE_USER")
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Resources<Resource<MatchDTO>>> getAll() {
 		try {
@@ -71,6 +77,7 @@ public class MatchRestController {
 	}
 
 
+	@RolesAllowed("ROLE_ADMIN")
 	@RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Resource<MatchDTO> create(@RequestBody MatchCreateDTO body) {
 		try {
@@ -82,6 +89,7 @@ public class MatchRestController {
 		}
 	}
 	
+	@RolesAllowed("ROLE_USER")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Resource<MatchDTO> getById(@PathVariable Long id) {
 		try {
@@ -92,6 +100,7 @@ public class MatchRestController {
 		}
 	}
 	
+	@RolesAllowed("ROLE_ADMIN")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public void delete(@PathVariable Long id) {
 		try {
@@ -101,6 +110,8 @@ public class MatchRestController {
 		}
 	}	
 	
+
+	@RolesAllowed("ROLE_ADMIN")
 	@RequestMapping(value = "/simulate/{id}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public Resource<MatchDTO> simulateMatches(@PathVariable Long id) {
 		try {

@@ -1,32 +1,36 @@
 package cz.fi.muni.pa165.soccermanager.rest.controllers;
 
-import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
-import cz.fi.muni.pa165.soccermanager.api.dto.UserAuthenticateDTO;
-import cz.fi.muni.pa165.soccermanager.api.dto.UserCreateDTO;
-import cz.fi.muni.pa165.soccermanager.api.facade.UserFacade;
-import cz.fi.muni.pa165.soccermanager.rest.ExceptionSorter;
-import cz.fi.muni.pa165.soccermanager.rest.assemblers.UserResourceAssembler;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+
 import java.util.ArrayList;
 import java.util.Collection;
+
 import javax.inject.Inject;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.Resources;
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-import cz.fi.muni.pa165.soccermanager.api.dto.UserDTO;
-import cz.fi.muni.pa165.soccermanager.api.dto.UserSessionDTO;
-import cz.fi.muni.pa165.soccermanager.rest.assemblers.TeamResourceAssembler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
+import cz.fi.muni.pa165.soccermanager.api.dto.UserAuthenticateDTO;
+import cz.fi.muni.pa165.soccermanager.api.dto.UserCreateDTO;
+import cz.fi.muni.pa165.soccermanager.api.dto.UserDTO;
+import cz.fi.muni.pa165.soccermanager.api.dto.UserSessionDTO;
+import cz.fi.muni.pa165.soccermanager.api.facade.UserFacade;
+import cz.fi.muni.pa165.soccermanager.rest.ExceptionSorter;
+import cz.fi.muni.pa165.soccermanager.rest.assemblers.TeamResourceAssembler;
+import cz.fi.muni.pa165.soccermanager.rest.assemblers.UserResourceAssembler;
 
 /**
  *
@@ -164,7 +168,6 @@ public class UserRestController {
     @RequestMapping(value = "/auth", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public UserSessionDTO authenticateUser(@RequestBody UserAuthenticateDTO body) {
-                
         logger.debug("rest authenticateUser()");
         
         try {
