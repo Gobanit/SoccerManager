@@ -3,8 +3,8 @@
         <label for="clubName" class="col-sm-2 control-label">Club name</label>
         <div class="col-sm-10">
             <input placeholder="clubName" id="clubName" type="text" ng-minlength="3" name="clubName" class="form-control" ng-model="team.clubName" required/>
-            <p class="help-block" ng-show="form.name.$error.required">club name is required</p>
-            <p class="help-block" ng-show="form.name.$error.minlength">club name must be at least 3 characters</p>
+            <p class="help-block" ng-show="form.clubName.$error.required">club name is required</p>
+            <p class="help-block" ng-show="form.clubName.$error.minlength">club name must be at least 3 characters</p>
         </div>
     </div>
     <div class="form-group">
@@ -18,7 +18,8 @@
     <div class="form-group" ng-class="{'has-error': !(form.championshipName.$valid)}">
         <label for="championshipName" class="col-sm-2 control-label">Championship name</label>
         <div class="col-sm-10">
-            <textarea placeholder="championshipName" ng-minlength="3" id="championshipName" name="championshipName" class="form-control" ng-model="team.championshipName"></textarea>
+            <textarea placeholder="championshipName" ng-minlength="3" id="championshipName" name="championshipName" class="form-control" ng-model="team.championshipName" required></textarea>
+            <p class="help-block" ng-show="form.championshipName.$error.required">championship name is required</p>
             <p class="help-block" ng-show="form.championshipName.$error.minlength">name of championship must be ate least 3 characters</p>
         </div>
     </div>
