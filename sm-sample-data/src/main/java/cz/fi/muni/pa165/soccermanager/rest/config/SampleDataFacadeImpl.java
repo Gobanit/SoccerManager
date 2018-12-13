@@ -53,7 +53,8 @@ public class SampleDataFacadeImpl implements SampleDataFacade {
 		SoccerPlayer henry = createPlayer("Thierry Henry", "France", LocalDate.of(1977,  8,  17),Position.OFFENSE, Footed.RIGHT, 9);
 		SoccerPlayer hleb = createPlayer("Alexander Hleb", "Belarus", LocalDate.of(1981, 5, 1), Position.MIDFIELD, Footed.RIGHT, 8);
 		SoccerPlayer ronald = createPlayer("Ronaldinho", "Brazil", LocalDate.of(1980, 3, 21), Position.MIDFIELD, Footed.BOTH, 10);
-		
+		SoccerPlayer messi = createPlayer("Lionel Messi", "Argentina", LocalDate.of(1978, 4, 21), Position.OFFENSE, Footed.LEFT, 50);
+
 		// Teams
 		Team arsenal = createTeam("Arsenal", "England", "Premier League", "1000000", Arrays.asList(henry, hleb));
 		Team barcelona = createTeam("Barcelona", "Spain", "Primera División", "2000000", Arrays.asList(ronald));

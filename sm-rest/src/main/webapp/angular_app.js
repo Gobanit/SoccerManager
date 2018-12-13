@@ -11,6 +11,7 @@ app.config(['$routeProvider', function($routeProvider) {
         .when('/matches', {templateUrl: 'partials/matchesList.html', controller: 'MatchesCtrl'})
         .when('/matches/create', {templateUrl: 'partials/matchCreate.html', controller: 'MatchCreateCtrl'})
         .when('/admin/newteam', {templateUrl: 'partials/admin_new_team.html', controller: 'AdminNewTeamCtrl'})
+        .when('/teams/:teamId/addplayer', {templateUrl: 'partials/add_player.html', controller: 'AddPlayerToTeam'})
 
         .otherwise({
             redirectTo: '/home'
@@ -154,6 +155,42 @@ soccerManagerControllers.controller('UserTeamDetailCtrl',
             };
         });
     });
+
+soccerManagerControllers.controller('AddPlayerToTeam', function ($scope, $http, $rootScope, $location, $routeParams) {
+    console.log('calling  /pa165/players/free');
+    $http.get('/pa165/players/free').then(function (response) {
+        var players = response.data.content;
+        $scope.players = players;
+        console.log('AJAX loaded all free players');
+        $scope.addPlayerToTeam = function (player) {
+            $http({
+                method: 'PUT',
+                url: '/pa165/teams/' + $routeParams.teamId + '/players/'  + player.id
+            }).then(function success() {
+                console.log('player added to team');
+                //display confirmation alert
+                $rootScope.successAlert = 'A player was added: "' + player.name;
+                //change view to list of products
+                $location.path("/userteam");
+
+            }, function error(response) {
+                //display error
+                console.log("error when player not added");
+                console.log(response);
+                switch (response.data.code) {
+                    case 'InvalidRequestException':
+                        $rootScope.errorAlert = 'Sent data were found to be invalid by server ! ';
+                        break;
+                    default:
+                        $rootScope.errorAlert = 'Cannot add player to team ! Reason given by the server: '+response.data.message;
+                        break;
+                }
+            });
+        };
+
+    });
+});
+
 
 soccerManagerControllers.controller('AdminNewTeamCtrl',
     function ($scope, $routeParams, $http, $location, $rootScope) {

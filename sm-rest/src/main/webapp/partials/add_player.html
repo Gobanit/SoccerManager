@@ -1,0 +1,33 @@
+<h1>List of free players</h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>player name</th>
+        <th>nationality</th>
+        <th>rating</th>
+        <th>footed</th>
+        <th>birth date</th>
+        <th>position</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="player in players track by $index">
+        <td>{{player.id}}</td>
+        <td>{{player.playerName}}</td>
+        <td>{{player.nationality}}</td>
+        <td>{{player.rating}}</td>
+        <td>{{player.footed}}</td>
+        <td>{{player.birthDate}}</td>
+        <td>{{player.position}}</td>
+        <td>
+            <button ng-click="addPlayerToTeam(player)" type="button" class="btn btn-primary">Add to team</button>
+        </td>
+    </tr>
+    </tbody>
+    <a ng-href="#!/userteam" class="btn btn-primary">
+        <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+        Go back
+    </a>
+</table>
