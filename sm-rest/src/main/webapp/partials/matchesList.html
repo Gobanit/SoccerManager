@@ -37,15 +37,15 @@
 					<span ng-hide="alreadyPlayed(match)">-</span>
 				</td>
 				<td>
-					<button type="button" ng-hide="!canBeSimulated(match)" ng-click="simulateMatch(match)" class="btn btn-primary">Simulate</button>	
+					<button type="button" ng-hide="!hasAdminRights() || !canBeSimulated(match)" ng-click="simulateMatch(match)" class="btn btn-primary">Simulate</button>	
 				</td>
 				<td>
-					<button type="button" ng-hide="alreadyPlayed(match)" ng-click="deleteMatch(match)" class="btn btn-primary">Delete</button>	
+					<button type="button" ng-hide="!hasAdminRights() || alreadyPlayed(match)" ng-click="deleteMatch(match)" class="btn btn-primary">Delete</button>	
 				</td>
 			</tr>
 		</tbody>
 	</table>
 	
-	<a href="#!/matches/create" class="btn btn-primary" role="button">Plan match</a>
+	<a href="#!/matches/create" class="btn btn-primary" role="button" ng-hide="!hasAdminRights()">Plan match</a>
 </body>
 </html>

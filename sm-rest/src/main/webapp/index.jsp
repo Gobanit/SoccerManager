@@ -35,11 +35,12 @@
                 <li><a href="#!/teams/pick">Pick team</a></li>
                 <li><a href="#!/matches">List of matches</a></li>
                 <li><a href="#!/userteam">Manage my team</a></li>
-                <li class="dropdown">
+                <li class="dropdown" ng-hide="!hasAdminRights()">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown">Admin<b class="caret"></b></a>
                     <ul class="dropdown-menu">
                         <li><a href="#!/admin/players">Players</a></li>
                         <li><a href="#!/admin/teams">Teams</a></li>
+                        <li><a href="#!/matches/create">Create Match</a></li>
                     </ul>
                 </li>
                 <li><a href="#!/login">{{ globals.currentUser.username }} - Logout</a></span> </li>

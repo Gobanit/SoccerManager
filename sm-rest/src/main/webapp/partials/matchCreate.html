@@ -8,7 +8,7 @@
 	<div class="container">
 		<form name="form" novalidate class="form-horizontal">
 			<div class="row">
-				<div class="form-group col-sm-4" ng-class="{'has-error': !(form.homeTeamSelect.$valid)}">
+				<div class="form-group col-sm-6" ng-class="{'has-error': !(form.homeTeamSelect.$valid)}">
 					<label for="homeTeamSelect">Home Team</label> 
 					<select	class="form-control" id="homeTeamSelect" name="homeTeamSelect" ng-model="match.homeTeam" required>
 						<option ng-repeat="team in teams" value="{{ team.id }}">{{ team.clubName }}</option>
@@ -17,7 +17,7 @@
 				</div>
 			</div>
 			<div class="row">			
-				<div class="form-group col-sm-4" ng-class="{'has-error': !(form.awayTeamSelect.$valid)}">
+				<div class="form-group col-sm-6" ng-class="{'has-error': !(form.awayTeamSelect.$valid)}">
 					<label for="awayTeamSelect">Away Team</label> 
 					<select	class="form-control" id="awayTeamSelect" name="awayTeamSelect" ng-model="match.awayTeam" required>
 						<option ng-repeat="team in teams" value="{{ team.id }}">{{ team.clubName }}</option>
@@ -26,7 +26,7 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="form-group col-sm-4" ng-class="{'has-error': !(form.dateTime.$valid)}">
+				<div class="form-group col-sm-6" ng-class="{'has-error': !(form.dateTime.$valid)}">
 					<label for="dateTime">Pick a date</label>
 					<input type="datetime-local" class="form-control" id="dateTime" name="dateTime" ng-model="match.date"
 					      placeholder="yyyy-MM-ddTHH:mm:ss" min="{{ minMatchDate }}" max="{{ maxMatchDate }}" required />
