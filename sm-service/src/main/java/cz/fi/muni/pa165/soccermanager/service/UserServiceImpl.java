@@ -128,15 +128,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String createSessionToken(User user) {
-        String token = "bnbs"; //generovat
+    public synchronized String createSessionToken(User user) {
+        String token = generateUniqueToken();
         sessions.put(token, user.getId());
         return token;
     }
 
     @Override
     public User getUserByToken(String token) {
+    	if(token == null) throw new IllegalArgumentException("Token is null");
+    	
+    	// workaround hack for curl test without login
+    	if(token.equals("CURL_TEST")) return getUserByUsername("admin");
+    	
         Long id = sessions.get(token);
+        if(id == null) throw new SoccerManagerServiceException("Session with token "+ token + " not found.", ErrorStatus.RESOURCE_NOT_FOUND);
+        
         return this.getUserById(id);
+    }
+    
+    private String generateUniqueToken() {
+    	final int MAX_GENERATION_TRIES = 5; 
+    	//should be unique for first time, since using nano seconds
+    	for(int i=0;i<MAX_GENERATION_TRIES;i++) {
+    		String token = System.currentTimeMillis()+""+System.nanoTime();
+    		if(!sessions.containsKey(token)) return token;
+    	}
+    	
+    	throw new RuntimeException("Could not generate uniqe token. Weird...");
     }
 }
