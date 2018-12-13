@@ -122,8 +122,7 @@ soccerManagerControllers.controller('TeamDetailCtrl',
 soccerManagerControllers.controller('UserTeamDetailCtrl',
     function ($scope, $rootScope, $http, $route) {
         var userName = $rootScope.globals.currentUser.username;
-        $http.get('/pa165/teams/users/' , {
-            params: { userName: userName }}).then(function (response) {
+        $http.get('/pa165/teams/users').then(function (response) {
             var team = response.data;
             $scope.team = team;
             console.log('AJAX loaded detail of team ' + $scope.team.clubName);

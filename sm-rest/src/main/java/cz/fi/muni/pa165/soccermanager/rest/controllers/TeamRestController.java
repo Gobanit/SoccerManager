@@ -5,6 +5,8 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
 import cz.fi.muni.pa165.soccermanager.api.dto.PlayerDTO;
@@ -21,6 +23,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,6 +61,7 @@ public class TeamRestController {
         this.playerResourceAssembler = playerResourceAssembler;
     }
 
+    @RolesAllowed("ROLE_USER")
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public HttpEntity<Resources<Resource<TeamDTO>>> teams() {
 
@@ -73,6 +77,7 @@ public class TeamRestController {
         return new ResponseEntity<>(teamsResources  , HttpStatus.OK);
     }
 
+    @RolesAllowed("ROLE_USER")
     @RequestMapping(value = "/{id}/players" ,method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public HttpEntity<Resources<Resource<PlayerDTO>>> getPlayersOfTeam(@PathVariable("id") long id) {
 
@@ -87,6 +92,7 @@ public class TeamRestController {
         return new ResponseEntity<>(new Resources<>(playerResourceList, selfLink)  , HttpStatus.OK);
     }
 
+    @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public final HttpEntity<Resource<TeamDTO>> getTeamById(@PathVariable("id") long id) {
 
@@ -99,7 +105,7 @@ public class TeamRestController {
             throw ExceptionSorter.throwException(ex);
         }
     }
-
+    @RolesAllowed("ROLE_USER")
     @RequestMapping(value = "/{teamId}/players/{playerId}", method = RequestMethod.DELETE)
     public final HttpEntity<Void> removePlayerFromTeam(@PathVariable("teamId") long teamId, @PathVariable("playerId") long playerId) {
 
@@ -111,7 +117,7 @@ public class TeamRestController {
             throw ExceptionSorter.throwException(ex);
         }
     }
-
+    @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(value = "/{teamId}", method = RequestMethod.DELETE)
     public final HttpEntity<Void> deleteTeam(@PathVariable("teamId") long teamId) {
 
@@ -123,7 +129,7 @@ public class TeamRestController {
             throw ExceptionSorter.throwException(ex);
         }
     }
-
+    @RolesAllowed("ROLE_USER")
     @RequestMapping(value = "/{teamId}/players/{playerId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public final void addPlayerToTeam(@PathVariable("teamId") long teamId, @PathVariable("playerId") long playerId) {
 
@@ -134,14 +140,16 @@ public class TeamRestController {
             throw ExceptionSorter.throwException(ex);
         }
     }
-
+    @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(value = "/users", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<Resource<TeamDTO>> getTeamOfUser(@RequestParam("userName") String userName) {
+    public final HttpEntity<Resource<TeamDTO>> getTeamOfUser() {
 
         logger.debug("rest getTeamOfUser()");
         try {
-            TeamDTO teamDTO = userFacade.getTeamOfUser(userName);
-            logger.debug(teamDTO.getClubName());
+            String userName = SecurityContextHolder.getContext().getAuthentication().getName();
+            logger.info(userName);
+            TeamDTO teamDTO = teamFacade.findById(1L);//userFacade.getTeamOfUser(userName);
+            logger.debug(teamDTO + "");
             Resource<TeamDTO> resource = teamResourceAssembler.toResource(teamDTO);
             return new ResponseEntity<>(resource, HttpStatus.OK);
         } catch (SoccerManagerServiceException ex) {
@@ -149,6 +157,7 @@ public class TeamRestController {
         }
     }
 
+    @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(value = "/country/{country}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public final HttpEntity<Resources<Resource<TeamDTO>>> findByCountry(@PathVariable("country") String country) {
 
@@ -167,7 +176,7 @@ public class TeamRestController {
             throw ExceptionSorter.throwException(ex);
         }
     }
-
+    @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public final HttpEntity<Void> createTeam(@RequestBody @Valid TeamCreateDTO teamCreateDTO, BindingResult bindingResult) {
 
