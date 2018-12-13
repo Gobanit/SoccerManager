@@ -43,7 +43,7 @@
                         <li><a href="#!/matches/create">Create Match</a></li>
                     </ul>
                 </li>
-                <li><a href="#!/login">{{ globals.currentUser.username }} - Logout</a></span> </li>
+                <li><a href="${pageContext.request.contextPath}">{{ globals.currentUser.username }} - Logout</a></span> </li>
            </ul>
         </div><!--/.nav-collapse -->
     </div>
