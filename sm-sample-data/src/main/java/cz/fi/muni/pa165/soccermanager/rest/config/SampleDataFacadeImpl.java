@@ -67,6 +67,7 @@ public class SampleDataFacadeImpl implements SampleDataFacade {
 
 		// Users
 		User admin = createUser("admin", "pass", true, arsenal);
+		User basic = createUser("basic", "basic", false, barcelona);
 	}
 
 	private User createUser(String name, String pass, boolean admin, Team team) {
