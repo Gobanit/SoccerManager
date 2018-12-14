@@ -120,16 +120,16 @@ soccerManagerControllers.controller('TeamDetailCtrl',
 	    });
 
 soccerManagerControllers.controller('UserTeamDetailCtrl',
-    function ($scope, $rootScope, $http, $route) {
+    function ($scope, $rootScope, $http, $location, $route) {
         var userName = $rootScope.globals.currentUser.username;
-        $http.get('/pa165/teams/users/' , {
-            params: { userName: userName }}).then(function (response) {
+        $http.get('/pa165/teams/users').then(function (response) {
             var team = response.data;
+            console.log(response);
             $scope.team = team;
             console.log('AJAX loaded detail of team ' + $scope.team.clubName);
             console.log(team.links[1].href);
             loadTeamPlayers($http, team, team.links[1].href);
-            $scope.removePlayerFromTeam = function (team, player) {
+            $scope.removePlayerFromTeam = function(team, player) {
                 $http({
                     method: 'DELETE',
                     url: '/pa165/teams/' + team.id + '/players/' + player.id
@@ -139,22 +139,41 @@ soccerManagerControllers.controller('UserTeamDetailCtrl',
                     $rootScope.successAlert = 'A player ' + player.name + 'was removed from "' + team.clubName;
                     //change view to list of products
                     $route.reload();
-                }, function error(response) {
+                }, function (error) {
                     //display error
                     console.log("error when removing player from team");
-                    console.log(response);
-                    switch (response.data.code) {
-                        case 'InvalidRequestException':
-                            $rootScope.errorAlert = 'Sent data were found to be invalid by server ! ';
+                    console.log(error.data.message);
+                    switch (error.data.code) {
+                        case 'ResourceNotFoundException':
+                            $rootScope.errorAlert = 'Cannot found player or team. ! ';
                             break;
                         default:
-                            $rootScope.errorAlert = 'Cannot remove player ! Reason given by the server: '+response.data.message;
+                            $rootScope.errorAlert = 'Cannot remove player ! Reason given by the server: '+error.data.message;
                             break;
                     }
                 });
-            };
+
+            }
+        }, function (error) {
+            //display error
+            console.log("error when loading team of user");
+            console.log(error.data.message);
+            switch (error.data.code) {
+                case 'ResourceNotFoundException':
+                    $rootScope.errorAlert = 'You have no team, please pick one!';
+                    $location.path("/home");
+                    break;
+                default:
+                    $rootScope.errorAlert = 'Cannot get team of user ! Reason given by the server: '+error.data.message;
+                    $location.path("/home");
+                    break;
+            }
         });
     });
+
+// function removePlayerFromTeam($http, $rootScope, $route, team, player) {
+//
+// }
 
 soccerManagerControllers.controller('AddPlayerToTeam', function ($scope, $http, $rootScope, $location, $routeParams) {
     console.log('calling  /pa165/players/free');
