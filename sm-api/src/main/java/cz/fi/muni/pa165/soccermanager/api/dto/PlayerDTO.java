@@ -12,7 +12,7 @@ public class PlayerDTO {
     private String nationality;
     private LocalDate birthDate;
     private Integer rating;
-    private TeamDTO teamDTO;
+    private TeamDTO team;
     private Position position;
     private Footed footed;
 
@@ -25,7 +25,7 @@ public class PlayerDTO {
         this.nationality = nationality;
         this.birthDate = birthday;
         this.rating = rating;
-        this.teamDTO = teamDTO;
+        this.team = teamDTO;
         this.position = position;
         this.footed = footed;
     }
@@ -70,12 +70,12 @@ public class PlayerDTO {
         this.rating = rating;
     }
 
-    public TeamDTO getTeamDTO() {
-        return teamDTO;
+    public TeamDTO getTeam() {
+        return team;
     }
 
-    public void setTeamDTO(TeamDTO teamDTO) {
-        this.teamDTO = teamDTO;
+    public void setTeam(TeamDTO teamDTO) {
+        this.team = teamDTO;
     }
 
     public Position getPosition() {

@@ -12,6 +12,8 @@ app.config(['$routeProvider', function($routeProvider) {
         .when('/matches/create', {templateUrl: 'partials/matchCreate.html', controller: 'MatchCreateCtrl'})
         .when('/admin/newteam', {templateUrl: 'partials/admin_new_team.html', controller: 'AdminNewTeamCtrl'})
         .when('/teams/:teamId/addplayer', {templateUrl: 'partials/add_player.html', controller: 'AddPlayerToTeam'})
+        .when('/players', {templateUrl: 'partials/playersList.html', controller: 'PlayersCtrl'})
+        .when('/players/create', {templateUrl: 'partials/playersCreate.html', controller: 'PlayersCreateCtrl'})
 
         .otherwise({
             redirectTo: '/home'
@@ -329,6 +331,43 @@ soccerManagerControllers.controller('MatchCreateCtrl',
 	        };
 	    });
 
+/*
+ * Players' Controllers Section
+ */
+soccerManagerControllers.controller('PlayersCtrl',
+    function($scope, $routeParams, $rootScope, $http) {
+        loadPlayers($scope, $http);
+
+        $scope.isFree = function(player) {
+            return player.team == null;
+        };
+
+        $scope.deletePlayer = function(player) {
+          console.log('Deleting a player ' + player.playerName + ' with an ID ' + player.id);
+
+          $http.delete('/pa165/players/' + player.id).then(
+              function success(response) {
+                  console.log('Deleted a player ' + player.id + ' on the server');
+
+                  $rootScope.successAlert = 'Deleted a player "' + player.name + '"';
+                  loadPlayers($scope, $http);
+              },
+              function error(response) {
+                  console.log("Error when deleting a player!");
+                  console.log(response);
+
+                  switch (response.data.code) {
+                      case 'ResourceNotFoundException':
+                          $rootScope.errorAlert = 'Cannot delete non-existent player ! ';
+                          break;
+                      default:
+                          $rootScope.errorAlert = 'Cannot delete player! Reason given by the server: ' + response.data.message;
+                          break;
+                  }
+              })
+        }
+    }
+);
 
 /* 
  * Matches functions
@@ -391,4 +430,18 @@ function compareMatchesByDate(m1, m2) {
 
 function dateTimeStrToDate(dateTimeString) {
 	return Date.parse(dateTimeString);
+}
+
+/*
+ * Players' functions
+ */
+function loadPlayers($scope, $http) {
+    $http.get('/pa165/players/').then(function (response) {
+        console.log('AJAX response.data:');
+        console.log(response.data);
+
+        $scope.players = response.data.content;
+
+        console.log('AJAX loaded list of ' + $scope.players.length + ' players.');
+    });
 }

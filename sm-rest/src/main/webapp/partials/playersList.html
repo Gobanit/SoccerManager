@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Players</title>
+</head>
+<body>
+
+<h1>Players</h1>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Name</th>
+        <th>Nationality</th>
+        <th>Birthday</th>
+        <th>Rating</th>
+        <th>Team</th>
+        <th>Position</th>
+        <th>Footed</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody ng-repeat="player in players">
+    <tr>
+        <td>
+            <span>{{ player.id }}</span>
+        </td>
+        <td>
+            <a href="#!/player/{{player.id}}">{{ player.playerName }}</a>
+        </td>
+        <td>
+            <span>{{ player.nationality }}</span>
+        </td>
+        <td>
+            <span>{{ player.birthDate }}</span>
+        </td>
+        <td>
+            <span>{{ player.rating }}</span>
+        </td>
+        <td>
+            <span ng-hide="isFree(player)">{{ player.team.clubName }}</span>
+            <span ng-hide="!isFree(player)"><i>None</i></span>
+        </td>
+        <td>
+            <span>{{ player.position }}</span>
+        </td>
+        <td>
+            <span>{{ player.footed }}</span>
+        </td>
+        <td>
+            <button type="button"
+                    ng-hide="!hasAdminRights()"
+                    ng-click="deletePlayer(player)"
+                    class="btn btn-primary">
+                Delete
+            </button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<a href="#!/player/create" class="btn btn-primary" role="button" ng-hide="!hasAdminRights()">Add a new player</a>
+</body>
+</html>
