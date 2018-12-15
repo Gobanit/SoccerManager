@@ -14,6 +14,8 @@ app.config(['$routeProvider', function($routeProvider) {
         .when('/teams/:teamId/addplayer', {templateUrl: 'partials/add_player.html', controller: 'AddPlayerToTeam'})
         .when('/players', {templateUrl: 'partials/playersList.html', controller: 'PlayersCtrl'})
         .when('/players/create', {templateUrl: 'partials/playersCreate.html', controller: 'PlayersCreateCtrl'})
+        .when('/players/:playerId', {templateUrl: 'partials/playersDetail.html', controller: 'PlayersDetailCtrl'})
+        .when('/players/update', {templateUrl: 'partials/playersUpdate.html', controller: 'PlayersUpdateCtrl'})
 
         .otherwise({
             redirectTo: '/home'
@@ -423,11 +425,7 @@ soccerManagerControllers.controller('PlayersCreateCtrl',
         $scope.create = function (player) {
             console.log('Creating a player ' + player.playerName);
 
-            $http.post({
-                method: 'POST',
-                url: '/pa165/players',
-                data: player
-            }).then(
+            $http.post('/pa165/players', player).then(
                 function success(response) {
                     console.log('Created a player ' + player.id + ' on the server');
 

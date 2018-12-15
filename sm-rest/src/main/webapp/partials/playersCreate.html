@@ -18,7 +18,7 @@
                 player's name must be at least 3 characters</span>
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" ng-class="{'has-error': !(form.nationality.$valid)}">
         <label for="nationality" class="col-sm-2 control-label">Nationality</label>
         <div class="col-sm-10">
             <select id="nationality" name="nationality" class="form-control" ng-model="player.nationality" required>
@@ -27,14 +27,14 @@
             <span class="help-block" ng-show="form.nationality.$error.required">player's nationality is required</span>
         </div>
     </div>
-    <div class="form-group" ng-class="{'has-error': !(form.birthday.$valid)}">
-        <label for="birthday" class="col-sm-2 control-label">Birthday</label>
+    <div class="form-group" ng-class="{'has-error': !(form.birthDate.$valid)}">
+        <label for="birthDate" class="col-sm-2 control-label">Birthday</label>
         <div class="col-sm-10">
-            <input placeholder="yyyy-MM-dd" type="date" min="1800-01-01" max="{{ now }}" id="birthday" name="birthday"
-                   class="form-control" ng-model="player.birthday" required/>
-            <span class="help-block" ng-show="form.birthday.$error.required">player's birthday is required</span>
-            <span class="help-block" ng-show="form.birthday.$error.min">date is too far in the past</span>
-            <span class="help-block" ng-show="form.birthday.$error.max">date can't be in the future</span>
+            <input placeholder="yyyy-MM-dd" type="date" min="1800-01-01" max="{{ now }}" id="birthDate" name="birthDate"
+                   class="form-control" ng-model="player.birthDate" required/>
+            <span class="help-block" ng-show="form.birthDate.$error.required">player's birthday is required</span>
+            <span class="help-block" ng-show="form.birthDate.$error.min">date is too far in the past</span>
+            <span class="help-block" ng-show="form.birthDate.$error.max">date can't be in the future</span>
         </div>
     </div>
     <div class="form-group" ng-class="{'has-error': !(form.rating.$valid)}">
@@ -47,7 +47,7 @@
             <span class="help-block" ng-show="form.rating.$error.max">player's rating must be less than 100</span>
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" ng-class="{'has-error': !(form.position.$valid)}">
         <label for="position" class="col-sm-2 control-label">Position</label>
         <div class="col-sm-10">
             <select id="position" name="position" class="form-control" ng-model="player.position" required>
@@ -56,7 +56,7 @@
             <span class="help-block" ng-show="form.position.$error.required">player's position is required</span>
         </div>
     </div>
-    <div class="form-group">
+    <div class="form-group" ng-class="{'has-error': !(form.footed.$valid)}">
         <label for="footed" class="col-sm-2 control-label">Footed</label>
         <div class="col-sm-10">
             <select id="footed" name="footed" class="form-control" ng-model="player.footed" required>

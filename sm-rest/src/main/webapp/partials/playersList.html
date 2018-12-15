@@ -20,6 +20,7 @@
         <th>Position</th>
         <th>Footed</th>
         <th></th>
+        <th></th>
     </tr>
     </thead>
     <tbody ng-repeat="player in players">
@@ -28,7 +29,7 @@
             <span>{{ player.id }}</span>
         </td>
         <td>
-            <a href="#!/player/{{player.id}}">{{ player.playerName }}</a>
+            <a href="#!/players/{{player.id}}">{{ player.playerName }}</a>
         </td>
         <td>
             <span>{{ player.nationality }}</span>
@@ -48,6 +49,14 @@
         </td>
         <td>
             <span>{{ player.footed }}</span>
+        </td>
+        <td>
+            <button type="button"
+                    ng-hide="!hasAdminRights()"
+                    ng-click="updatePlayer(player)"
+                    class="btn btn-primary">
+                Update
+            </button>
         </td>
         <td>
             <button type="button"

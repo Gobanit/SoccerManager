@@ -18,7 +18,7 @@ public class PlayerCreateDTO {
     private String nationality;
     
     @NotNull
-    private LocalDate birthday;
+    private LocalDate birthDate;
     
     @NotNull
     private Integer rating;
@@ -45,12 +45,12 @@ public class PlayerCreateDTO {
         this.nationality = nationality;
     }
 
-    public LocalDate getBirthday() {
-        return birthday;
+    public LocalDate getBirthDate() {
+        return birthDate;
     }
 
-    public void setBirthday(LocalDate birthday) {
-        this.birthday = birthday;
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
     }
 
     public Integer getRating() {
