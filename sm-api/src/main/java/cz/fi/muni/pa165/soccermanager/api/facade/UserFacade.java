@@ -92,7 +92,7 @@ public interface UserFacade {
 	 * 
 	 * @param userName
 	 *            - name of user to be changed
-	 * @param admin
+	 * @param adminRights
 	 *            - whether user should have admin rights
 	 */
 	public void changeAdminRights(String userName, boolean adminRights);

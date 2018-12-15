@@ -5,6 +5,7 @@ package cz.fi.muni.pa165.soccermanager.service.facade;
 
 import java.util.List;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
@@ -104,6 +105,7 @@ public class UserFacadeImpl implements UserFacade {
 
 	@Override
 	public TeamDTO getTeamOfUser(String userName) {
+		logger.info(userName);
 		return  beanMapping.mapTo(userService.getTeamOfUser(userName), TeamDTO.class);
 	}
 
