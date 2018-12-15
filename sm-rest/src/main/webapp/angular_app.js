@@ -354,36 +354,92 @@ soccerManagerControllers.controller('MatchCreateCtrl',
  * Players' Controllers Section
  */
 soccerManagerControllers.controller('PlayersCtrl',
-    function($scope, $routeParams, $rootScope, $http) {
+    function ($scope, $routeParams, $rootScope, $http) {
         loadPlayers($scope, $http);
 
-        $scope.isFree = function(player) {
+        $scope.isFree = function (player) {
             return player.team == null;
         };
 
-        $scope.deletePlayer = function(player) {
-          console.log('Deleting a player ' + player.playerName + ' with an ID ' + player.id);
+        $scope.deletePlayer = function (player) {
+            console.log('Deleting a player ' + player.playerName + ' with an ID ' + player.id);
 
-          $http.delete('/pa165/players/' + player.id).then(
-              function success(response) {
-                  console.log('Deleted a player ' + player.id + ' on the server');
+            $http.delete('/pa165/players/' + player.id).then(
+                function success(response) {
+                    console.log('Deleted a player ' + player.id + ' on the server');
 
-                  $rootScope.successAlert = 'Deleted a player "' + player.name + '"';
-                  loadPlayers($scope, $http);
-              },
-              function error(response) {
-                  console.log("Error when deleting a player!");
-                  console.log(response);
+                    $rootScope.successAlert = 'Deleted a player "' + player.playerName + '"';
+                    loadPlayers($scope, $http);
+                },
+                function error(response) {
+                    console.log("Error when deleting a player!");
+                    console.log(response);
 
-                  switch (response.data.code) {
-                      case 'ResourceNotFoundException':
-                          $rootScope.errorAlert = 'Cannot delete non-existent player ! ';
-                          break;
-                      default:
-                          $rootScope.errorAlert = 'Cannot delete player! Reason given by the server: ' + response.data.message;
-                          break;
-                  }
-              })
+                    switch (response.data.code) {
+                        case 'ResourceNotFoundException':
+                            $rootScope.errorAlert = 'Cannot delete non-existent player ! ';
+                            break;
+                        default:
+                            $rootScope.errorAlert = 'Cannot delete player! Reason given by the server: ' + response.data.message;
+                            break;
+                    }
+                })
+        }
+    }
+);
+
+soccerManagerControllers.controller('PlayersCreateCtrl',
+    function ($scope, $routeParams, $rootScope, $http, $location) {
+        $scope.now = new Date();
+        $scope.countries = ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Anguilla", "Antigua & Barbuda",
+            "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh",
+            "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia & Herzegovina",
+            "Botswana", "Brazil", "British Virgin Islands", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia",
+            "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Chad", "Chile", "China", "Colombia", "Congo",
+            "Cook Islands", "Costa Rica", "Cote D'Ivoire", "Croatia", "Cruise Ship", "Cuba", "Cyprus", "Czech Republic",
+            "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador",
+            "Equatorial Guinea", "Estonia", "Ethiopia", "Falkland Islands", "Faroe Islands", "Fiji", "Finland",
+            "France", "French Polynesia", "French West Indies", "Gabon", "Gambia", "Georgia", "Germany", "Ghana",
+            "Gibraltar", "Greece", "Greenland", "Grenada", "Guam", "Guatemala", "Guernsey", "Guinea", "Guinea Bissau",
+            "Guyana", "Haiti", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq",
+            "Ireland", "Isle of Man", "Israel", "Italy", "Jamaica", "Japan", "Jersey", "Jordan", "Kazakhstan", "Kenya",
+            "Kuwait", "Kyrgyz Republic", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein",
+            "Lithuania", "Luxembourg", "Macau", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali",
+            "Malta", "Mauritania", "Mauritius", "Mexico", "Moldova", "Monaco", "Mongolia", "Montenegro", "Montserrat",
+            "Morocco", "Mozambique", "Namibia", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia",
+            "New Zealand", "Nicaragua", "Niger", "Nigeria", "Norway", "Oman", "Pakistan", "Palestine", "Panama",
+            "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Puerto Rico", "Qatar",
+            "Reunion", "Romania", "Russia", "Rwanda", "Saint Pierre & Miquelon", "Samoa", "San Marino", "Satellite",
+            "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia",
+            "South Africa", "South Korea", "Spain", "Sri Lanka", "St Kitts & Nevis", "St Lucia", "St Vincent",
+            "St. Lucia", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan",
+            "Tanzania", "Thailand", "Timor L'Este", "Togo", "Tonga", "Trinidad & Tobago", "Tunisia", "Turkey",
+            "Turkmenistan", "Turks & Caicos", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom",
+            "United States", "United States Minor Outlying Islands", "Uruguay", "Uzbekistan", "Venezuela", "Vietnam",
+            "Virgin Islands (US)", "Yemen", "Zambia", "Zimbabwe"];
+        $scope.positions = ['DEFFENSE', 'OFFENSE', 'MIDFIELD'];
+        $scope.footed_options = ['RIGHT', 'LEFT', 'BOTH'];
+
+        $scope.create = function (player) {
+            console.log('Creating a player ' + player.playerName);
+
+            $http.post({
+                method: 'POST',
+                url: '/pa165/players',
+                data: player
+            }).then(
+                function success(response) {
+                    console.log('Created a player ' + player.id + ' on the server');
+
+                    $rootScope.successAlert = 'Created a player "' + player.playerName + '"';
+                    $location.path("/players");
+                },
+                function error(response) {
+                    console.log("Error when creating a player!");
+                    console.log(response);
+
+                    $rootScope.errorAlert = 'Cannot create player! Reason given by the server: ' + response.data.message;
+                })
         }
     }
 );
