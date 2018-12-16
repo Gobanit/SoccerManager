@@ -26,11 +26,11 @@ import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserAuthenticateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserCreateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserDTO;
-import cz.fi.muni.pa165.soccermanager.api.dto.UserSessionDTO;
 import cz.fi.muni.pa165.soccermanager.api.facade.UserFacade;
 import cz.fi.muni.pa165.soccermanager.rest.ExceptionSorter;
 import cz.fi.muni.pa165.soccermanager.rest.assemblers.TeamResourceAssembler;
 import cz.fi.muni.pa165.soccermanager.rest.assemblers.UserResourceAssembler;
+import javax.annotation.security.RolesAllowed;
 
 /**
  *
@@ -54,6 +54,7 @@ public class UserRestController {
         this.teamResourceAssembler = teamResourceAssembler;
     }
    
+    @RolesAllowed("ROLE_USER")
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Resources<Resource<UserDTO>>> getAll() {
         
@@ -75,6 +76,7 @@ public class UserRestController {
         }
     }
     
+    @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public Resource<UserDTO> create(@RequestBody UserCreateDTO body) {
         
@@ -89,6 +91,7 @@ public class UserRestController {
         }
     }
     
+    @RolesAllowed("ROLE_USER")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Resource<UserDTO> getById(@PathVariable Long id) {
         
@@ -102,6 +105,7 @@ public class UserRestController {
         }
     }
     
+    @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(value = "/{name}", method = RequestMethod.DELETE, produces = MediaType.APPLICATION_JSON_VALUE)
     public void delete(@PathVariable("name") String name) {
         
@@ -114,6 +118,7 @@ public class UserRestController {
         }
     }
     
+    @RolesAllowed("ROLE_USER")
     @RequestMapping(value = "/name/{name}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Resource<UserDTO> getByName(@PathVariable("name") String name) {
         
@@ -127,8 +132,9 @@ public class UserRestController {
         }
     }
     
+    @RolesAllowed("ROLE_USER")
     @RequestMapping(value = "/{name}/team/{teamId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final void pickTeam(@PathVariable("name") String name, @PathVariable("teamId") long teamId) {
+    public void pickTeam(@PathVariable("name") String name, @PathVariable("teamId") long teamId) {
 
         logger.debug("rest pickTeamForUser()");
         
@@ -139,8 +145,9 @@ public class UserRestController {
         }
     }
     
+    @RolesAllowed("ROLE_USER")
     @RequestMapping(value = "/{name}/team", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<Resource<TeamDTO>> getTeam(@PathVariable("name") String name) {
+    public HttpEntity<Resource<TeamDTO>> getTeam(@PathVariable("name") String name) {
 
         logger.debug("rest getTeamOfUser()");
         
@@ -153,8 +160,9 @@ public class UserRestController {
         }
     }
     
+    @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(value = "/{name}/{admin}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final void changeRights(@PathVariable("name") String name, @PathVariable("admin") boolean admin) {
+    public void changeRights(@PathVariable("name") String name, @PathVariable("admin") boolean admin) {
 
         logger.debug("rest changeAdminRights()");
         
@@ -167,12 +175,22 @@ public class UserRestController {
     
     @RequestMapping(value = "/auth", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public UserSessionDTO authenticateUser(@RequestBody UserAuthenticateDTO body) {
+    public UserDTO authenticateUser(@RequestBody UserAuthenticateDTO body) {
         logger.debug("rest authenticateUser()");
         
         try {
-            UserSessionDTO session = userFacade.authenticateUser(body);
-            return session;
+            UserDTO user = userFacade.authenticateUser(body);
+            return user;
+        } catch(Exception ex) {
+            throw ExceptionSorter.throwException(ex);
+        }
+    }
+    
+    @RequestMapping(value = "/currentUser", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public UserDTO currentUser() {
+        try {
+            return userFacade.getCurrentUser();
         } catch(Exception ex) {
             throw ExceptionSorter.throwException(ex);
         }

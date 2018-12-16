@@ -1,63 +1,53 @@
 //  Authentication service. Wrapped in an IIFE to avoid global variables
 //  Purpose: To handle all user authentication methods
 
-
-
 var AuthenticationService = function($http, $cookies, $rootScope, $timeout) {
-
-    //  Function defined for when the user login is initiate
+    
+	//  Function defined for when the user login is initiate
     var Login = function (username, password, callback) {
-        var user = {
-            'username': username,
-            'rawPassword': password
+    	doCustomLogin($http, username, password, callback)
+    };
+    
+    /*
+     * Login using custom login servlet in REST API
+     */
+    function doCustomLogin($http, username, password, callback) {
+    	var success = function success(response) {
+    		var status = { 
+                success: true,
+                message: 'Logged in successfuly!',
+                username: response.data.username,
+                admin: response.data.admin
+            };
+            callback(status);  
+        };
+        
+    	var failure = function failure(response) {
+            console.log('Error throw!');
+            var status = {
+               	success: false,
+                message: 'Could not log in, probably incorrect username/password'
+            };
+            callback(status);                 	
         };
         
         $http({
             method: 'POST',
             url: 'http://localhost:8080/pa165/users/auth',
-            data: user
-        }).then(function success(response) {
-            if (response.data === "") {
-                console.log('Error auth!');
-                var status = {
-               		success: false,
-                   	message: 'Password is incorrect'
-                };
-                callback(status);                 	
-            } else {
-                console.log('Success!');
-                var status = { 
-                	success: true,
-                	message: 'Successfully logged in',
-                	token: response.data.token,
-                	username: response.data.user.username,
-                	admin: response.data.user.admin
-                };
-                callback(status);                 	
+            data: {
+            	'username': username,
+            	'rawPassword': password
             }
-
-        }, function error(response) {
-            console.log('Error throw!');
-            var status = {
-               	success: false,
-                message: 'Username is incorrect'
-            };
-            callback(status);                 	
-        });
-
-    };
-
+        }).then(success, failure);
+    }
     
-    var SetSessionInfo = function(token, username, admin) {
+    var SetSessionInfo = function(username, admin) {
     	$rootScope.globals = {
            currentUser: {
         	   'username': username,
-               'sessionToken': token,
                'admin': admin
            }
     	};
-    	console.log('token: '+token);
-    	$http.defaults.headers.common['Authorization'] = 'Bearer ' + token;
         $cookies.put('globals', $rootScope.globals);
     };
 
@@ -65,7 +55,6 @@ var AuthenticationService = function($http, $cookies, $rootScope, $timeout) {
     var ClearSessionInfo = function () {
         $rootScope.globals = {};
         $cookies.remove('globals');
-        $http.defaults.headers.common.Authorization = 'Bearer ';
     };
 
 

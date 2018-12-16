@@ -8,10 +8,15 @@ app.config(['$routeProvider', function($routeProvider) {
         .when('/admin/teams', {templateUrl: 'partials/admin_teams.html', controller: 'AdminTeamsCtrl'})
         .when('/team/:teamId', {templateUrl: 'partials/team_detail.html', controller: 'TeamDetailCtrl'})
         .when('/userteam', {templateUrl: 'partials/user_team_detail.html', controller: 'UserTeamDetailCtrl'})
+        .when('/teams/pick', {templateUrl: 'partials/pickTeam.html', controller: 'PickTeamCtrl'})
         .when('/matches', {templateUrl: 'partials/matchesList.html', controller: 'MatchesCtrl'})
         .when('/matches/create', {templateUrl: 'partials/matchCreate.html', controller: 'MatchCreateCtrl'})
         .when('/admin/newteam', {templateUrl: 'partials/admin_new_team.html', controller: 'AdminNewTeamCtrl'})
         .when('/teams/:teamId/addplayer', {templateUrl: 'partials/add_player.html', controller: 'AddPlayerToTeam'})
+        .when('/players', {templateUrl: 'partials/playersList.html', controller: 'PlayersCtrl'})
+        .when('/players/create', {templateUrl: 'partials/playersCreate.html', controller: 'PlayersCreateCtrl'})
+        .when('/players/:playerId', {templateUrl: 'partials/playersDetail.html', controller: 'PlayersDetailCtrl'})
+        .when('/players/:playerId/update', {templateUrl: 'partials/playersUpdate.html', controller: 'PlayersUpdateCtrl'})
 
         .otherwise({
             redirectTo: '/home'
@@ -35,14 +40,11 @@ app.run(function($rootScope, $location, $cookies, $http) {
     // keep user logged in after page refresh
     console.log($rootScope.globals.currentUser);
     if ($rootScope.globals.currentUser) {
-
-        $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata;
         $rootScope.showMenu = true;
     }
 
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
         // redirect to login page if not logged in
-
         if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
             $location.path('/login');
         }
@@ -94,6 +96,52 @@ soccerManagerControllers.controller('AdminTeamsCtrl', function ($scope, $http, $
             });
         };
 
+    });
+});
+
+soccerManagerControllers.controller('PickTeamCtrl', function ($scope, $http, $rootScope, $route) {
+    
+    console.log('checking if user has team');
+    $http({
+            method: 'GET',
+            url: 'http://localhost:8080/pa165/users/' + $rootScope.globals.currentUser.username + '/team'
+        }).then(function success(response) {
+            console.log('User already have a team: ' + response.status);
+            $rootScope.errorAlert = 'User already have a team';
+            window.location = 'http://localhost:8080/pa165/#!/userteam';
+        }, function error(response) {
+            console.log('User doesnt have a team: ' + response.status);
+        });
+        
+    console.log('calling  /teams/pick');
+    
+    $http.get('/pa165/teams/').then(function (response) {
+        var teams = response.data.content;
+        var userName = $rootScope.globals.currentUser.username;
+        $scope.teams = teams;
+        console.log('AJAX loaded all teams');
+        $scope.pickTeam = function (team) {
+            $http({
+                method: 'PUT',
+                url: '/pa165/users/' + userName + '/team/' + team.id
+            }).then(function success() {
+                console.log('team picked');
+                $rootScope.successAlert = 'A team was picked: "' + team.clubName;
+                window.location = 'http://localhost:8080/pa165/#!/userteam';
+            }, function error(response) {
+                //display error
+                console.log("error when picking team");
+                console.log(response);
+                switch (response.data.code) {
+                    case 'InvalidRequestException':
+                        $rootScope.errorAlert = 'Sent data were found to be invalid by server ! ';
+                        break;
+                    default:
+                        $rootScope.errorAlert = 'Cannot pick a team ! Reason given by the server: '+response.data.message;
+                        break;
+                }
+            });
+        };
     });
 });
 
@@ -161,7 +209,7 @@ soccerManagerControllers.controller('UserTeamDetailCtrl',
             switch (error.data.code) {
                 case 'ResourceNotFoundException':
                     $rootScope.errorAlert = 'You have no team, please pick one!';
-                    $location.path("/home");
+                    $location.path("/teams/pick");
                     break;
                 default:
                     $rootScope.errorAlert = 'Cannot get team of user ! Reason given by the server: '+error.data.message;
@@ -348,11 +396,143 @@ soccerManagerControllers.controller('MatchCreateCtrl',
 	        };
 	    });
 
+/*
+ * Players' Controllers Section
+ */
+soccerManagerControllers.controller('PlayersCtrl',
+    function ($scope, $routeParams, $rootScope, $http) {
+        loadPlayers($scope, $http);
+
+        $scope.isFree = function (player) {
+            return player.team == null;
+        };
+
+        $scope.deletePlayer = function (player) {
+            console.log('Deleting a player ' + player.playerName + ' with an ID ' + player.id);
+
+            $http.delete('/pa165/players/' + player.id).then(
+                function success(response) {
+                    console.log('Deleted a player ' + player.id + ' on the server');
+
+                    $rootScope.successAlert = 'Deleted a player "' + player.playerName + '"';
+                    loadPlayers($scope, $http);
+                },
+                function error(response) {
+                    console.log("Error when deleting a player!");
+                    console.log(response);
+
+                    switch (response.data.code) {
+                        case 'ResourceNotFoundException':
+                            $rootScope.errorAlert = 'Cannot delete non-existent player ! ';
+                            break;
+                        default:
+                            $rootScope.errorAlert = 'Cannot delete player! Reason given by the server: ' + response.data.message;
+                            break;
+                    }
+                })
+        }
+    }
+);
+
+soccerManagerControllers.controller('PlayersCreateCtrl',
+    function ($scope, $routeParams, $rootScope, $http, $location) {
+        $scope.now = new Date();
+        $scope.countries = ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Anguilla", "Antigua & Barbuda",
+            "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh",
+            "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia & Herzegovina",
+            "Botswana", "Brazil", "British Virgin Islands", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia",
+            "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Chad", "Chile", "China", "Colombia", "Congo",
+            "Cook Islands", "Costa Rica", "Cote D'Ivoire", "Croatia", "Cruise Ship", "Cuba", "Cyprus", "Czech Republic",
+            "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador",
+            "Equatorial Guinea", "Estonia", "Ethiopia", "Falkland Islands", "Faroe Islands", "Fiji", "Finland",
+            "France", "French Polynesia", "French West Indies", "Gabon", "Gambia", "Georgia", "Germany", "Ghana",
+            "Gibraltar", "Greece", "Greenland", "Grenada", "Guam", "Guatemala", "Guernsey", "Guinea", "Guinea Bissau",
+            "Guyana", "Haiti", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq",
+            "Ireland", "Isle of Man", "Israel", "Italy", "Jamaica", "Japan", "Jersey", "Jordan", "Kazakhstan", "Kenya",
+            "Kuwait", "Kyrgyz Republic", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein",
+            "Lithuania", "Luxembourg", "Macau", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali",
+            "Malta", "Mauritania", "Mauritius", "Mexico", "Moldova", "Monaco", "Mongolia", "Montenegro", "Montserrat",
+            "Morocco", "Mozambique", "Namibia", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia",
+            "New Zealand", "Nicaragua", "Niger", "Nigeria", "Norway", "Oman", "Pakistan", "Palestine", "Panama",
+            "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Puerto Rico", "Qatar",
+            "Reunion", "Romania", "Russia", "Rwanda", "Saint Pierre & Miquelon", "Samoa", "San Marino", "Satellite",
+            "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia",
+            "South Africa", "South Korea", "Spain", "Sri Lanka", "St Kitts & Nevis", "St Lucia", "St Vincent",
+            "St. Lucia", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan",
+            "Tanzania", "Thailand", "Timor L'Este", "Togo", "Tonga", "Trinidad & Tobago", "Tunisia", "Turkey",
+            "Turkmenistan", "Turks & Caicos", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom",
+            "United States", "United States Minor Outlying Islands", "Uruguay", "Uzbekistan", "Venezuela", "Vietnam",
+            "Virgin Islands (US)", "Yemen", "Zambia", "Zimbabwe"];
+        $scope.positions = ['DEFFENSE', 'OFFENSE', 'MIDFIELD'];
+        $scope.footed_options = ['RIGHT', 'LEFT', 'BOTH'];
+
+        $scope.create = function (player) {
+            console.log('Creating a player ' + player.playerName);
+
+            $http.post('/pa165/players', player).then(
+                function success(response) {
+                    console.log('Created a player ' + player.id + ' on the server');
+
+                    $rootScope.successAlert = 'Created a player "' + player.playerName + '"';
+                    $location.path("/players");
+                },
+                function error(response) {
+                    console.log("Error when creating a player!");
+                    console.log(response);
+
+                    $rootScope.errorAlert = 'Cannot create player! Reason given by the server: ' + response.data.message;
+                })
+        }
+    }
+);
+
+soccerManagerControllers.controller('PlayersDetailCtrl',
+    function ($scope, $routeParams, $rootScope, $http) {
+        var playerId = $routeParams.playerId;
+
+        $http.get('/pa165/players/' + playerId).then(function (response) {
+            $scope.player = response.data;
+
+            console.log('AJAX loaded a detail of a player ' + $scope.player.playerName)
+        })
+    }
+);
+
+soccerManagerControllers.controller('PlayersUpdateCtrl',
+    function ($scope, $routeParams, $rootScope, $http, $location) {
+        $scope.positions = ['DEFFENSE', 'OFFENSE', 'MIDFIELD'];
+        $scope.footed_options = ['RIGHT', 'LEFT', 'BOTH'];
+        var playerId = $routeParams.playerId;
+
+        $http.get('/pa165/players/' + playerId).then(function (response) {
+            $scope.player = response.data;
+
+            console.log('AJAX loaded a player ' + $scope.player.playerName)
+        });
+
+        $scope.update = function (player) {
+            console.log('Updating a player ' + player.playerName);
+
+            $http.put('/pa165/players', player).then(
+                function success(response) {
+                    console.log('Updated a player ' + player.id + ' on the server');
+
+                    $rootScope.successAlert = 'Updated a player "' + player.playerName + '"';
+                    $location.path("/players");
+                },
+                function error(response) {
+                    console.log("Error when updating a player!");
+                    console.log(response);
+
+                    $rootScope.errorAlert = 'Cannot update player! Reason given by the server: ' + response.data.message;
+                })
+        }
+    }
+);
 
 /* 
  * Matches functions
  */
-
 function loadMatches($scope, $http) {
 	$http.get('/pa165/matches/').then(function (response) {
 		console.log('AJAX response.data: ' + response.data);
@@ -381,6 +561,7 @@ function findHrefFromLinks(links, relName) {
 function alreadyPlayed(match) {
 	if(match.homeTeamGoals != null) return true;
 	if(match.awayTeamGoals != null) return true;
+        
 	return false;
 }
 
@@ -410,4 +591,18 @@ function compareMatchesByDate(m1, m2) {
 
 function dateTimeStrToDate(dateTimeString) {
 	return Date.parse(dateTimeString);
+}
+
+/*
+ * Players' functions
+ */
+function loadPlayers($scope, $http) {
+    $http.get('/pa165/players/').then(function (response) {
+        console.log('AJAX response.data:');
+        console.log(response.data);
+
+        $scope.players = response.data.content;
+
+        console.log('AJAX loaded list of ' + $scope.players.length + ' players.');
+    });
 }

@@ -1,8 +1,16 @@
 package cz.fi.muni.pa165.soccermanager.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
@@ -12,8 +20,6 @@ import cz.fi.muni.pa165.soccermanager.dao.TeamDAO;
 import cz.fi.muni.pa165.soccermanager.dao.UserDAO;
 import cz.fi.muni.pa165.soccermanager.data.Team;
 import cz.fi.muni.pa165.soccermanager.data.User;
-import java.util.HashMap;
-import java.util.Map;
 /**
  * implementation of service layer for user
  * @author Dominik Pilar
@@ -21,12 +27,11 @@ import java.util.Map;
  */
 @Service
 public class UserServiceImpl implements UserService {
+	private static final Logger LOG = LoggerFactory.getLogger(UserServiceImpl.class);
 
     private UserDAO userDAO;
     private TeamDAO teamDAO;
     
-    private final Map<String, Long> sessions = new HashMap<>();
-
     @Autowired
     public UserServiceImpl(UserDAO userDAO, TeamDAO teamDAO) {
         this.userDAO = userDAO;
@@ -70,9 +75,20 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean authenticateUser(String userName, String password) {
+    public User authenticateUser(String userName, String password) {
     	User user = getUserByUsername(userName);
-    	return BCrypt.checkpw(password, user.getPasswordHash());
+    	   	
+    	boolean success =  BCrypt.checkpw(password, user.getPasswordHash());
+    	if(!success) throw new SoccerManagerServiceException("Incorrect password!",
+				ErrorStatus.INCORRECT_PASSWORD);
+    	
+    	List<String> roles = new ArrayList<>();
+    	roles.add("USER");
+    	if(user.isAdmin()) roles.add("ADMIN");   	
+    	
+    	setSpringSecurityUser(user.getUserName(), user.getPasswordHash(), roles);
+    	
+    	return user;
     }
 
     @Override
@@ -127,34 +143,26 @@ public class UserServiceImpl implements UserService {
         return u.getTeam();
     }
 
-    @Override
-    public synchronized String createSessionToken(User user) {
-        String token = generateUniqueToken();
-        sessions.put(token, user.getId());
-        return token;
-    }
+	@Override
+	public User getCurrentUser() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		if(auth == null) return null;
+		return getUserByUsername(auth.getName());
+	}
 
-    @Override
-    public User getUserByToken(String token) {
-    	if(token == null) throw new IllegalArgumentException("Token is null");
-    	
-    	// workaround hack for curl test without login
-    	if(token.equals("CURL_TEST")) return getUserByUsername("admin");
-    	
-        Long id = sessions.get(token);
-        if(id == null) throw new SoccerManagerServiceException("Session with token "+ token + " not found.", ErrorStatus.RESOURCE_NOT_FOUND);
-        
-        return this.getUserById(id);
-    }
+	@Override
+	public void logoutCurrentUser() {
+		SecurityContextHolder.clearContext();		
+	}
     
-    private String generateUniqueToken() {
-    	final int MAX_GENERATION_TRIES = 5; 
-    	//should be unique for first time, since using nano seconds
-    	for(int i=0;i<MAX_GENERATION_TRIES;i++) {
-    		String token = System.currentTimeMillis()+""+System.nanoTime();
-    		if(!sessions.containsKey(token)) return token;
-    	}
-    	
-    	throw new RuntimeException("Could not generate uniqe token. Weird...");
-    }
+	private void setSpringSecurityUser(String username, String passwordHash, List<String> roles) {
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		for(String role : roles) authorities.add(new SimpleGrantedAuthority("ROLE_"+role));     
+
+		org.springframework.security.core.userdetails.User u = new org.springframework.security.core.userdetails.User(username, passwordHash, authorities);
+		
+		SecurityContextHolder.getContext().setAuthentication(new UsernamePasswordAuthenticationToken(u.getUsername(), u.getPassword(), u.getAuthorities()));
+
+		LOG.info("User set to security context");
+	}
 }

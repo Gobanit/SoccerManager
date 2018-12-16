@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Player's Detail</title>
+</head>
+<body>
+<a href="#!/players" class="btn btn-primary" role="button">Back</a>
+
+<h1><b><i>{{ player.playerName }}</i></b></h1>
+<br>
+<h2><b>Nationality: </b> {{ player.nationality }}</h2>
+<h2><b>Birthday: </b>{{ player.birthDate }}</h2>
+<br>
+<h2><b>Rating: </b>{{ player.rating }}</h2>
+<br>
+<h3><b>Position: </b>{{ player.position }}</h3>
+<h3><b>Footed: </b>{{ player.footed }}</h3>
+
+<a href="#!/players/update" ng-hide="!hasAdminRights()" class="btn btn-primary" role="button">Update</a>
+</body>
+</html>

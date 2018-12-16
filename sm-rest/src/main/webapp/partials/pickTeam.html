@@ -1,0 +1,24 @@
+<h1>Pick a team</h1>
+<table class="table">
+    <thead>
+    <tr>
+        <th>id</th>
+        <th>club name</th>
+        <th>championship name</th>
+        <th>country</th>
+        <th>budget</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-repeat="team in teams track by $index">
+        <td>{{team.id}}</td>
+        <td>{{team.clubName}}</td>
+        <td>{{team.championshipName}}</td>
+        <td>{{team.country}}</td>
+        <td>{{team.budget}}</td>
+        <td>
+            <button type="button" ng-click="pickTeam(team)" class="btn btn-primary">Pick</button>        
+        </td>
+    </tr>
+    </tbody>
+</table>

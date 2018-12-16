@@ -1,9 +1,11 @@
 package cz.fi.muni.pa165.soccermanager.rest.controllers;
 
+import cz.fi.muni.pa165.soccermanager.api.dto.PlayerChangeDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.PlayerCreateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.PlayerDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.PlayerFreeDTO;
 import cz.fi.muni.pa165.soccermanager.api.facade.PlayerFacade;
+import cz.fi.muni.pa165.soccermanager.api.facade.TeamFacade;
 import cz.fi.muni.pa165.soccermanager.rest.ExceptionSorter;
 import cz.fi.muni.pa165.soccermanager.rest.assemblers.PlayerFreeResourceAssembler;
 import cz.fi.muni.pa165.soccermanager.rest.assemblers.PlayerResourceAssembler;
@@ -27,7 +29,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 /**
  * Rest Controller for Player entity.
  *
- * @author Lenka Horvathova, Dominik Pilar
+ * @author Lenka Horvathova
  */
 @RestController
 @ExposesResourceFor(PlayerDTO.class)
@@ -37,19 +39,21 @@ public class PlayerRestController {
     private final static Logger logger = LoggerFactory.getLogger(PlayerRestController.class);
 
     private PlayerFacade playerFacade;
+    private TeamFacade teamFacade;
     private PlayerResourceAssembler playerResourceAssembler;
     private PlayerFreeResourceAssembler playerFreeResourceAssembler;
 
     @Autowired
-    public PlayerRestController(PlayerFacade playerFacade, PlayerResourceAssembler playerResourceAssembler, PlayerFreeResourceAssembler playerFreeResourceAssembler) {
+    public PlayerRestController(PlayerFacade playerFacade, TeamFacade teamFacade, PlayerResourceAssembler playerResourceAssembler, PlayerFreeResourceAssembler playerFreeResourceAssembler) {
         this.playerFacade = playerFacade;
+        this.teamFacade = teamFacade;
         this.playerResourceAssembler = playerResourceAssembler;
         this.playerFreeResourceAssembler = playerFreeResourceAssembler;
 
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<Void> createPlayer(@RequestBody PlayerCreateDTO playerCreateDTO) {
+    public HttpEntity<Void> createPlayer(@RequestBody PlayerCreateDTO playerCreateDTO) {
         logger.debug("rest createPlayer()");
 
         try {
@@ -61,11 +65,28 @@ public class PlayerRestController {
         }
     }
 
-    @RequestMapping(value = "/{playerId}", method = RequestMethod.DELETE)
-    public final HttpEntity<Void> deletePlayer(@PathVariable("playerId") long playerId) {
-        logger.debug("rest deleteTeam()");
+    @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public HttpEntity<Void> updatePlayer(@RequestBody PlayerChangeDTO playerChangeDTO) {
+        logger.debug("rest createPlayer()");
 
         try {
+            playerFacade.changePlayerAttributes(playerChangeDTO);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            throw ExceptionSorter.throwException(e);
+        }
+    }
+
+    @RequestMapping(value = "/{playerId}", method = RequestMethod.DELETE)
+    public HttpEntity<Void> deletePlayer(@PathVariable("playerId") long playerId) {
+        logger.debug("rest deletePlayer()");
+
+        try {
+            PlayerDTO playerDTO = playerFacade.findPlayerById(playerId);
+            if (playerDTO.getTeam() != null) {
+                teamFacade.removePlayerFromTeam(playerId, playerDTO.getTeam().getId());
+            }
             playerFacade.removePlayer(playerId);
 
             return new ResponseEntity<>(HttpStatus.OK);
@@ -75,7 +96,7 @@ public class PlayerRestController {
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<Resources<Resource<PlayerDTO>>> getAllPlayers() {
+    public HttpEntity<Resources<Resource<PlayerDTO>>> getAllPlayers() {
         logger.debug("rest getAllPlayers()");
 
         try {
@@ -97,7 +118,7 @@ public class PlayerRestController {
     }
 
     @RequestMapping(value = "/free", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<Resources<Resource<PlayerFreeDTO>>> getAllFreePlayers() {
+    public HttpEntity<Resources<Resource<PlayerFreeDTO>>> getAllFreePlayers() {
         logger.debug("rest getAllPlayers()");
 
         try {
@@ -117,7 +138,7 @@ public class PlayerRestController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<Resource<PlayerDTO>> getPlayerById(@PathVariable("id") long id) {
+    public HttpEntity<Resource<PlayerDTO>> getPlayerById(@PathVariable("id") long id) {
         logger.debug("rest getPlayerById()");
 
         try {

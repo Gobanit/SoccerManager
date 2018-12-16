@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,9 +28,11 @@ public class CustomExceptionHandler {
         } else if (e instanceof ConflictException) {
             httpStatus = HttpStatus.CONFLICT;
         } else if (e instanceof MethodNotAllowedException) {
-                httpStatus = HttpStatus.METHOD_NOT_ALLOWED;
+            httpStatus = HttpStatus.METHOD_NOT_ALLOWED;
         } else if (e instanceof ResourceNotModifiedException) {
             httpStatus = HttpStatus.NOT_MODIFIED;
+        } else if (e instanceof AccessDeniedException) {
+        	httpStatus = HttpStatus.FORBIDDEN;
         } else {
             httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
         }
