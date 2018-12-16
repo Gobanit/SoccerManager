@@ -5,22 +5,21 @@ package cz.fi.muni.pa165.soccermanager.service.facade;
 
 import java.util.List;
 
-import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserAuthenticateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserCreateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserDTO;
-import cz.fi.muni.pa165.soccermanager.api.dto.UserSessionDTO;
 import cz.fi.muni.pa165.soccermanager.api.facade.UserFacade;
 import cz.fi.muni.pa165.soccermanager.data.User;
 import cz.fi.muni.pa165.soccermanager.service.BeanMapping;
 import cz.fi.muni.pa165.soccermanager.service.UserService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of {@link UserFacade}
@@ -74,19 +73,11 @@ public class UserFacadeImpl implements UserFacade {
 	}
 
 	@Override
-	public UserSessionDTO authenticateUser(UserAuthenticateDTO userAuth) {
-            boolean auth = userService.authenticateUser(userAuth.getUsername(), userAuth.getRawPassword());
-		if (auth) {
-                    User user = userService.getUserByUsername(userAuth.getUsername());
-                    String token = userService.createSessionToken(user);
-                    UserSessionDTO session = new UserSessionDTO();
-                    session.setToken(token);
-                    session.setUser(beanMapping.mapTo(user, UserDTO.class));
-                    return session;
-                }
-                return null;
-        }
-
+	public UserDTO authenticateUser(UserAuthenticateDTO userAuth) {
+        User u = userService.authenticateUser(userAuth.getUsername(), userAuth.getRawPassword());
+        return beanMapping.mapTo(u, UserDTO.class);
+	}
+	
 	@Override
 	public void deleteUser(String userName) {
 		userService.deleteUser(userName);
@@ -106,12 +97,13 @@ public class UserFacadeImpl implements UserFacade {
 	@Override
 	public TeamDTO getTeamOfUser(String userName) {
 		logger.info(userName);
-		return  beanMapping.mapTo(userService.getTeamOfUser(userName), TeamDTO.class);
+		return beanMapping.mapTo(userService.getTeamOfUser(userName), TeamDTO.class);
 	}
-
+	
 	@Override
-	public UserDTO getBySessionToken(String token) {
-		return beanMapping.mapTo(userService.getUserByToken(token), UserDTO.class);
+	public UserDTO getCurrentUser() {
+		User user = userService.getCurrentUser();
+		return beanMapping.mapTo(user, UserDTO.class);
 	}
 
 }
