@@ -10,6 +10,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import cz.fi.muni.pa165.soccermanager.api.exceptions.SoccerManagerServiceException;
 import cz.fi.muni.pa165.soccermanager.data.Team;
 import cz.fi.muni.pa165.soccermanager.data.User;
 
@@ -65,15 +66,24 @@ public class UserServiceBasicTest extends UserServiceAbstractTestBase {
 	}
 	
 	@Test
-	public void authenticateUser() {
+	public void authenticateUserSuccess() {
 		User user = user(100l, "SomeUser", BCrypt.hashpw("pass", BCrypt.gensalt()), false, null);
 		String rawPassword = "pass";
 		
 		mockFindForUser(user);
 
-		Assert.assertTrue(userService.authenticateUser(user.getUserName(), rawPassword));
-		Assert.assertFalse(userService.authenticateUser(user.getUserName(), "passw"));
+		Assert.assertNotNull(userService.authenticateUser(user.getUserName(), rawPassword));
 	}
+	
+	@Test(expectedExceptions = SoccerManagerServiceException.class)
+	public void authenticateUserIncorrectPass() {
+		User user = user(100l, "SomeUser", BCrypt.hashpw("pass", BCrypt.gensalt()), false, null);		
+		mockFindForUser(user);
+
+		userService.authenticateUser(user.getUserName(), "passw");
+	}
+	
+
 	
 	@Test
 	public void deleteUser() {

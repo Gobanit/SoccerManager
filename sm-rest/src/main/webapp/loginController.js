@@ -13,7 +13,7 @@ var LoginController = function($scope, $rootScope, $location, AuthenticationServ
         $scope.dataLoading = true;
         AuthenticationService.Login(username, password, function(status) {
             if(status.success) {
-                AuthenticationService.SetSessionInfo(status.token, status.username, status.admin);
+                AuthenticationService.SetSessionInfo(status.username, status.admin);
                 $rootScope.showMenu = true;
                 console.log('currentUser: '+JSON.stringify($rootScope.globals.currentUser));
                 $location.path('/');

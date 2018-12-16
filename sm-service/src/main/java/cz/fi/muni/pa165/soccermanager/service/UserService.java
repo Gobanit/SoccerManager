@@ -45,13 +45,25 @@ public interface UserService {
      */
     User getUserByUsername(String userName);
     /**
-     * Check if user is authenticated.
+     * Check if user is authenticated and logs him in if so.
      *
      * @param userName name of the user to be authenticated
-     * @return true if is authenticated, false otherwise
+     * @return authenticated user
      * @throws SoccerManagerServiceException with error status RESOURCE_NOT_FOUND - if user with user name was not found
+     * @throws SoccerManagerServiceException with error status INCORRECT_PASSWORD - if user password does not match
      */
-    boolean authenticateUser(String userName, String password);
+    User authenticateUser(String userName, String password);
+    /**
+     * Returns currently logged in user for this thread
+     * @return current user
+     */
+    User getCurrentUser();
+    
+    /**
+     * Clears security context, so current user will no longer 
+     * be logged in.
+     */
+    void logoutCurrentUser();
     /**
      * Delete user from system.
      *
@@ -98,8 +110,4 @@ public interface UserService {
      * @throws SoccerManagerServiceException with error status RESOURCE_NOT_FOUND - if user with user name was not found or user has no team
      */
     Team getTeamOfUser(String userName);
-    
-    String createSessionToken(User user);
-    
-    User getUserByToken(String token);
 }

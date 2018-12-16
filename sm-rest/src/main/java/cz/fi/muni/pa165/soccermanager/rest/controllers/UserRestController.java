@@ -26,7 +26,6 @@ import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserAuthenticateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserCreateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserDTO;
-import cz.fi.muni.pa165.soccermanager.api.dto.UserSessionDTO;
 import cz.fi.muni.pa165.soccermanager.api.facade.UserFacade;
 import cz.fi.muni.pa165.soccermanager.rest.ExceptionSorter;
 import cz.fi.muni.pa165.soccermanager.rest.assemblers.TeamResourceAssembler;
@@ -167,12 +166,22 @@ public class UserRestController {
     
     @RequestMapping(value = "/auth", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public UserSessionDTO authenticateUser(@RequestBody UserAuthenticateDTO body) {
+    public UserDTO authenticateUser(@RequestBody UserAuthenticateDTO body) {
         logger.debug("rest authenticateUser()");
         
         try {
-            UserSessionDTO session = userFacade.authenticateUser(body);
-            return session;
+            UserDTO user = userFacade.authenticateUser(body);
+            return user;
+        } catch(Exception ex) {
+            throw ExceptionSorter.throwException(ex);
+        }
+    }
+    
+    @RequestMapping(value = "/currentUser", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public UserDTO currentUser() {
+        try {
+            return userFacade.getCurrentUser();
         } catch(Exception ex) {
             throw ExceptionSorter.throwException(ex);
         }

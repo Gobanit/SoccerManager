@@ -36,14 +36,11 @@ app.run(function($rootScope, $location, $cookies, $http) {
     // keep user logged in after page refresh
     console.log($rootScope.globals.currentUser);
     if ($rootScope.globals.currentUser) {
-
-        $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata;
         $rootScope.showMenu = true;
     }
 
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
         // redirect to login page if not logged in
-
         if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
             $location.path('/login');
         }
