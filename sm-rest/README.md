@@ -44,22 +44,22 @@ curl -i -H "CurlTest: true" -X PUT http://localhost:8080/pa165/users/user1/True
 ## Authenticate User
 curl -i -H "Content-Type: application/json" -X GET --data '{"username": "user1","rawPassword": "1234"}' http://localhost:8080/pa165/users/auth
 
-## Players
+# Players
 
-# Create a player
+## Create a player
 curl -X POST -i -H "Content-Type: application/json" --data '{"playerName": "John Smith", "nationality": "Slovakia", "birthDate": "1974-12-12", "rating": 55, "position": "OFFENSE", "footed": "RIGHT"}' http://localhost:8080/pa165/players
 
-# Update a player 
+## Update a player 
 curl -X PUT -i -H "Content-Type: application/json" --data '{"id": 1, rating": 55, "position": "OFFENSE", "footed": "RIGHT"}' http://localhost:8080/pa165/players
 
-# Delete a player
+## Delete a player
 curl -i -X DELETE http://localhost:8080/pa165/players/1
 
-# Get all players
+## Get all players
 curl -i -X GET http://localhost:8080/pa165/players
 
-# Get all free players
+## Get all free players
 curl -i -X GET http://localhost:8080/pa165/players/free
 
-# Get a player by ID
+## Get a player by ID
 curl -i -X GET http://localhost:8080/pa165/players/1
