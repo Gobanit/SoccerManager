@@ -21,6 +21,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,6 +53,7 @@ public class PlayerRestController {
 
     }
 
+    @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public HttpEntity<Void> createPlayer(@RequestBody PlayerCreateDTO playerCreateDTO) {
         logger.debug("rest createPlayer()");
@@ -65,6 +67,7 @@ public class PlayerRestController {
         }
     }
 
+    @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
     public HttpEntity<Void> updatePlayer(@RequestBody PlayerChangeDTO playerChangeDTO) {
         logger.debug("rest createPlayer()");
@@ -78,6 +81,7 @@ public class PlayerRestController {
         }
     }
 
+    @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(value = "/{playerId}", method = RequestMethod.DELETE)
     public HttpEntity<Void> deletePlayer(@PathVariable("playerId") long playerId) {
         logger.debug("rest deletePlayer()");
@@ -95,6 +99,7 @@ public class PlayerRestController {
         }
     }
 
+    @RolesAllowed("ROLE_USER")
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public HttpEntity<Resources<Resource<PlayerDTO>>> getAllPlayers() {
         logger.debug("rest getAllPlayers()");
@@ -117,6 +122,7 @@ public class PlayerRestController {
         }
     }
 
+    @RolesAllowed("ROLE_USER")
     @RequestMapping(value = "/free", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public HttpEntity<Resources<Resource<PlayerFreeDTO>>> getAllFreePlayers() {
         logger.debug("rest getAllPlayers()");
@@ -137,6 +143,7 @@ public class PlayerRestController {
         }
     }
 
+    @RolesAllowed("ROLE_USER")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public HttpEntity<Resource<PlayerDTO>> getPlayerById(@PathVariable("id") long id) {
         logger.debug("rest getPlayerById()");
