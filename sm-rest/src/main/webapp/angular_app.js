@@ -205,7 +205,7 @@ soccerManagerControllers.controller('UserTeamDetailCtrl',
             switch (error.data.code) {
                 case 'ResourceNotFoundException':
                     $rootScope.errorAlert = 'You have no team, please pick one!';
-                    $location.path("/home");
+                    $location.path("/teams/pick");
                     break;
                 default:
                     $rootScope.errorAlert = 'Cannot get team of user ! Reason given by the server: '+error.data.message;
