@@ -134,7 +134,7 @@ public class UserRestController {
     
     @RolesAllowed("ROLE_USER")
     @RequestMapping(value = "/{name}/team/{teamId}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final void pickTeam(@PathVariable("name") String name, @PathVariable("teamId") long teamId) {
+    public void pickTeam(@PathVariable("name") String name, @PathVariable("teamId") long teamId) {
 
         logger.debug("rest pickTeamForUser()");
         
@@ -147,7 +147,7 @@ public class UserRestController {
     
     @RolesAllowed("ROLE_USER")
     @RequestMapping(value = "/{name}/team", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<Resource<TeamDTO>> getTeam(@PathVariable("name") String name) {
+    public HttpEntity<Resource<TeamDTO>> getTeam(@PathVariable("name") String name) {
 
         logger.debug("rest getTeamOfUser()");
         
@@ -162,7 +162,7 @@ public class UserRestController {
     
     @RolesAllowed("ROLE_ADMIN")
     @RequestMapping(value = "/{name}/{admin}", method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final void changeRights(@PathVariable("name") String name, @PathVariable("admin") boolean admin) {
+    public void changeRights(@PathVariable("name") String name, @PathVariable("admin") boolean admin) {
 
         logger.debug("rest changeAdminRights()");
         

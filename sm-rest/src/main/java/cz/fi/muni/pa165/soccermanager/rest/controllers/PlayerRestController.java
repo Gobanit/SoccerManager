@@ -53,7 +53,7 @@ public class PlayerRestController {
     }
 
     @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<Void> createPlayer(@RequestBody PlayerCreateDTO playerCreateDTO) {
+    public HttpEntity<Void> createPlayer(@RequestBody PlayerCreateDTO playerCreateDTO) {
         logger.debug("rest createPlayer()");
 
         try {
@@ -66,7 +66,7 @@ public class PlayerRestController {
     }
 
     @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<Void> updatePlayer(@RequestBody PlayerChangeDTO playerChangeDTO) {
+    public HttpEntity<Void> updatePlayer(@RequestBody PlayerChangeDTO playerChangeDTO) {
         logger.debug("rest createPlayer()");
 
         try {
@@ -79,7 +79,7 @@ public class PlayerRestController {
     }
 
     @RequestMapping(value = "/{playerId}", method = RequestMethod.DELETE)
-    public final HttpEntity<Void> deletePlayer(@PathVariable("playerId") long playerId) {
+    public HttpEntity<Void> deletePlayer(@PathVariable("playerId") long playerId) {
         logger.debug("rest deletePlayer()");
 
         try {
@@ -96,7 +96,7 @@ public class PlayerRestController {
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<Resources<Resource<PlayerDTO>>> getAllPlayers() {
+    public HttpEntity<Resources<Resource<PlayerDTO>>> getAllPlayers() {
         logger.debug("rest getAllPlayers()");
 
         try {
@@ -118,7 +118,7 @@ public class PlayerRestController {
     }
 
     @RequestMapping(value = "/free", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<Resources<Resource<PlayerFreeDTO>>> getAllFreePlayers() {
+    public HttpEntity<Resources<Resource<PlayerFreeDTO>>> getAllFreePlayers() {
         logger.debug("rest getAllPlayers()");
 
         try {
@@ -138,7 +138,7 @@ public class PlayerRestController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public final HttpEntity<Resource<PlayerDTO>> getPlayerById(@PathVariable("id") long id) {
+    public HttpEntity<Resource<PlayerDTO>> getPlayerById(@PathVariable("id") long id) {
         logger.debug("rest getPlayerById()");
 
         try {
