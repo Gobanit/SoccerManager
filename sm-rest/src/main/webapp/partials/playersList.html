@@ -51,12 +51,8 @@
             <span>{{ player.footed }}</span>
         </td>
         <td>
-            <button type="button"
-                    ng-hide="!hasAdminRights()"
-                    ng-click="updatePlayer(player)"
-                    class="btn btn-primary">
-                Update
-            </button>
+            <a href="#!/players/{{player.id}}/update" ng-hide="!hasAdminRights()" class="btn btn-primary" role="button"
+               ng-hide="!hasAdminRights()">Update</a>
         </td>
         <td>
             <button type="button"

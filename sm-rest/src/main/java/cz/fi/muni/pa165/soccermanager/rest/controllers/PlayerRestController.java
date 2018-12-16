@@ -1,5 +1,6 @@
 package cz.fi.muni.pa165.soccermanager.rest.controllers;
 
+import cz.fi.muni.pa165.soccermanager.api.dto.PlayerChangeDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.PlayerCreateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.PlayerDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.PlayerFreeDTO;
@@ -28,7 +29,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 /**
  * Rest Controller for Player entity.
  *
- * @author Lenka Horvathova, Dominik Pilar
+ * @author Lenka Horvathova
  */
 @RestController
 @ExposesResourceFor(PlayerDTO.class)
@@ -57,6 +58,19 @@ public class PlayerRestController {
 
         try {
             playerFacade.createPlayer(playerCreateDTO);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            throw ExceptionSorter.throwException(e);
+        }
+    }
+
+    @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public final HttpEntity<Void> updatePlayer(@RequestBody PlayerChangeDTO playerChangeDTO) {
+        logger.debug("rest createPlayer()");
+
+        try {
+            playerFacade.changePlayerAttributes(playerChangeDTO);
 
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (Exception e) {

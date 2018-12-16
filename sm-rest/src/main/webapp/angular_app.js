@@ -15,7 +15,7 @@ app.config(['$routeProvider', function($routeProvider) {
         .when('/players', {templateUrl: 'partials/playersList.html', controller: 'PlayersCtrl'})
         .when('/players/create', {templateUrl: 'partials/playersCreate.html', controller: 'PlayersCreateCtrl'})
         .when('/players/:playerId', {templateUrl: 'partials/playersDetail.html', controller: 'PlayersDetailCtrl'})
-        .when('/players/update', {templateUrl: 'partials/playersUpdate.html', controller: 'PlayersUpdateCtrl'})
+        .when('/players/:playerId/update', {templateUrl: 'partials/playersUpdate.html', controller: 'PlayersUpdateCtrl'})
 
         .otherwise({
             redirectTo: '/home'
@@ -437,6 +437,50 @@ soccerManagerControllers.controller('PlayersCreateCtrl',
                     console.log(response);
 
                     $rootScope.errorAlert = 'Cannot create player! Reason given by the server: ' + response.data.message;
+                })
+        }
+    }
+);
+
+soccerManagerControllers.controller('PlayersDetailCtrl',
+    function ($scope, $routeParams, $rootScope, $http) {
+        var playerId = $routeParams.playerId;
+
+        $http.get('/pa165/players/' + playerId).then(function (response) {
+            $scope.player = response.data;
+
+            console.log('AJAX loaded a detail of a player ' + $scope.player.playerName)
+        })
+    }
+);
+
+soccerManagerControllers.controller('PlayersUpdateCtrl',
+    function ($scope, $routeParams, $rootScope, $http, $location) {
+        $scope.positions = ['DEFFENSE', 'OFFENSE', 'MIDFIELD'];
+        $scope.footed_options = ['RIGHT', 'LEFT', 'BOTH'];
+        var playerId = $routeParams.playerId;
+
+        $http.get('/pa165/players/' + playerId).then(function (response) {
+            $scope.player = response.data;
+
+            console.log('AJAX loaded a player ' + $scope.player.playerName)
+        });
+
+        $scope.update = function (player) {
+            console.log('Updating a player ' + player.playerName);
+
+            $http.put('/pa165/players', player).then(
+                function success(response) {
+                    console.log('Updated a player ' + player.id + ' on the server');
+
+                    $rootScope.successAlert = 'Updated a player "' + player.playerName + '"';
+                    $location.path("/players");
+                },
+                function error(response) {
+                    console.log("Error when updating a player!");
+                    console.log(response);
+
+                    $rootScope.errorAlert = 'Cannot update player! Reason given by the server: ' + response.data.message;
                 })
         }
     }
