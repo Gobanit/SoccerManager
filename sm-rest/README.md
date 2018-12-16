@@ -47,19 +47,19 @@ curl -i -H "Content-Type: application/json" -X GET --data '{"username": "user1",
 # Players
 
 ## Create a player
-curl -X POST -i -H "Content-Type: application/json" --data '{"playerName": "John Smith", "nationality": "Slovakia", "birthDate": "1974-12-12", "rating": 55, "position": "OFFENSE", "footed": "RIGHT"}' http://localhost:8080/pa165/players
+curl -X POST -i -H "CurlTest: true" -H "Content-Type: application/json" --data '{"playerName": "John Smith", "nationality": "Slovakia", "birthDate": "1974-12-12", "rating": 55, "position": "OFFENSE", "footed": "RIGHT"}' http://localhost:8080/pa165/players
 
 ## Update a player 
-curl -X PUT -i -H "Content-Type: application/json" --data '{"id": 1, rating": 55, "position": "OFFENSE", "footed": "RIGHT"}' http://localhost:8080/pa165/players
+curl -X PUT -i -H "CurlTest: true" -H "Content-Type: application/json" --data '{"id": 1, rating": 55, "position": "OFFENSE", "footed": "RIGHT"}' http://localhost:8080/pa165/players
 
 ## Delete a player
-curl -i -X DELETE http://localhost:8080/pa165/players/1
+curl -i -H "CurlTest: true" -X DELETE http://localhost:8080/pa165/players/1
 
 ## Get all players
-curl -i -X GET http://localhost:8080/pa165/players
+curl -i -H "CurlTest: true" -X GET http://localhost:8080/pa165/players
 
 ## Get all free players
-curl -i -X GET http://localhost:8080/pa165/players/free
+curl -i -H "CurlTest: true" -X GET http://localhost:8080/pa165/players/free
 
 ## Get a player by ID
-curl -i -X GET http://localhost:8080/pa165/players/1
+curl -i -H "CurlTest: true" -X GET http://localhost:8080/pa165/players/1
