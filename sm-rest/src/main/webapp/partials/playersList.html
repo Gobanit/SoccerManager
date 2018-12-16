@@ -41,7 +41,7 @@
             <span>{{ player.rating }}</span>
         </td>
         <td>
-            <span ng-hide="isFree(player)">{{ player.team.clubName }}</span>
+			<a ng-hide="isFree(player)" href="#!/team/{{ player.team.id }}">{{ player.team.clubName }}</a>
             <span ng-hide="!isFree(player)"><i>None</i></span>
         </td>
         <td>

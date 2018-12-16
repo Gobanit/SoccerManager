@@ -35,7 +35,7 @@
                 <li class="dropdown" ng-hide="!hasAdminRights()">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown">Admin<b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#!/admin/players">Players</a></li>
+                        <li><a href="#!/players">Players</a></li>
                         <li><a href="#!/admin/teams">Teams</a></li>
                         <li><a href="#!/matches/create">Create Match</a></li>
                     </ul>
