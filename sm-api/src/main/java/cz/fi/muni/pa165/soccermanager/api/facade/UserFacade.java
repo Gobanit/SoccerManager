@@ -9,7 +9,6 @@ import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserAuthenticateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserCreateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.UserDTO;
-import cz.fi.muni.pa165.soccermanager.api.dto.UserSessionDTO;
 
 /**
  * Interface for accessing users related use cases.
@@ -43,14 +42,13 @@ public interface UserFacade {
 	 * @return found user or null if not existing
 	 */
 	public UserDTO getUserByUsername(String username);
-	
-	/**
-	 * Finds user by session token
-	 * @param token - id of session
-	 * @return found user or null if none found
-	 */
-	public UserDTO getBySessionToken(String token);
 
+	/**
+	 * Finds currently logged in user for this thread.
+	 * @return user
+	 */
+	public UserDTO getCurrentUser();
+	
 	/**
 	 * Registers new user
 	 * 
@@ -65,9 +63,9 @@ public interface UserFacade {
 	 * 
 	 * @param userAuth
 	 *            - authentication data
-	 * @return UserSessionDTO representing user with token
+	 * @return UserDTO reprezenting currently logged user
 	 */
-	public UserSessionDTO authenticateUser(UserAuthenticateDTO userAuth);
+	public UserDTO authenticateUser(UserAuthenticateDTO userAuth);
 
 	/**
 	 * Removes user from application
@@ -97,5 +95,5 @@ public interface UserFacade {
 	 */
 	public void changeAdminRights(String userName, boolean adminRights);
 
-	TeamDTO getTeamOfUser(String userName);
+	public TeamDTO getTeamOfUser(String userName);
 }

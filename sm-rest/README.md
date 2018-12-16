@@ -1,45 +1,45 @@
-## Matches
+# Matches
 
-# Get all matches
-curl -i -X GET http://localhost:8080/pa165/matches
+## Get all matches
+curl -i -H "CurlTest: true" -X GET http://localhost:8080/pa165/matches
 
-# Create match
-curl -X POST -i -H "Content-Type: application/json" --data '{"homeTeam": 2,"awayTeam": 3,"date":"2018-12-05T17:09:19.014"}' http://localhost:8080/pa165/matches
+## Create match
+curl -i -H "CurlTest: true" -H "Content-Type: application/json" --data '{"homeTeam": 5,"awayTeam": 5,"date":"2018-12-05T17:09:19.014"}' -X POST http://localhost:8080/pa165/matches
 
-# Get one match
-curl -i -X GET http://localhost:8080/pa165/matches/5
+## Get one match
+curl -i -H "CurlTest: true" -X GET http://localhost:8080/pa165/matches/8
 
-# Delete one match
-curl -i -X DELETE http://localhost:8080/pa165/matches/5
+## Delete one match
+curl -i -H "CurlTest: true" -X DELETE http://localhost:8080/pa165/matches/8
 
-# Simulate one match
-curl -X POST -i http://localhost:8080/pa165/matches/simulate/5
+## Simulate one match
+curl -i -H "CurlTest: true" -X POST  http://localhost:8080/pa165/matches/simulate/8
 
-## Users
+# Users
 
-# Get all users
-curl -i -X GET http://localhost:8080/pa165/users
+## Get all users
+curl -i -H "CurlTest: true" -X GET http://localhost:8080/pa165/users
 
-# Create user
-curl -X POST -i -H "Content-Type: application/json" --data '{"username": "user1","rawPassword": "1234","isAdmin": false}' http://localhost:8080/pa165/users
+## Create user
+curl -i -H "CurlTest: true" -H "Content-Type: application/json" --data '{"username": "user1","rawPassword": "1234","isAdmin": false}' -X POST http://localhost:8080/pa165/users
 
-# Get user by id
-curl -i -X GET http://localhost:8080/pa165/users/8
+## Get user by id
+curl -i -H "CurlTest: true" -X GET http://localhost:8080/pa165/users/11
 
-# Get user by name
-curl -i -X GET http://localhost:8080/pa165/users/name/admin
+## Get user by name
+curl -i -H "CurlTest: true" -X GET http://localhost:8080/pa165/users/name/admin
 
-# Delete user
-curl -i -X DELETE http://localhost:8080/pa165/users/user1
+## Delete user
+curl -i -H "CurlTest: true" -X DELETE http://localhost:8080/pa165/users/user1
 
-# Pick team (id) for user
-curl -X PUT http://localhost:8080/pa165/users/user1/team/4
+## Pick team (id) for user
+curl -i -H "CurlTest: true" -X PUT http://localhost:8080/pa165/users/user1/team/7
 
-# Get user team
-curl -i -X GET http://localhost:8080/pa165/users/user1/team
+## Get user team
+curl -i -H "CurlTest: true" -X GET http://localhost:8080/pa165/users/user1/team
 
-# Change admin rights
-curl -X PUT http://localhost:8080/pa165/users/user1/True
+## Change admin rights
+curl -i -H "CurlTest: true" -X PUT http://localhost:8080/pa165/users/user1/True
 
-# Authenticate User
-curl -X GET -i -H "Content-Type: application/json" --data '{"username": "user1","rawPassword": "1234"}' http://localhost:8080/pa165/users/auth
+## Authenticate User
+curl -i -H "Content-Type: application/json" -X GET --data '{"username": "user1","rawPassword": "1234"}' http://localhost:8080/pa165/users/auth

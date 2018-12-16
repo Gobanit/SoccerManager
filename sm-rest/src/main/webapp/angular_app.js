@@ -8,6 +8,7 @@ app.config(['$routeProvider', function($routeProvider) {
         .when('/admin/teams', {templateUrl: 'partials/admin_teams.html', controller: 'AdminTeamsCtrl'})
         .when('/team/:teamId', {templateUrl: 'partials/team_detail.html', controller: 'TeamDetailCtrl'})
         .when('/userteam', {templateUrl: 'partials/user_team_detail.html', controller: 'UserTeamDetailCtrl'})
+        .when('/teams/pick', {templateUrl: 'partials/pickTeam.html', controller: 'PickTeamCtrl'})
         .when('/matches', {templateUrl: 'partials/matchesList.html', controller: 'MatchesCtrl'})
         .when('/matches/create', {templateUrl: 'partials/matchCreate.html', controller: 'MatchCreateCtrl'})
         .when('/admin/newteam', {templateUrl: 'partials/admin_new_team.html', controller: 'AdminNewTeamCtrl'})
@@ -39,14 +40,11 @@ app.run(function($rootScope, $location, $cookies, $http) {
     // keep user logged in after page refresh
     console.log($rootScope.globals.currentUser);
     if ($rootScope.globals.currentUser) {
-
-        $http.defaults.headers.common['Authorization'] = 'Basic ' + $rootScope.globals.currentUser.authdata;
         $rootScope.showMenu = true;
     }
 
     $rootScope.$on('$locationChangeStart', function (event, next, current) {
         // redirect to login page if not logged in
-
         if ($location.path() !== '/login' && !$rootScope.globals.currentUser) {
             $location.path('/login');
         }
@@ -98,6 +96,52 @@ soccerManagerControllers.controller('AdminTeamsCtrl', function ($scope, $http, $
             });
         };
 
+    });
+});
+
+soccerManagerControllers.controller('PickTeamCtrl', function ($scope, $http, $rootScope, $route) {
+    
+    console.log('checking if user has team');
+    $http({
+            method: 'GET',
+            url: 'http://localhost:8080/pa165/users/' + $rootScope.globals.currentUser.username + '/team'
+        }).then(function success(response) {
+            console.log('User already have a team: ' + response.status);
+            $rootScope.errorAlert = 'User already have a team';
+            window.location = 'http://localhost:8080/pa165/#!/userteam';
+        }, function error(response) {
+            console.log('User doesnt have a team: ' + response.status);
+        });
+        
+    console.log('calling  /teams/pick');
+    
+    $http.get('/pa165/teams/').then(function (response) {
+        var teams = response.data.content;
+        var userName = $rootScope.globals.currentUser.username;
+        $scope.teams = teams;
+        console.log('AJAX loaded all teams');
+        $scope.pickTeam = function (team) {
+            $http({
+                method: 'PUT',
+                url: '/pa165/users/' + userName + '/team/' + team.id
+            }).then(function success() {
+                console.log('team picked');
+                $rootScope.successAlert = 'A team was picked: "' + team.clubName;
+                window.location = 'http://localhost:8080/pa165/#!/userteam';
+            }, function error(response) {
+                //display error
+                console.log("error when picking team");
+                console.log(response);
+                switch (response.data.code) {
+                    case 'InvalidRequestException':
+                        $rootScope.errorAlert = 'Sent data were found to be invalid by server ! ';
+                        break;
+                    default:
+                        $rootScope.errorAlert = 'Cannot pick a team ! Reason given by the server: '+response.data.message;
+                        break;
+                }
+            });
+        };
     });
 });
 
@@ -165,7 +209,7 @@ soccerManagerControllers.controller('UserTeamDetailCtrl',
             switch (error.data.code) {
                 case 'ResourceNotFoundException':
                     $rootScope.errorAlert = 'You have no team, please pick one!';
-                    $location.path("/home");
+                    $location.path("/teams/pick");
                     break;
                 default:
                     $rootScope.errorAlert = 'Cannot get team of user ! Reason given by the server: '+error.data.message;
@@ -489,7 +533,6 @@ soccerManagerControllers.controller('PlayersUpdateCtrl',
 /* 
  * Matches functions
  */
-
 function loadMatches($scope, $http) {
 	$http.get('/pa165/matches/').then(function (response) {
 		console.log('AJAX response.data: ' + response.data);
@@ -518,6 +561,7 @@ function findHrefFromLinks(links, relName) {
 function alreadyPlayed(match) {
 	if(match.homeTeamGoals != null) return true;
 	if(match.awayTeamGoals != null) return true;
+        
 	return false;
 }
 
