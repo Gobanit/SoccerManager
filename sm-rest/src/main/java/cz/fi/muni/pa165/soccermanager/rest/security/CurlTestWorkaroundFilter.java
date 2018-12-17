@@ -39,9 +39,9 @@ public class CurlTestWorkaroundFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest req, ServletResponse resp, FilterChain next)
 			throws IOException, ServletException {
-		LOG.info("doFilter: ");
 
         if(isCurlTestRequest(req)) {
+        	LOG.debug("curl test request");
         	ServletContext sc = req.getServletContext();
         	UserFacade userFacade = WebApplicationContextUtils.
         			getWebApplicationContext(sc).getBean(UserFacade.class);
