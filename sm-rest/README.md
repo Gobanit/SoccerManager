@@ -63,3 +63,26 @@ curl -i -H "CurlTest: true" -X GET http://localhost:8080/pa165/rest/players/free
 
 ## Get a player by ID
 curl -i -H "CurlTest: true" -X GET http://localhost:8080/pa165/rest/players/1
+
+# Teams
+
+## Get team of logged in user
+curl -i -H "CurlTest: true" -X GET http://localhost:8080/pa165/rest/teams/users
+
+## Get all teams
+curl -i -H "CurlTest: true" -X GET http://localhost:8080/pa165/rest/teams/
+
+## Add player to team 
+curl -i -H "CurlTest: true" -X PUT http://localhost:8080/pa165/rest/teams/4/players/4
+
+## Delete team 
+curl -i -H "CurlTest: true" -X DELETE http://localhost:8080/pa165/rest/teams/1
+
+## Remove player from team 
+curl -i -H "CurlTest: true" -X DELETE http://localhost:8080/pa165/rest/teams//4/players/2
+
+## Get team by ID 
+curl -i -H "CurlTest: true" -X GET http://localhost:8080/pa165/rest/teams/4
+
+## Get players of team 
+curl -i -H "CurlTest: true" -X GET http://localhost:8080/pa165/rest/teams/4/players
