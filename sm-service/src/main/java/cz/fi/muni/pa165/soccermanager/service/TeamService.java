@@ -44,6 +44,13 @@ public interface TeamService {
     public List<Team> findAll();
     
     /**
+     * Finds all free teams.
+     *
+     * @return  a list of all free teams
+     */
+    public List<Team> findAllFree();
+    
+    /**
      * Finds all Teams in specified Country.
      *
      * @param country a country where teams to be found.

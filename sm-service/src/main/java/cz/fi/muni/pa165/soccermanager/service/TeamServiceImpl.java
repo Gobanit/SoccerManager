@@ -3,6 +3,7 @@ package cz.fi.muni.pa165.soccermanager.service;
 import cz.fi.muni.pa165.soccermanager.api.exceptions.ErrorStatus;
 import cz.fi.muni.pa165.soccermanager.api.exceptions.SoccerManagerServiceException;
 import cz.fi.muni.pa165.soccermanager.dao.TeamDAO;
+import cz.fi.muni.pa165.soccermanager.dao.UserDAO;
 import cz.fi.muni.pa165.soccermanager.data.SoccerPlayer;
 import cz.fi.muni.pa165.soccermanager.data.Team;
 import java.math.BigDecimal;
@@ -24,10 +25,13 @@ public class TeamServiceImpl implements TeamService {
     static final int MAXIMUM_TEAM_SIZE = 30;
     private final Logger logger = LoggerFactory.getLogger(TeamServiceImpl.class);
     private final TeamDAO teamDAO;
+    private final UserDAO userDAO;
+
 
     @Inject
-    public TeamServiceImpl(TeamDAO teamDAO) {
+    public TeamServiceImpl(TeamDAO teamDAO, UserDAO userDAO) {
         this.teamDAO = teamDAO;
+        this.userDAO = userDAO;
     }
     
     @Override
@@ -116,5 +120,18 @@ public class TeamServiceImpl implements TeamService {
     public void changeBudgetBy(Team team, BigDecimal budgetChange) {
         team.setBudget(team.getBudget().add(budgetChange));
         teamDAO.update(team);
+    }
+
+    @Override
+    public List<Team> findAllFree() {
+        List<Team> freeTeams = new ArrayList<>();
+        
+        for (Team team : this.findAll()) {
+            if (!userDAO.isTeamAlreadyAssignedToUser(team.getId())) {
+                freeTeams.add(team);
+            }
+        }
+        
+        return freeTeams;
     }
 }

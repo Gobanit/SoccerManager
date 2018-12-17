@@ -90,6 +90,22 @@ public class TeamRestController {
         teamsResources.add(linkTo(TeamRestController.class).withSelfRel().withType("GET"));
         return new ResponseEntity<>(teamsResources  , HttpStatus.OK);
     }
+    
+    @RolesAllowed("ROLE_USER")
+    @RequestMapping(value = "/free", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public HttpEntity<Resources<Resource<TeamDTO>>> freeTeams() {
+
+        logger.debug("rest getFreeTeams()");
+        List<TeamDTO> allTeams = teamFacade.findAllFree();
+        List<Resource<TeamDTO>> teamResourceList = new ArrayList<>();
+
+        for (TeamDTO teamDTO : allTeams) {
+            teamResourceList.add(teamResourceAssembler.toResource(teamDTO));
+        }
+        Resources<Resource<TeamDTO>> teamsResources = new Resources<>(teamResourceList);
+        teamsResources.add(linkTo(TeamRestController.class).withSelfRel().withType("GET"));
+        return new ResponseEntity<>(teamsResources  , HttpStatus.OK);
+    }
 
     @RolesAllowed("ROLE_USER")
     @RequestMapping(value = "/{id}/players" ,method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

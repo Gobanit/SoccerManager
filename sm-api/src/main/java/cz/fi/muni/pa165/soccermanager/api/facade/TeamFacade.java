@@ -33,6 +33,13 @@ public interface TeamFacade {
      * @return a list of all teams
      */
     List<TeamDTO> findAll();
+    
+        /**
+     * Finds all free teams.
+     *
+     * @return a list of all free teams
+     */
+    List<TeamDTO> findAllFree();
 
     /**
      * Finds a team by its ID.

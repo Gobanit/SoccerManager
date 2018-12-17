@@ -51,7 +51,13 @@ public class TeamFacadeImpl implements TeamFacade {
         List<Team> teams = teamService.findAll();
         return beanMapping.mapTo(teams, TeamDTO.class);
     }
-
+    
+    @Override
+    public List<TeamDTO> findAllFree() {
+        List<Team> teams = teamService.findAllFree();
+        return beanMapping.mapTo(teams, TeamDTO.class);
+    }
+    
     @Override
     public TeamDTO findById(Long id) {
         return beanMapping.mapTo(teamService.findById(id), TeamDTO.class);
