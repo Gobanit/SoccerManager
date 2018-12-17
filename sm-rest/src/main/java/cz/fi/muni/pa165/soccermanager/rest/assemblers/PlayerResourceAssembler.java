@@ -1,15 +1,15 @@
 package cz.fi.muni.pa165.soccermanager.rest.assemblers;
 
-import cz.fi.muni.pa165.soccermanager.api.dto.PlayerDTO;
-import cz.fi.muni.pa165.soccermanager.api.dto.PlayerFreeDTO;
-import cz.fi.muni.pa165.soccermanager.rest.controllers.PlayerRestController;
+import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.Resource;
 import org.springframework.hateoas.ResourceAssembler;
 import org.springframework.stereotype.Component;
 
-import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
+import cz.fi.muni.pa165.soccermanager.api.dto.PlayerDTO;
+import cz.fi.muni.pa165.soccermanager.rest.controllers.PlayerRestController;
 
 @Component
 public class PlayerResourceAssembler implements ResourceAssembler<PlayerDTO, Resource<PlayerDTO>> {
