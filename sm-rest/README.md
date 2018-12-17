@@ -4,7 +4,7 @@
 curl -i -H "CurlTest: true" -X GET http://localhost:8080/pa165/rest/matches
 
 ## Create match
-curl -i -H "CurlTest: true" -H "Content-Type: application/json" --data '{"homeTeam": 5,"awayTeam": 5,"date":"2018-12-05T17:09:19.014"}' -X POST http://localhost:8080/pa165/rest/matches
+curl -i -H "CurlTest: true" -H "Content-Type: application/json" --data '{"homeTeam": 5,"awayTeam": 6,"date":"2018-12-05T17:09:19.014"}' -X POST http://localhost:8080/pa165/rest/matches
 
 ## Get one match
 curl -i -H "CurlTest: true" -X GET http://localhost:8080/pa165/rest/matches/8
