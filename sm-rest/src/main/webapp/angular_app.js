@@ -113,13 +113,13 @@ soccerManagerControllers.controller('PickTeamCtrl', function ($scope, $http, $ro
             console.log('User doesnt have a team: ' + response.status);
         });
         
-    console.log('calling  /teams/pick');
+    console.log('calling  /teams/free');
     
-    $http.get('/pa165/teams/').then(function (response) {
+    $http.get('/pa165/teams/free').then(function (response) {
         var teams = response.data.content;
         var userName = $rootScope.globals.currentUser.username;
         $scope.teams = teams;
-        console.log('AJAX loaded all teams');
+        console.log('AJAX loaded all free teams');
         $scope.pickTeam = function (team) {
             $http({
                 method: 'PUT',

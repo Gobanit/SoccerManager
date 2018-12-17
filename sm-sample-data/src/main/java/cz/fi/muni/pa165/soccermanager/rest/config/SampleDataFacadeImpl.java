@@ -52,7 +52,9 @@ public class SampleDataFacadeImpl implements SampleDataFacade {
 		User admin = createUser("admin", "pass", true, null);
 		User basic = createUser("basic", "basic", false, null);
 		User newUser = createUser("new", "new", false, null);
-		
+		User newUser2 = createUser("new2", "new2", false, null);
+                User newUser3 = createUser("new3", "new3", false, null);
+                
 		// Players
 		SoccerPlayer henry = createPlayer("Thierry Henry", "France", LocalDate.of(1977,  8,  17),Position.OFFENSE, Footed.RIGHT, 9);
 		SoccerPlayer hleb = createPlayer("Alexander Hleb", "Belarus", LocalDate.of(1981, 5, 1), Position.MIDFIELD, Footed.RIGHT, 8);
