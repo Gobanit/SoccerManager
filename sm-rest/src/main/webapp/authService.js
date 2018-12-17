@@ -33,7 +33,7 @@ var AuthenticationService = function($http, $cookies, $rootScope, $timeout) {
         
         $http({
             method: 'POST',
-            url: 'http://localhost:8080/pa165/users/auth',
+            url: '/pa165/rest/users/auth',
             data: {
             	'username': username,
             	'rawPassword': password

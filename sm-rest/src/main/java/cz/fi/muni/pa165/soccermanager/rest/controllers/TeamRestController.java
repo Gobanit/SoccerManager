@@ -41,7 +41,7 @@ import cz.fi.muni.pa165.soccermanager.rest.exceptions.InvalidRequestException;
 
 @RestController
 @ExposesResourceFor(TeamDTO.class)
-@RequestMapping("/teams")
+@RequestMapping("/rest/teams")
 public class TeamRestController {
 
     final static Logger logger = LoggerFactory.getLogger(TeamRestController.class);
@@ -121,7 +121,7 @@ public class TeamRestController {
         Link selfLink = linkTo(TeamRestController.class).slash(id).slash("/players").withSelfRel();
         return new ResponseEntity<>(new Resources<>(playerResourceList, selfLink)  , HttpStatus.OK);
     }
-    @RolesAllowed("ROLE_ADMIN")
+    @RolesAllowed("ROLE_USER")
     @RequestMapping(value = "/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public  HttpEntity<Resource<TeamDTO>> getTeamById(@PathVariable("id") long id) {
 

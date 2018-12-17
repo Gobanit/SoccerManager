@@ -38,7 +38,7 @@ import javax.annotation.security.RolesAllowed;
  */
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/rest/users")
 public class UserRestController {
     
     final static Logger logger = LoggerFactory.getLogger(UserRestController.class);

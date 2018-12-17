@@ -65,15 +65,15 @@ app.run(function($rootScope, $location, $cookies, $http) {
  * Team Controllers Section
  */
 soccerManagerControllers.controller('AdminTeamsCtrl', function ($scope, $http, $rootScope, $route) {
-    console.log('calling  /pa165/teams/');
-    $http.get('/pa165/teams/').then(function (response) {
+    console.log('calling  /pa165/rest/teams/');
+    $http.get('/pa165/rest/teams/').then(function (response) {
         var teams = response.data.content;
         $scope.teams = teams;
         console.log('AJAX loaded all teams');
         $scope.deleteTeam = function (team) {
             $http({
                 method: 'DELETE',
-                url: '/pa165/teams/' + team.id
+                url: '/pa165/rest/teams/' + team.id
             }).then(function success() {
                 console.log('team removed');
                 //display confirmation alert
@@ -104,18 +104,18 @@ soccerManagerControllers.controller('PickTeamCtrl', function ($scope, $http, $ro
     console.log('checking if user has team');
     $http({
             method: 'GET',
-            url: 'http://localhost:8080/pa165/users/' + $rootScope.globals.currentUser.username + '/team'
+            url: '/pa165/rest/users/' + $rootScope.globals.currentUser.username + '/team'
         }).then(function success(response) {
             console.log('User already have a team: ' + response.status);
             $rootScope.errorAlert = 'User already have a team';
-            window.location = 'http://localhost:8080/pa165/#!/userteam';
+            window.location = '/pa165/#!/userteam';
         }, function error(response) {
             console.log('User doesnt have a team: ' + response.status);
         });
         
     console.log('calling  /teams/free');
     
-    $http.get('/pa165/teams/free').then(function (response) {
+    $http.get('/pa165/rest/teams/free').then(function (response) {
         var teams = response.data.content;
         var userName = $rootScope.globals.currentUser.username;
         $scope.teams = teams;
@@ -123,11 +123,11 @@ soccerManagerControllers.controller('PickTeamCtrl', function ($scope, $http, $ro
         $scope.pickTeam = function (team) {
             $http({
                 method: 'PUT',
-                url: '/pa165/users/' + userName + '/team/' + team.id
+                url: '/pa165/rest/users/' + userName + '/team/' + team.id
             }).then(function success() {
                 console.log('team picked');
                 $rootScope.successAlert = 'A team was picked: "' + team.clubName;
-                window.location = 'http://localhost:8080/pa165/#!/userteam';
+                window.location = '/pa165/#!/userteam';
             }, function error(response) {
                 //display error
                 console.log("error when picking team");
@@ -158,7 +158,7 @@ soccerManagerControllers.controller('TeamDetailCtrl',
 	    function ($scope, $rootScope, $http, $route, $routeParams) {
     		var teamId = $routeParams.teamId;
 
-	        $http.get('/pa165/teams/'+teamId).then(function (response) {
+	        $http.get('/pa165/rest/teams/'+teamId).then(function (response) {
 	            var team = response.data;
 	            $scope.team = team;
 	            console.log('AJAX loaded detail of team ' + $scope.team.clubName);
@@ -170,7 +170,7 @@ soccerManagerControllers.controller('TeamDetailCtrl',
 soccerManagerControllers.controller('UserTeamDetailCtrl',
     function ($scope, $rootScope, $http, $location, $route) {
         var userName = $rootScope.globals.currentUser.username;
-        $http.get('/pa165/teams/users').then(function (response) {
+        $http.get('/pa165/rest/teams/users').then(function (response) {
             var team = response.data;
             console.log(response);
             $scope.team = team;
@@ -180,7 +180,7 @@ soccerManagerControllers.controller('UserTeamDetailCtrl',
             $scope.removePlayerFromTeam = function(team, player) {
                 $http({
                     method: 'DELETE',
-                    url: '/pa165/teams/' + team.id + '/players/' + player.id
+                    url: '/pa165/rest/teams/' + team.id + '/players/' + player.id
                 }).then(function success() {
                     console.log('player removed from team');
                     //display confirmation alert
@@ -224,15 +224,15 @@ soccerManagerControllers.controller('UserTeamDetailCtrl',
 // }
 
 soccerManagerControllers.controller('AddPlayerToTeam', function ($scope, $http, $rootScope, $location, $routeParams) {
-    console.log('calling  /pa165/players/free');
-    $http.get('/pa165/players/free').then(function (response) {
+    console.log('calling  /pa165/rest/players/free');
+    $http.get('/pa165/rest/players/free').then(function (response) {
         var players = response.data.content;
         $scope.players = players;
         console.log('AJAX loaded all free players');
         $scope.addPlayerToTeam = function (player) {
             $http({
                 method: 'PUT',
-                url: '/pa165/teams/' + $routeParams.teamId + '/players/'  + player.id
+                url: '/pa165/rest/teams/' + $routeParams.teamId + '/players/'  + player.id
             }).then(function success() {
                 console.log('player added to team');
                 //display confirmation alert
@@ -274,7 +274,7 @@ soccerManagerControllers.controller('AdminNewTeamCtrl',
         $scope.create = function (team) {
             $http({
                 method: 'POST',
-                url: '/pa165/teams',
+                url: '/pa165/rest/teams',
                 data: team
             }).then(function success() {
                 console.log('created team');
@@ -380,7 +380,7 @@ soccerManagerControllers.controller('MatchCreateCtrl',
 	        $scope.create = function (match) {      	
 	            $http({
 	                method: 'POST',
-	                url: '/pa165/matches',
+	                url: '/pa165/rest/matches',
 	                data: match
 	            }).then(function success(response) {
 	                console.log('created match');
@@ -410,7 +410,7 @@ soccerManagerControllers.controller('PlayersCtrl',
         $scope.deletePlayer = function (player) {
             console.log('Deleting a player ' + player.playerName + ' with an ID ' + player.id);
 
-            $http.delete('/pa165/players/' + player.id).then(
+            $http.delete('/pa165/rest/players/' + player.id).then(
                 function success(response) {
                     console.log('Deleted a player ' + player.id + ' on the server');
 
@@ -469,7 +469,7 @@ soccerManagerControllers.controller('PlayersCreateCtrl',
         $scope.create = function (player) {
             console.log('Creating a player ' + player.playerName);
 
-            $http.post('/pa165/players', player).then(
+            $http.post('/pa165/rest/players', player).then(
                 function success(response) {
                     console.log('Created a player ' + player.id + ' on the server');
 
@@ -490,7 +490,7 @@ soccerManagerControllers.controller('PlayersDetailCtrl',
     function ($scope, $routeParams, $rootScope, $http) {
         var playerId = $routeParams.playerId;
 
-        $http.get('/pa165/players/' + playerId).then(function (response) {
+        $http.get('/pa165/rest/players/' + playerId).then(function (response) {
             $scope.player = response.data;
 
             console.log('AJAX loaded a detail of a player ' + $scope.player.playerName)
@@ -504,7 +504,7 @@ soccerManagerControllers.controller('PlayersUpdateCtrl',
         $scope.footed_options = ['RIGHT', 'LEFT', 'BOTH'];
         var playerId = $routeParams.playerId;
 
-        $http.get('/pa165/players/' + playerId).then(function (response) {
+        $http.get('/pa165/rest/players/' + playerId).then(function (response) {
             $scope.player = response.data;
 
             console.log('AJAX loaded a player ' + $scope.player.playerName)
@@ -513,7 +513,7 @@ soccerManagerControllers.controller('PlayersUpdateCtrl',
         $scope.update = function (player) {
             console.log('Updating a player ' + player.playerName);
 
-            $http.put('/pa165/players', player).then(
+            $http.put('/pa165/rest/players', player).then(
                 function success(response) {
                     console.log('Updated a player ' + player.id + ' on the server');
 
@@ -534,7 +534,7 @@ soccerManagerControllers.controller('PlayersUpdateCtrl',
  * Matches functions
  */
 function loadMatches($scope, $http) {
-	$http.get('/pa165/matches/').then(function (response) {
+	$http.get('/pa165/rest/matches/').then(function (response) {
 		console.log('AJAX response.data: ' + response.data);
         $scope.matches = response.data.content;
         console.log('AJAX loaded list of ' + $scope.matches.length + 'matches.');
@@ -543,7 +543,7 @@ function loadMatches($scope, $http) {
 }
 
 function loadTeams($scope, $http) {
-	$http.get('/pa165/teams/').then(function (response) {
+	$http.get('/pa165/rest/teams/').then(function (response) {
 		console.log('AJAX response.data: ' + response.data);
         $scope.teams = response.data.content;
         console.log('AJAX loaded list of ' + $scope.teams.length + 'teams.');
@@ -597,7 +597,7 @@ function dateTimeStrToDate(dateTimeString) {
  * Players' functions
  */
 function loadPlayers($scope, $http) {
-    $http.get('/pa165/players/').then(function (response) {
+    $http.get('/pa165/rest/players/').then(function (response) {
         console.log('AJAX response.data:');
         console.log(response.data);
 

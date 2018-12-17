@@ -36,7 +36,7 @@ import cz.fi.muni.pa165.soccermanager.rest.assemblers.MatchesResourceAssembler;
  */
 
 @RestController
-@RequestMapping("/matches")
+@RequestMapping("/rest/matches")
 public class MatchRestController {
 	private static final Logger LOG = LoggerFactory.getLogger(MatchRestController.class);
 

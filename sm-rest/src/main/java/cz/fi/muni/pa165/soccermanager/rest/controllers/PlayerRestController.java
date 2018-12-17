@@ -34,7 +34,7 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
  */
 @RestController
 @ExposesResourceFor(PlayerDTO.class)
-@RequestMapping("/players")
+@RequestMapping("/rest/players")
 public class PlayerRestController {
 
     private final static Logger logger = LoggerFactory.getLogger(PlayerRestController.class);
