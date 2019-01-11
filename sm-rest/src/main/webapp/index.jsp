@@ -2,7 +2,7 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>AngularJS Basic HTTP Authentication</title>
+    <title>Soccer Manager</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootswatch/3.3.7/yeti/bootstrap.min.css" />
     <script src="//code.jquery.com/jquery-2.0.3.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -18,13 +18,13 @@
 </head>
 
 <body ng-app="SoccerManagerApp">
-<nav class="navbar navbar-inverse navbar-static-top" ng-show="showMenu">
+<nav class="navbar navbar-inverse navbar-static-top" ng-show="showMenu" style="align-content: center">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
             </button>
-            <a class="navbar-brand" href="${pageContext.request.contextPath}">PA165 AngularJS Soccer Manager</a>
+            <a class="navbar-brand" href="${pageContext.request.contextPath}">PA165 Soccer Manager</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
@@ -39,7 +39,7 @@
                         <li><a href="#!/matches/create">Create Match</a></li>
                     </ul>
                 </li>
-                <li><a href="${pageContext.request.contextPath}">{{ globals.currentUser.username }} - Logout</a></span> </li>
+                <li><a href="${pageContext.request.contextPath}">{{ globals.currentUser.username }} (logout)</a></span> </li>
            </ul>
         </div><!--/.nav-collapse -->
     </div>

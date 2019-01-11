@@ -1,18 +1,14 @@
-<h1>Administration of teams</h1>
-<!-- button for adding a new category -->
-<a href="#!/admin/newteam" class="btn btn-primary">
-    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-    New team
-</a>
+<h2>Administration of teams</h2>
 
 <table class="table">
     <thead>
     <tr>
-        <th>id</th>
-        <th>club name</th>
-        <th>championship name</th>
-        <th>country</th>
-        <th>budget</th>
+        <th>#</th>
+        <th>Club name</th>
+        <th>Championship name</th>
+        <th>Country</th>
+        <th>Budget</th>
+        <th></th>
     </tr>
     </thead>
     <tbody>
@@ -25,7 +21,12 @@
         <td>
             <button ng-click="deleteTeam(team)" type="button" class="btn btn-primary">Delete</button>
         </td>
-
     </tr>
     </tbody>
 </table>
+
+<!-- button for adding a new category -->
+<a href="#!/admin/newteam" class="btn btn-primary">
+    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+    New team
+</a>

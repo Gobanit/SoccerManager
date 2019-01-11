@@ -3,13 +3,13 @@
 <table class="table">
     <thead>
     <tr>
-        <th>id</th>
-        <th>player name</th>
-        <th>nationality</th>
-        <th>rating</th>
-        <th>footed</th>
-        <th>birth date</th>
-        <th>position</th>
+        <th>#</th>
+        <th>Name</th>
+        <th>Nationality</th>
+        <th>Birthday</th>
+        <th>Rating</th>
+        <th>Position</th>
+        <th>Footed</th>
     </tr>
     </thead>
     <tbody>
@@ -17,10 +17,10 @@
         <td>{{player.id}}</td>
         <td>{{player.playerName}}</td>
         <td>{{player.nationality}}</td>
-        <td>{{player.rating}}</td>
-        <td>{{player.footed}}</td>
         <td>{{player.birthDate}}</td>
+        <td>{{player.rating}}</td>
         <td>{{player.position}}</td>
+        <td>{{player.footed}}</td>
         <td>
             <button ng-click="addPlayerToTeam(player)" type="button" class="btn btn-primary">Add to team</button>
         </td>
