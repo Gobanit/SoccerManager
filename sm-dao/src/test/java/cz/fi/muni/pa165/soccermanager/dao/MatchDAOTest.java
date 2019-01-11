@@ -15,8 +15,10 @@ import org.testng.annotations.Test;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.time.ZoneOffset;
 import java.util.List;
 
 /**
@@ -39,8 +41,8 @@ public class MatchDAOTest extends AbstractTestNGSpringContextTests {
     private Team awayTeam;
     private Team homeTeam;
 
-    private static final LocalDateTime DATE = LocalDateTime.of(2018, Month.OCTOBER, 24, 15, 0);
-    private static final LocalDateTime NEW_DATE = LocalDateTime.of(2018, Month.MARCH, 13, 16, 30);
+    private static final Instant DATE = LocalDateTime.of(2018, Month.OCTOBER, 24, 15, 0).toInstant(ZoneOffset.UTC);
+    private static final Instant NEW_DATE = LocalDateTime.of(2018, Month.MARCH, 13, 16, 30).toInstant(ZoneOffset.UTC);
 
     @BeforeMethod
     public void prepareMatches() {

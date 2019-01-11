@@ -2,7 +2,7 @@ package cz.fi.muni.pa165.soccermanager.api.dto;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
+import java.time.Instant;
 /**
  * @author Dominik Pilar
  *
@@ -10,17 +10,17 @@ import java.time.LocalDateTime;
 public class MatchCreateDTO {
     @NotNull
     @Future
-    private LocalDateTime date;
+    private Instant date;
     @NotNull
     private Long homeTeam;
     @NotNull
     private Long awayTeam;
 
-    public LocalDateTime getDate() {
+    public Instant getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(Instant date) {
         this.date = date;
     }
 

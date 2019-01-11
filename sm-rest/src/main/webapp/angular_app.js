@@ -58,6 +58,10 @@ app.run(function($rootScope, $location, $cookies, $http) {
     	if(!$rootScope.hasBasicRights()) return false;
     	return $rootScope.globals.currentUser.admin;
     };
+    
+    $rootScope.formatDateTime = function(dateTime) {
+    	return formatDateTime(dateTime);
+    };
 });
 
 
@@ -591,6 +595,11 @@ function compareMatchesByDate(m1, m2) {
 
 function dateTimeStrToDate(dateTimeString) {
 	return Date.parse(dateTimeString);
+}
+
+function formatDateTime(dateTime) {
+	var date = new Date(dateTime);
+	return date.toLocaleString();
 }
 
 /*

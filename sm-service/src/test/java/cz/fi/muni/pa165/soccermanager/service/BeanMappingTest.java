@@ -4,7 +4,8 @@
 package cz.fi.muni.pa165.soccermanager.service;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 
 import org.modelmapper.ModelMapper;
@@ -104,7 +105,7 @@ public class BeanMappingTest {
 	@Test
 	public void testMatchMapping() {
 		Match match = new Match();
-		match.setDate(LocalDateTime.now());
+		match.setDate(Instant.now());
 		match.setAwayTeam(senica);
 		match.setHomeTeam(slovan);
 		match.setHomeTeamGoals(1);
@@ -119,7 +120,7 @@ public class BeanMappingTest {
 	@Test
 	public void testMatchAwaitingMapping() {
 		Match match = new Match();
-		match.setDate(LocalDateTime.now());
+		match.setDate(Instant.now());
 		match.setAwayTeam(senica);
 		match.setHomeTeam(slovan);
 		match.setHomeTeamGoals(1);
@@ -135,7 +136,7 @@ public class BeanMappingTest {
 		MatchCreateDTO matchCreateDTO = new MatchCreateDTO();
 		matchCreateDTO.setAwayTeam(1L);
 		matchCreateDTO.setHomeTeam(2L);
-		matchCreateDTO.setDate(LocalDateTime.now());
+		matchCreateDTO.setDate(Instant.now());
 
 		Match match = beanMapping.mapTo(matchCreateDTO, Match.class);
 

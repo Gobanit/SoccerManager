@@ -1,8 +1,13 @@
 package cz.fi.muni.pa165.soccermanager.rest.config;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoField;
+import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.List;
 
@@ -66,9 +71,14 @@ public class SampleDataFacadeImpl implements SampleDataFacade {
 		Team realmadrid = createTeam("Real Madrid", "Spain", "Primera División", "12300000", Arrays.asList());
 
 		// Matches
-		Match match0 = createMatch(liverpool, arsenal, LocalDateTime.of(2018, 6, 2, 17, 30, 00), null, null);
-		Match match1 = createMatch(arsenal, barcelona, LocalDateTime.now().plusDays(4).withSecond(0).withNano(0), null, null);
-		Match match2 = createMatch(barcelona, arsenal, LocalDateTime.now().plusDays(8).withSecond(0).withNano(0), null, null);
+		Match match0 = createMatch(liverpool, arsenal, 
+				LocalDateTime.of(2018, 6, 2, 17, 30, 00).toInstant(ZoneOffset.UTC), null, null);
+		Match match1 = createMatch(arsenal, barcelona, 
+				LocalDateTime.now().plusDays(4).withSecond(0).withNano(0).
+				atZone(ZoneId.systemDefault()).toInstant(), null, null);
+		Match match2 = createMatch(barcelona, arsenal, 
+				LocalDateTime.now().plusDays(8).withSecond(0).withNano(0).
+				atZone(ZoneId.systemDefault()).toInstant(), null, null);
 		
 		// Assign teams
 		userService.pickTeamForUser(admin.getUserName(), arsenal.getId());
@@ -84,7 +94,7 @@ public class SampleDataFacadeImpl implements SampleDataFacade {
 		return u;
 	}
 
-	private Match createMatch(Team home, Team away, LocalDateTime date, Integer homeGoals, Integer awayGoals) {
+	private Match createMatch(Team home, Team away, Instant date, Integer homeGoals, Integer awayGoals) {
 		Match m = new Match();
 		m.setHomeTeam(home);
 		m.setAwayTeam(away);

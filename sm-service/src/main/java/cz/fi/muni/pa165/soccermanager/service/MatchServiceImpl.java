@@ -1,17 +1,19 @@
 package cz.fi.muni.pa165.soccermanager.service;
 
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.inject.Inject;
+
+import org.springframework.stereotype.Service;
+
 import cz.fi.muni.pa165.soccermanager.api.exceptions.ErrorStatus;
 import cz.fi.muni.pa165.soccermanager.api.exceptions.SoccerManagerServiceException;
 import cz.fi.muni.pa165.soccermanager.dao.MatchDAO;
 import cz.fi.muni.pa165.soccermanager.data.Match;
 import cz.fi.muni.pa165.soccermanager.data.SoccerPlayer;
 import cz.fi.muni.pa165.soccermanager.data.Team;
-import org.springframework.stereotype.Service;
-
-import javax.inject.Inject;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Implementation of {@link MatchService}
@@ -76,7 +78,7 @@ public class MatchServiceImpl implements MatchService {
         List<Match> awaitingMatches = new ArrayList<>();
 
         for (Match match : this.findAll()) {
-            if (LocalDateTime.now().isAfter(match.getDate())
+            if (Instant.now().isAfter(match.getDate())
                     && match.getHomeTeamGoals() == null && match.getAwayTeamGoals() == null) {
                 awaitingMatches.add(match);
             }
@@ -93,7 +95,7 @@ public class MatchServiceImpl implements MatchService {
             );
         }
 
-        if (LocalDateTime.now().isBefore(match.getDate())) {
+        if (Instant.now().isBefore(match.getDate())) {
             throw new SoccerManagerServiceException(
                     "A match with an ID \"" + match.getId() + "\" has not taken place yet!",
                     ErrorStatus.MATCH_DATE_IN_THE_FUTURE

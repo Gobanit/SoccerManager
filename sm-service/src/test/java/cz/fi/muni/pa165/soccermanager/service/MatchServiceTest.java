@@ -4,7 +4,8 @@ import static org.mockito.BDDMockito.given;
 import static org.mockito.BDDMockito.then;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -77,7 +78,7 @@ public class MatchServiceTest {
         match1.setId(1L);
         match1.setAwayTeam(slovan);
         match1.setHomeTeam(senica);
-        match1.setDate(LocalDateTime.now().minusDays(5));
+        match1.setDate(Instant.now().minus(5, ChronoUnit.DAYS));
         match1.setAwayTeamGoals(1);
         match1.setHomeTeamGoals(3);
 
@@ -85,7 +86,7 @@ public class MatchServiceTest {
         match2.setId(2L);
         match2.setAwayTeam(senica);
         match2.setHomeTeam(slovan);
-        match2.setDate(LocalDateTime.now().plusDays(5));
+        match2.setDate(Instant.now().plus(5, ChronoUnit.DAYS));
     }
 
     @Test
@@ -145,9 +146,13 @@ public class MatchServiceTest {
 
     @Test
     public void findAwaitingMatches() {
-        match2.setDate(LocalDateTime.now().minusHours(1));
+        match2.setDate(Instant.now().minus(1, ChronoUnit.HOURS));
         given(matchDAO.findAll()).willReturn(Arrays.asList(match2, match1));
         List<Match> matches = matchService.findNotSimulatedMatches();
+
+        System.out.println("match1 date: "+match1.getDate());
+        System.out.println("match2 date: "+match2.getDate());
+        System.out.println("current date: "+Instant.now());
 
         Assert.assertEquals(1, matches.size());
         Assert.assertTrue(matches.contains(match2));
@@ -156,7 +161,7 @@ public class MatchServiceTest {
 
     @Test
     public void simulateMatch() {
-        match2.setDate(LocalDateTime.now());
+        match2.setDate(Instant.now());
         matchService.simulateMatch(match2);
 
         Assert.assertNotNull(match2.getHomeTeamGoals());

@@ -1,6 +1,6 @@
 package cz.fi.muni.pa165.soccermanager.api.dto;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 /**
  * @author Dominik Pilar
  *
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 public class MatchAwaitingDTO {
 
     private Long id;
-    private LocalDateTime date;
+    private Instant date;
     private TeamDTO homeTeam;
     private TeamDTO awayTeam;
 
@@ -20,11 +20,11 @@ public class MatchAwaitingDTO {
         this.id = id;
     }
 
-    public LocalDateTime getDate() {
+    public Instant getDate() {
         return date;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDate(Instant date) {
         this.date = date;
     }
 

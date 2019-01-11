@@ -4,7 +4,10 @@
 package cz.fi.muni.pa165.soccermanager.service.facade;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -85,7 +88,7 @@ public class MatchFacadeTest {
 		match.setId(id);
 		match.setHomeTeam(home);
 		match.setAwayTeam(away);
-		match.setDate(LocalDateTime.now().plusDays(dayOffset));
+		match.setDate(Instant.now().plus(dayOffset, ChronoUnit.DAYS));
 		
 		return match;
 	}
@@ -95,7 +98,7 @@ public class MatchFacadeTest {
 		match.setId(id);
 		match.setHomeTeam(home);
 		match.setAwayTeam(away);
-		match.setDate(LocalDateTime.now().minusDays(dayOffset));
+		match.setDate(Instant.now().minus(dayOffset, ChronoUnit.DAYS));
 		match.setHomeTeamGoals(homeGoals);
 		match.setAwayTeamGoals(awayGoals);
 		
@@ -107,7 +110,7 @@ public class MatchFacadeTest {
 	@Test
 	public void testCreate() {
 		MatchCreateDTO createDTO = new MatchCreateDTO();
-		createDTO.setDate(LocalDateTime.of(2011, 10, 13, 18, 30));
+		createDTO.setDate(LocalDateTime.of(2011, 10, 13, 18, 30).toInstant(ZoneOffset.UTC));
 		createDTO.setHomeTeam(arsenal.getId());
 		createDTO.setAwayTeam(barcelona.getId());
 
@@ -183,9 +186,9 @@ public class MatchFacadeTest {
 class MatchArgumentChecker implements ArgumentMatcher<Match> {
 	private Team home;
 	private Team away;
-	private LocalDateTime date;
+	private Instant date;
 	
-	public MatchArgumentChecker(Team home, Team away, LocalDateTime date) {
+	public MatchArgumentChecker(Team home, Team away, Instant date) {
 		this.home = home;
 		this.away = away;
 		this.date = date;
