@@ -473,6 +473,9 @@ soccerManagerControllers.controller('PlayersCreateCtrl',
         $scope.create = function (player) {
             console.log('Creating a player ' + player.playerName);
 
+			// timezone bug workaround (currently date is in UTC time, which is not what user really filled in)
+			player.birthDate = applyDateInputTimezoneWorkaround(player.birthDate);
+			
             $http.post('/pa165/rest/players', player).then(
                 function success(response) {
                     console.log('Created a player ' + player.id + ' on the server');
@@ -600,6 +603,12 @@ function dateTimeStrToDate(dateTimeString) {
 function formatDateTime(dateTime) {
 	var date = new Date(dateTime);
 	return date.toLocaleString();
+}
+
+function applyDateInputTimezoneWorkaround(orig) {
+	var mins = new Date().getTimezoneOffset(); // find system time offset
+	var fixed = new Date(orig.getTime() - mins * 60000); // add offset to orig date
+	return fixed;
 }
 
 /*
