@@ -23,7 +23,7 @@ app.config(['$routeProvider', function($routeProvider) {
         });
 }]);
 
-app.run(function($rootScope, $cookies, $location, $http) {
+app.run(function($rootScope, $location, $http) {
     // alert closing functions defined in root scope to be available in every template
     $rootScope.hideSuccessAlert = function () {
         $rootScope.successAlert = undefined;
@@ -315,7 +315,7 @@ soccerManagerControllers.controller('AdminNewTeamCtrl',
  */
 soccerManagerControllers.controller('MatchesCtrl',
     function ($scope, $routeParams, $rootScope, $http, $window) {
-    loadMatches($scope, $http);					
+                loadMatches($scope, $http);					
 		//define method isAlreadyPlayed
 		$scope.alreadyPlayed = function (match) {
 			return alreadyPlayed(match);
