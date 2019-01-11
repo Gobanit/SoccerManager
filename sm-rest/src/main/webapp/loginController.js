@@ -7,7 +7,7 @@ var app = angular.module("SoccerManagerApp");
 var LoginController = function($scope, $rootScope, $location, AuthenticationService) {
 
     // Reset the login status before we start
-    AuthenticationService.ClearSessionInfo();
+    // AuthenticationService.ClearSessionInfo();
     $rootScope.showMenu = false;
     $scope.login = function (username, password) {
         $scope.dataLoading = true;
