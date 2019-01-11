@@ -440,7 +440,9 @@ soccerManagerControllers.controller('PlayersCtrl',
 
 soccerManagerControllers.controller('PlayersCreateCtrl',
     function ($scope, $routeParams, $rootScope, $http, $location) {
-        $scope.now = new Date();
+        var date = new Date();
+        date.setFullYear( date.getFullYear() - 18 );
+        $scope.max_date = date;
         $scope.countries = ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Anguilla", "Antigua & Barbuda",
             "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh",
             "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia & Herzegovina",
@@ -498,7 +500,11 @@ soccerManagerControllers.controller('PlayersDetailCtrl',
         var playerId = $routeParams.playerId;
 
         $http.get('/pa165/rest/players/' + playerId).then(function (response) {
-            $scope.player = response.data;
+            var player = response.data;
+            $scope.player = player;
+
+            var date = new Date(player.birthDate);
+            $scope.date = date.getDay() + "." + date.getMonth() + "." + date.getFullYear();
 
             console.log('AJAX loaded a detail of a player ' + $scope.player.playerName)
         })
@@ -512,7 +518,11 @@ soccerManagerControllers.controller('PlayersUpdateCtrl',
         var playerId = $routeParams.playerId;
 
         $http.get('/pa165/rest/players/' + playerId).then(function (response) {
-            $scope.player = response.data;
+            var player = response.data;
+            $scope.player = player;
+
+            var date = new Date(player.birthDate);
+            $scope.date = date.getDay() + "." + date.getMonth() + "." + date.getFullYear();
 
             console.log('AJAX loaded a player ' + $scope.player.playerName)
         });
