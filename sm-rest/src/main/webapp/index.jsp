@@ -29,6 +29,7 @@
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li><a href="#!/players">List of players</a></li>
+                <li><a href="#!/teams/pick">Pick team</a></li>
                 <li><a href="#!/matches">List of matches</a></li>
                 <li><a href="#!/userteam">Manage my team</a></li>
                 <li class="dropdown" ng-hide="!hasAdminRights()">
