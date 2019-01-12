@@ -271,7 +271,7 @@ soccerManagerControllers.controller('UserTeamDetailCtrl',
                 }).then(function success() {
                     console.log('player removed from team');
                     //display confirmation alert
-                    $rootScope.successAlert = 'A player ' + player.name + 'was removed from "' + team.clubName;
+                    $rootScope.successAlert = 'A player ' + player.playerName + 'was removed from "' + team.clubName;
                     //change view to list of products
                     $route.reload();
                 }, function (error) {
@@ -323,7 +323,7 @@ soccerManagerControllers.controller('AddPlayerToTeam', function ($scope, $http, 
             }).then(function success() {
                 console.log('player added to team');
                 //display confirmation alert
-                $rootScope.successAlert = 'A player was added: "' + player.name;
+                $rootScope.successAlert = 'A player was added: "' + player.playerName;
                 //change view to list of products
                 $location.path("/userteam");
 
