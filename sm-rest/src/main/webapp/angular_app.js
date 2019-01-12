@@ -112,18 +112,6 @@ soccerManagerControllers.controller('AdminTeamsCtrl', function ($scope, $http, $
 });
 
 soccerManagerControllers.controller('PickTeamCtrl', function ($scope, $http, $rootScope, $route) {
-    
-    console.log('checking if user has team');
-    $http({
-            method: 'GET',
-            url: '/pa165/rest/users/' + $rootScope.globals.currentUser.username + '/team'
-        }).then(function success(response) {
-            console.log('User already have a team: ' + response.status);
-            $rootScope.errorAlert = 'User already have a team';
-            window.location = '/pa165/#!/userteam';
-        }, function error(response) {
-            console.log('User doesnt have a team: ' + response.status);
-        });
         
     console.log('calling  /teams/free');
     
