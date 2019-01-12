@@ -34,7 +34,7 @@
                    name="birthDate" class="form-control" ng-model="player.birthDate" required/>
             <span class="help-block" ng-show="form.birthDate.$error.required">player's birthday is required</span>
             <span class="help-block" ng-show="form.birthDate.$error.min">date is too far in the past</span>
-            <span class="help-block" ng-show="form.birthDate.$error.max">player must be at least 18 years old</span>
+            <span class="help-block" ng-show="form.birthDate.$error.max">player must be at least 18 years old and can't be in the future</span>
         </div>
     </div>
     <div class="form-group" ng-class="{'has-error': !(form.rating.$valid)}">

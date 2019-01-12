@@ -599,9 +599,10 @@ soccerManagerControllers.controller('PlayersCreateCtrl',
         $scope.create = function (player) {
             console.log('Creating a player ' + player.playerName);
 
-			// timezone bug workaround (currently date is in UTC time, which is not what user really filled in)
-			player.birthDate = applyDateInputTimezoneWorkaround(player.birthDate);
-			
+			// Change timezone of the date to UTC.
+			player.birthDate = new Date(Date.UTC(
+                player.birthDate.getFullYear(), player.birthDate.getMonth(), player.birthDate.getDate()));
+
             $http.post('/pa165/rest/players', player).then(
                 function success(response) {
                     console.log('Created a player ' + player.id + ' on the server');
@@ -627,8 +628,8 @@ soccerManagerControllers.controller('PlayersDetailCtrl',
             var player = response.data;
             $scope.player = player;
 
-            var date = new Date(player.birthDate);
-            $scope.date = date.getDay() + "." + date.getMonth() + "." + date.getFullYear();
+            var date = new Date(Date.parse(player.birthDate));
+            $scope.date = date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
 
             console.log('AJAX loaded a detail of a player ' + $scope.player.playerName)
         })
@@ -645,8 +646,8 @@ soccerManagerControllers.controller('PlayersUpdateCtrl',
             var player = response.data;
             $scope.player = player;
 
-            var date = new Date(player.birthDate);
-            $scope.date = date.getDay() + "." + date.getMonth() + "." + date.getFullYear();
+            var date = new Date(Date.parse(player.birthDate));
+            $scope.date = date.getDate() + "." + (date.getMonth() + 1) + "." + date.getFullYear();
 
             console.log('AJAX loaded a player ' + $scope.player.playerName)
         });
@@ -737,12 +738,6 @@ function dateTimeStrToDate(dateTimeString) {
 function formatDateTime(dateTime) {
 	var date = new Date(dateTime);
 	return date.toLocaleString();
-}
-
-function applyDateInputTimezoneWorkaround(orig) {
-	var mins = new Date().getTimezoneOffset(); // find system time offset
-	var fixed = new Date(orig.getTime() - mins * 60000); // add offset to orig date
-	return fixed;
 }
 
 /*
