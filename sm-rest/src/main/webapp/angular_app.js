@@ -85,15 +85,15 @@ soccerManagerControllers.controller('AdminTeamsCtrl', function ($scope, $http, $
         $scope.teams = teams;
         console.log('AJAX loaded all teams');
 		
-		// checking whether individual teams can be edited (if they arent already assigned)
-		var i;
-		for(i=0;i<teams.length;i++) {
-			var team = teams[i];
-			$http.get('/pa165/rest/teams/'+team.id+'/picked').then(function(response) {
-				var hasTeam = response.data.content;
-				team.updatable = !hasTeam;
-			});
-		}
+		// checking whether individual teams can be edited (if they arent already assigned) - not working correcly
+		//var i;
+		//for(i=0;i<teams.length;i++) {
+		//	var team = teams[i];
+		//	$http.get('/pa165/rest/teams/'+team.id+'/picked').then(function(response) {
+		//		var hasTeam = response.data.content;
+		//		team.updatable = !hasTeam;
+		//	});
+		//}
 		
         $scope.deleteTeam = function (team) {
             $http({
