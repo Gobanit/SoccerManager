@@ -11,7 +11,7 @@
 	</appender>
 
 	<logger name="cz.fi.muni.pa165.soccermanager">
-		<level value="DEBUG" />
+		<level value="INFO" />
 	</logger>
 
 	<root>
