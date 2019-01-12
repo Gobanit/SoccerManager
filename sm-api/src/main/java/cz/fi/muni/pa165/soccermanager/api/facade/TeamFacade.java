@@ -1,6 +1,7 @@
 package cz.fi.muni.pa165.soccermanager.api.facade;
 
 import cz.fi.muni.pa165.soccermanager.api.dto.PlayerDTO;
+import cz.fi.muni.pa165.soccermanager.api.dto.TeamChangeDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.TeamCreateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
 
@@ -80,5 +81,15 @@ public interface TeamFacade {
      * @param teamId   an ID of a team to be removed from
      */
     void removePlayerFromTeam(Long playerId, Long teamId);
+
+
+    /**
+     * Changes attributes of team.
+     *
+     * @param teamChangeDTO - team to update
+     */
+    void updateTeam(TeamChangeDTO teamChangeDTO);
+
+    boolean isTeamPicked(Long teamId);
 
 }

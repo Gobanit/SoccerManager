@@ -1,6 +1,8 @@
 package cz.fi.muni.pa165.soccermanager.service;
 
+import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
 import cz.fi.muni.pa165.soccermanager.api.exceptions.SoccerManagerServiceException;
+import cz.fi.muni.pa165.soccermanager.dao.MatchDAO;
 import cz.fi.muni.pa165.soccermanager.dao.TeamDAO;
 import cz.fi.muni.pa165.soccermanager.dao.UserDAO;
 import cz.fi.muni.pa165.soccermanager.data.SoccerPlayer;
@@ -35,6 +37,9 @@ public class TeamServiceTest {
     private UserDAO userDAO;
 
     @Mock
+    private MatchDAO matchDAO;
+
+    @Mock
     private Team fcb;
 
     @Mock
@@ -49,7 +54,7 @@ public class TeamServiceTest {
     @BeforeMethod
     public void setup() throws ServiceException {
         MockitoAnnotations.initMocks(this);
-        teamService = new TeamServiceImpl(teamDAO, userDAO);
+        teamService = new TeamServiceImpl(teamDAO, userDAO, matchDAO);
 
         when(fcb.getId()).thenReturn(1L);
         when(fcb.getBudget()).thenReturn(BigDecimal.TEN);

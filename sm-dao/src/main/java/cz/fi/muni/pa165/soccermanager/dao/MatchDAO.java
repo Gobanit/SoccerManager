@@ -48,5 +48,7 @@ public interface MatchDAO {
      * @return  a list of all matches
      */
     public List<Match> findAll();
+
+    boolean isTeamParticipatedInMatch(Long teamId);
     
 }

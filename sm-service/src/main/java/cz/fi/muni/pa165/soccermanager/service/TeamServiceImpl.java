@@ -2,6 +2,7 @@ package cz.fi.muni.pa165.soccermanager.service;
 
 import cz.fi.muni.pa165.soccermanager.api.exceptions.ErrorStatus;
 import cz.fi.muni.pa165.soccermanager.api.exceptions.SoccerManagerServiceException;
+import cz.fi.muni.pa165.soccermanager.dao.MatchDAO;
 import cz.fi.muni.pa165.soccermanager.dao.TeamDAO;
 import cz.fi.muni.pa165.soccermanager.dao.UserDAO;
 import cz.fi.muni.pa165.soccermanager.data.SoccerPlayer;
@@ -11,8 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.inject.Inject;
 
+import cz.fi.muni.pa165.soccermanager.data.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,12 +30,14 @@ public class TeamServiceImpl implements TeamService {
     private final Logger logger = LoggerFactory.getLogger(TeamServiceImpl.class);
     private final TeamDAO teamDAO;
     private final UserDAO userDAO;
+    private final MatchDAO matchDAO;
 
 
     @Inject
-    public TeamServiceImpl(TeamDAO teamDAO, UserDAO userDAO) {
+    public TeamServiceImpl(TeamDAO teamDAO, UserDAO userDAO, MatchDAO matchDAO) {
         this.teamDAO = teamDAO;
         this.userDAO = userDAO;
+        this.matchDAO = matchDAO;
     }
     
     @Override
@@ -41,6 +47,12 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public void remove(Team team) {
+        if (userDAO.isTeamAlreadyAssignedToUser(team.getId())) {
+            throw new SoccerManagerServiceException("Cannot delete team. Team is assigned to user.", ErrorStatus.TEAM_CANNOT_REMOVE);
+        }
+        if (matchDAO.isTeamParticipatedInMatch(team.getId())) {
+            throw new SoccerManagerServiceException("Cannot delete team. team is participated in the match.", ErrorStatus.TEAM_CANNOT_REMOVE);
+        }
         teamDAO.delete(team);
     }
 
@@ -133,5 +145,27 @@ public class TeamServiceImpl implements TeamService {
         }
         
         return freeTeams;
+    }
+
+    @Override
+    public void updateTeam(Team t) {
+        User u = userDAO.findByTeamId(t.getId());
+        if(u == null) {
+            if (!SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+                throw new SoccerManagerServiceException("Cannot update team. User is not owner nor admin.", ErrorStatus.TEAM_CANNOT_UPDATE);
+
+            }
+
+        }
+        Team teamToUpdate = teamDAO.findById(t.getId());
+        teamToUpdate.setCountry(t.getCountry());
+        teamToUpdate.setBudget(t.getBudget());
+        teamToUpdate.setChampionshipName(t.getChampionshipName());
+        teamToUpdate.setClubName(t.getClubName());
+    }
+
+    @Override
+    public boolean isTeamPicked(Long teamId) {
+        return userDAO.isTeamAlreadyAssignedToUser(teamId);
     }
 }
