@@ -42,14 +42,6 @@
             <p class="help-block" ng-show="form.championshipName.$error.minlength">name of championship must be ate least 3 characters</p>
         </div>
     </div>
-    <div class="form-group" ng-class="{'has-error': !(form.budget.$valid)}" >
-        <label for="budget" class="col-sm-2 control-label">Budget</label>
-        <div class="col-sm-10">
-            <input type="number" min="1" integer required id="budget" name="budget" class="form-control" ng-model="team.budget" />
-            <p class="help-block" ng-show="form.budget.$error.required">budget is required</p>
-            <p class="help-block" ng-show="form.budget.$error.min">budget greater than zero is required</p>
-        </div>
-    </div>
 
     <button ng-disabled="!form.$valid" class="btn btn-primary" type="submit" ng-click="update(team)">Update</button>
     <a href="#!/userteam">

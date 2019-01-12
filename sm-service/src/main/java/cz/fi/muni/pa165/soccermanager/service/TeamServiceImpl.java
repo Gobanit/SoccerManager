@@ -159,6 +159,9 @@ public class TeamServiceImpl implements TeamService {
         }
         Team teamToUpdate = teamDAO.findById(t.getId());
         teamToUpdate.setCountry(t.getCountry());
+        if (teamToUpdate.getBudget() != t.getBudget() && !SecurityContextHolder.getContext().getAuthentication().getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"))) {
+            throw new SoccerManagerServiceException("User cannot update budget.", ErrorStatus.TEAM_CANNOT_UPDATE);
+        }
         teamToUpdate.setBudget(t.getBudget());
         teamToUpdate.setChampionshipName(t.getChampionshipName());
         teamToUpdate.setClubName(t.getClubName());
