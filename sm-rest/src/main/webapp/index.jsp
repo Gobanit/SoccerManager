@@ -24,7 +24,7 @@
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                 <span class="sr-only">Toggle navigation</span>
             </button>
-            <a class="navbar-brand" href="${pageContext.request.contextPath}">PA165 Soccer Manager</a>
+            <a class="navbar-brand" href="#!/home">PA165 Soccer Manager</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="nav navbar-nav">
@@ -39,7 +39,7 @@
                         <li><a href="#!/matches/create">Create Match</a></li>
                     </ul>
                 </li>
-                <li><a href="${pageContext.request.contextPath}">{{ globals.currentUser.username }} (logout)</a></span> </li>
+                <li><a href="#!/login" ng-click="logout()">{{ globals.currentUser.username }} (logout)</a></span> </li>
            </ul>
         </div><!--/.nav-collapse -->
     </div>

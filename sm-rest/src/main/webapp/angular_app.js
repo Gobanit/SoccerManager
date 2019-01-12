@@ -23,7 +23,7 @@ app.config(['$routeProvider', function($routeProvider) {
         });
 }]);
 
-app.run(function($rootScope, $location, $cookies, $http) {
+app.run(function($rootScope, $location, $http) {
     // alert closing functions defined in root scope to be available in every template
     $rootScope.hideSuccessAlert = function () {
         $rootScope.successAlert = undefined;
@@ -34,11 +34,14 @@ app.run(function($rootScope, $location, $cookies, $http) {
     $rootScope.hideErrorAlert = function () {
         $rootScope.errorAlert = undefined;
     };
+    console.log(localStorage.getItem('globals'));
+
     //change the HTTP Accept header globally to signal accepting the HAL format
     $http.defaults.headers.common.Accept = 'application/hal+json, */*';
-    $rootScope.globals = $cookies.get('globals') || {};
+    $rootScope.globals = JSON.parse(localStorage.getItem('globals')) || {};
+    
+    
     // keep user logged in after page refresh
-    console.log($rootScope.globals.currentUser);
     if ($rootScope.globals.currentUser) {
         $rootScope.showMenu = true;
     }
@@ -62,8 +65,13 @@ app.run(function($rootScope, $location, $cookies, $http) {
     $rootScope.formatDateTime = function(dateTime) {
     	return formatDateTime(dateTime);
     };
+    
+    $rootScope.logout = function() {
+    localStorage.removeItem('globals');
+    $rootScope.globals = {};
+    $location.path('/login');
+  };
 });
-
 
 /*
  * Team Controllers Section
@@ -306,9 +314,8 @@ soccerManagerControllers.controller('AdminNewTeamCtrl',
  * Match Controllers Section
  */
 soccerManagerControllers.controller('MatchesCtrl',
-    function ($scope, $routeParams, $rootScope, $http) {			
-		loadMatches($scope, $http);			
-		
+    function ($scope, $routeParams, $rootScope, $http, $window) {
+                loadMatches($scope, $http);					
 		//define method isAlreadyPlayed
 		$scope.alreadyPlayed = function (match) {
 			return alreadyPlayed(match);

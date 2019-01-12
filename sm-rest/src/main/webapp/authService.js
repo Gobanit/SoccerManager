@@ -1,7 +1,7 @@
 //  Authentication service. Wrapped in an IIFE to avoid global variables
 //  Purpose: To handle all user authentication methods
 
-var AuthenticationService = function($http, $cookies, $rootScope, $timeout) {
+var AuthenticationService = function($http, $rootScope, $timeout) {
     
 	//  Function defined for when the user login is initiate
     var Login = function (username, password, callback) {
@@ -48,13 +48,15 @@ var AuthenticationService = function($http, $cookies, $rootScope, $timeout) {
                'admin': admin
            }
     	};
-        $cookies.put('globals', $rootScope.globals);
+        if(!localStorage.getItem('globals')){
+            localStorage.setItem('globals', JSON.stringify($rootScope.globals));
+        }
     };
 
     //  Clears the cookie and the state for the application to recognise a logged out state
     var ClearSessionInfo = function () {
         $rootScope.globals = {};
-        $cookies.remove('globals');
+        localStorage.removeItem('globals');
     };
 
 

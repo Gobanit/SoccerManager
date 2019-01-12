@@ -3,6 +3,7 @@
  */
 package cz.fi.muni.pa165.soccermanager.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -36,6 +37,12 @@ public class PlayerServiceImpl implements PlayerService {
 
 	@Override
 	public void createPlayer(SoccerPlayer player) {
+		LocalDate today = LocalDate.now(); // note that it check it in system timezone
+		if(player.getBirthDate().plusYears(18).isAfter(today)) throw new IllegalArgumentException("Player is not 18 yet!");
+		if(player.getPlayerName() == null) throw new IllegalArgumentException("Player name is null");
+		if(player.getPlayerName().replace(" ", "").length() <= 3) 
+			throw new IllegalArgumentException("Name '"+player.getPlayerName()+"' has less then 3 characters");
+		
 		playerDAO.save(player);
 	}
 
