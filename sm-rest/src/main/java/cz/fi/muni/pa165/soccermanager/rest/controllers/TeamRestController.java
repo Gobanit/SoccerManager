@@ -8,7 +8,7 @@ import java.util.List;
 import javax.annotation.security.RolesAllowed;
 import javax.validation.Valid;
 
-import cz.fi.muni.pa165.soccermanager.api.dto.PlayerDTO;
+import cz.fi.muni.pa165.soccermanager.api.dto.*;
 import cz.fi.muni.pa165.soccermanager.api.facade.UserFacade;
 import cz.fi.muni.pa165.soccermanager.rest.assemblers.PlayerResourceAssembler;
 import org.slf4j.Logger;
@@ -26,8 +26,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import cz.fi.muni.pa165.soccermanager.api.dto.TeamCreateDTO;
-import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
 import cz.fi.muni.pa165.soccermanager.api.exceptions.SoccerManagerServiceException;
 import cz.fi.muni.pa165.soccermanager.api.facade.TeamFacade;
 import cz.fi.muni.pa165.soccermanager.rest.ExceptionSorter;
@@ -201,6 +199,35 @@ public class TeamRestController {
             teamFacade.create(teamCreateDTO);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (SoccerManagerServiceException ex) {
+            throw ExceptionSorter.throwException(ex);
+        }
+    }
+
+    @RolesAllowed("ROLE_USER")
+    @RequestMapping(method = RequestMethod.PUT, produces = MediaType.APPLICATION_JSON_VALUE)
+    public HttpEntity<Void> updatePlayer(@RequestBody TeamChangeDTO teamChangeDTO) {
+        logger.debug("rest createPlayer()");
+
+        try {
+            teamFacade.updateTeam(teamChangeDTO);
+
+            return new ResponseEntity<>(HttpStatus.OK);
+        } catch (Exception e) {
+            throw ExceptionSorter.throwException(e);
+        }
+    }
+
+    @RolesAllowed("ROLE_USER")
+    @RequestMapping(value = "/{teamId}/picked", method = RequestMethod.GET)
+    public HttpEntity<Boolean> isTeamPicked(@PathVariable("teamId") long teamId) {
+
+        logger.debug("rest isTeamPicked()");
+        try {
+            if (teamFacade.isTeamPicked(teamId)) {
+                return new ResponseEntity<>(true, HttpStatus.OK);
+            }
+            return new ResponseEntity<>(false, HttpStatus.OK);
+        } catch (Exception ex) {
             throw ExceptionSorter.throwException(ex);
         }
     }

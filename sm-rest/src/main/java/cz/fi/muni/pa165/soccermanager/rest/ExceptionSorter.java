@@ -33,6 +33,8 @@ public class ExceptionSorter {
                 case MATCH_NOT_SIMULATED:
                     return new ResourceNotModifiedException(ex.getLocalizedMessage());
                 case MATCH_DATE_IN_THE_FUTURE:
+                case TEAM_CANNOT_UPDATE:
+                case TEAM_CANNOT_REMOVE:
                     return new ConflictException(ex.getLocalizedMessage());
                 default:
                     return new InternalServerErrorException(ex.getLocalizedMessage());

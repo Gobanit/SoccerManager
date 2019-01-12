@@ -75,4 +75,16 @@ public class UserDAOImpl implements UserDAO {
     public Long getNumberOfAdministrators() {
         return (Long) entityManager.createQuery("SELECT count(*) FROM User u WHERE u.admin = true").getSingleResult();
     }
+
+    @Override
+    public User findByTeamId(Long teamId) {
+        try {
+            return entityManager
+                    .createQuery("SELECT u FROM User u INNER JOIN u.team t WHERE t.id = :teamId", User.class)
+                    .setParameter("teamId", teamId)
+                    .getSingleResult();
+        } catch (NoResultException ex) {
+            return null;
+        }
+    }
 }

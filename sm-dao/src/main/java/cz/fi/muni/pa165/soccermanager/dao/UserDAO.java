@@ -70,4 +70,6 @@ public interface UserDAO {
      * @return  number of administrators
      */
     public Long getNumberOfAdministrators();
+
+    public User findByTeamId(Long teamId);
 }

@@ -102,4 +102,8 @@ public interface TeamService {
      * for lowering, positive for adjusting)
      */
     public void changeBudgetBy(Team team, BigDecimal budgetChange);
+
+    void updateTeam(Team t);
+
+    boolean isTeamPicked(Long teamId);
 }

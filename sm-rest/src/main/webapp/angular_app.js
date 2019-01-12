@@ -16,6 +16,8 @@ app.config(['$routeProvider', function($routeProvider) {
         .when('/players', {templateUrl: 'partials/playersList.html', controller: 'PlayersCtrl'})
         .when('/players/create', {templateUrl: 'partials/playersCreate.html', controller: 'PlayersCreateCtrl'})
         .when('/players/:playerId', {templateUrl: 'partials/playersDetail.html', controller: 'PlayersDetailCtrl'})
+        .when('/admin/teams/:teamId', {templateUrl: 'partials/admin_update_team.html', controller: 'AdminTeamUpdateCtrl'})
+        .when('/user/teams/:teamId', {templateUrl: 'partials/team_update.html', controller: 'UserTeamUpdateCtrl'})
         .when('/players/:playerId/update', {templateUrl: 'partials/playersUpdate.html', controller: 'PlayersUpdateCtrl'})
 
         .otherwise({
@@ -179,6 +181,103 @@ soccerManagerControllers.controller('TeamDetailCtrl',
 	        });
 	    });
 
+soccerManagerControllers.controller('UserTeamUpdateCtrl',
+    function ($scope, $rootScope, $http, $route, $routeParams, $location) {
+        var teamId = $routeParams.teamId;
+        $scope.countries = ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Anguilla", "Antigua & Barbuda",
+            "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh",
+            "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia & Herzegovina",
+            "Botswana", "Brazil", "British Virgin Islands", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia",
+            "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Chad", "Chile", "China", "Colombia", "Congo",
+            "Cook Islands", "Costa Rica", "Cote D'Ivoire", "Croatia", "Cruise Ship", "Cuba", "Cyprus", "Czech Republic",
+            "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador",
+            "Equatorial Guinea", "Estonia", "Ethiopia", "Falkland Islands", "Faroe Islands", "Fiji", "Finland",
+            "France", "French Polynesia", "French West Indies", "Gabon", "Gambia", "Georgia", "Germany", "Ghana",
+            "Gibraltar", "Greece", "Greenland", "Grenada", "Guam", "Guatemala", "Guernsey", "Guinea", "Guinea Bissau",
+            "Guyana", "Haiti", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq",
+            "Ireland", "Isle of Man", "Israel", "Italy", "Jamaica", "Japan", "Jersey", "Jordan", "Kazakhstan", "Kenya",
+            "Kuwait", "Kyrgyz Republic", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein",
+            "Lithuania", "Luxembourg", "Macau", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali",
+            "Malta", "Mauritania", "Mauritius", "Mexico", "Moldova", "Monaco", "Mongolia", "Montenegro", "Montserrat",
+            "Morocco", "Mozambique", "Namibia", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia",
+            "New Zealand", "Nicaragua", "Niger", "Nigeria", "Norway", "Oman", "Pakistan", "Palestine", "Panama",
+            "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Puerto Rico", "Qatar",
+            "Reunion", "Romania", "Russia", "Rwanda", "Saint Pierre & Miquelon", "Samoa", "San Marino", "Satellite",
+            "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia",
+            "South Africa", "South Korea", "Spain", "Sri Lanka", "St Kitts & Nevis", "St Lucia", "St Vincent",
+            "St. Lucia", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan",
+            "Tanzania", "Thailand", "Timor L'Este", "Togo", "Tonga", "Trinidad & Tobago", "Tunisia", "Turkey",
+            "Turkmenistan", "Turks & Caicos", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom",
+            "United States", "United States Minor Outlying Islands", "Uruguay", "Uzbekistan", "Venezuela", "Vietnam",
+            "Virgin Islands (US)", "Yemen", "Zambia", "Zimbabwe"];
+        $http.get('/pa165/rest/teams/'+teamId).then(function (response) {
+            var team = response.data;
+            $scope.team = team;
+            console.log('AJAX loaded detail of team ' + $scope.team.clubName);
+            console.log(team.links[1].href);
+
+        });
+        $scope.update = function (team) {
+            console.log('Updating a team' + team.clubName);
+
+            $http.put('/pa165/rest/teams', team).then(
+                function success(response) {
+                    console.log('Updated a team' + team.id + ' on the server');
+
+                    $rootScope.successAlert = 'Updated a team"' + team.clubName + '"';
+                    $location.path("/userteam");
+                },
+                function error(response) {
+                    console.log("Error when updating a team!");
+                    console.log(response);
+
+                    $rootScope.errorAlert = 'Cannot update team! Reason given by the server: ' + response.data.message;
+                })
+        }
+    });
+
+
+soccerManagerControllers.controller('AdminTeamUpdateCtrl',
+    function ($scope, $rootScope, $http, $route, $routeParams, $location) {
+        var teamId = $routeParams.teamId;
+        $http.get('/pa165/rest/teams/'+teamId + '/picked').then(function (response) {
+            var isPicked = response.data;
+            if(isPicked == "true") {
+                console.log("Admin cannot update already picked team.!");
+                console.log(response);
+                $rootScope.errorAlert = 'Cannot update team! Team is picked by some user.';
+                $location.path("/admin/teams");
+            }
+
+        });
+
+        $http.get('/pa165/rest/teams/'+teamId).then(function (response) {
+            var team = response.data;
+            $scope.team = team;
+            console.log('AJAX loaded detail of team ' + $scope.team.clubName);
+            console.log(team.links[1].href);
+
+        });
+        $scope.update = function (team) {
+            console.log('Updating a team' + team.clubName);
+
+            $http.put('/pa165/rest/teams', team).then(
+                function success(response) {
+                    console.log('Updated a team' + team.id + ' on the server');
+
+                    $rootScope.successAlert = 'Updated a team"' + team.clubName + '"';
+                    $location.path("/admin/teams");
+                },
+                function error(response) {
+                    console.log("Error when updating a team!");
+                    console.log(response);
+
+                    $rootScope.errorAlert = 'Cannot update team! Reason given by the server: ' + response.data.message;
+                })
+        }
+    });
+
+
 soccerManagerControllers.controller('UserTeamDetailCtrl',
     function ($scope, $rootScope, $http, $location, $route) {
         var userName = $rootScope.globals.currentUser.username;
@@ -274,7 +373,32 @@ soccerManagerControllers.controller('AddPlayerToTeam', function ($scope, $http, 
 soccerManagerControllers.controller('AdminNewTeamCtrl',
     function ($scope, $routeParams, $http, $location, $rootScope) {
         //prepare data for selection lists
-        $scope.countries = ['SLOVAKIA', 'CZECH REPUBLIC', 'ITALY', 'SPAIN', 'ENGLAND', "GERMANY"];
+        $scope.countries = ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Anguilla", "Antigua & Barbuda",
+            "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh",
+            "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia & Herzegovina",
+            "Botswana", "Brazil", "British Virgin Islands", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia",
+            "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Chad", "Chile", "China", "Colombia", "Congo",
+            "Cook Islands", "Costa Rica", "Cote D'Ivoire", "Croatia", "Cruise Ship", "Cuba", "Cyprus", "Czech Republic",
+            "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador",
+            "Equatorial Guinea", "Estonia", "Ethiopia", "Falkland Islands", "Faroe Islands", "Fiji", "Finland",
+            "France", "French Polynesia", "French West Indies", "Gabon", "Gambia", "Georgia", "Germany", "Ghana",
+            "Gibraltar", "Greece", "Greenland", "Grenada", "Guam", "Guatemala", "Guernsey", "Guinea", "Guinea Bissau",
+            "Guyana", "Haiti", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq",
+            "Ireland", "Isle of Man", "Israel", "Italy", "Jamaica", "Japan", "Jersey", "Jordan", "Kazakhstan", "Kenya",
+            "Kuwait", "Kyrgyz Republic", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein",
+            "Lithuania", "Luxembourg", "Macau", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali",
+            "Malta", "Mauritania", "Mauritius", "Mexico", "Moldova", "Monaco", "Mongolia", "Montenegro", "Montserrat",
+            "Morocco", "Mozambique", "Namibia", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia",
+            "New Zealand", "Nicaragua", "Niger", "Nigeria", "Norway", "Oman", "Pakistan", "Palestine", "Panama",
+            "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Puerto Rico", "Qatar",
+            "Reunion", "Romania", "Russia", "Rwanda", "Saint Pierre & Miquelon", "Samoa", "San Marino", "Satellite",
+            "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia",
+            "South Africa", "South Korea", "Spain", "Sri Lanka", "St Kitts & Nevis", "St Lucia", "St Vincent",
+            "St. Lucia", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan",
+            "Tanzania", "Thailand", "Timor L'Este", "Togo", "Tonga", "Trinidad & Tobago", "Tunisia", "Turkey",
+            "Turkmenistan", "Turks & Caicos", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom",
+            "United States", "United States Minor Outlying Islands", "Uruguay", "Uzbekistan", "Venezuela", "Vietnam",
+            "Virgin Islands (US)", "Yemen", "Zambia", "Zimbabwe"];
         //get categories from server
         $scope.team = {
             'clubName': '',

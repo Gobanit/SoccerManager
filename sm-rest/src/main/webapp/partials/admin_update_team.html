@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Team update</title>
+</head>
+<body>
+<h1><b>{{team.clubName}}</b></h1>
+<h2><b>Country: </b> {{team.country}}</h2>
+<h2><b>Championship: </b>{{team.championshipName}}</h2>
+<h2><b>Budget: </b>{{team.budget}}</h2>
+
+<form name="form" novalidate class="form-horizontal">
+    <input id="id" name="id" value="{{team.id}}" type="hidden"/>
+
+    <div class="form-group" ng-class="{'has-error': !(form.clubName.$valid)}">
+        <label for="clubName" class="col-sm-2 control-label">Club name</label>
+        <div class="col-sm-10">
+            <input placeholder="{{ team.clubName }}" id="clubName" type="text" ng-minlength="3" name="clubName" class="form-control" ng-model="team.clubName" required/>
+            <p class="help-block" ng-show="form.clubName.$error.required">club name is required</p>
+            <p class="help-block" ng-show="form.clubName.$error.minlength">club name must be at least 3 characters</p>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="country" class="col-sm-2 control-label">Country</label>
+        <div class="col-sm-10">
+            <select id="country" name="country" class="form-control" ng-model="team.country">
+                <option ng-repeat="country in countries" value="{{country}}">ng-selected="position == player.position">{{ position }}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group" ng-class="{'has-error': !(form.championshipName.$valid)}">
+        <label for="championshipName" class="col-sm-2 control-label">Championship name</label>
+        <div class="col-sm-10">
+            <textarea placeholder="championshipName" ng-minlength="3" id="championshipName" name="championshipName" class="form-control" ng-model="team.championshipName" required></textarea>
+            <p class="help-block" ng-show="form.championshipName.$error.required">championship name is required</p>
+            <p class="help-block" ng-show="form.championshipName.$error.minlength">name of championship must be ate least 3 characters</p>
+        </div>
+    </div>
+    <div class="form-group" ng-class="{'has-error': !(form.budget.$valid)}" >
+        <label for="budget" class="col-sm-2 control-label">Budget</label>
+        <div class="col-sm-10">
+            <input type="number" min="1" integer required id="budget" name="budget" class="form-control" ng-model="team.budget" />
+            <p class="help-block" ng-show="form.budget.$error.required">budget is required</p>
+            <p class="help-block" ng-show="form.budget.$error.min">budget greater than zero is required</p>
+        </div>
+    </div>
+
+    <button ng-disabled="!form.$valid" class="btn btn-primary" type="submit" ng-click="update(team)">Update</button>
+    <a href="#!/admin/teams">
+        <button class="btn btn-primary">Cancel</button>
+    </a>
+</form>
+
+</body>
+</html>

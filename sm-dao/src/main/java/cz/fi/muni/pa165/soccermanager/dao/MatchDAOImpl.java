@@ -3,8 +3,10 @@ package cz.fi.muni.pa165.soccermanager.dao;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 
+import cz.fi.muni.pa165.soccermanager.data.User;
 import org.springframework.stereotype.Repository;
 
 import cz.fi.muni.pa165.soccermanager.data.Match;
@@ -46,4 +48,15 @@ public class MatchDAOImpl implements MatchDAO {
     	return entityManager.merge(match);
     }
 
+    @Override
+    public boolean isTeamParticipatedInMatch(Long teamId) {
+        try {
+            entityManager
+                    .createQuery("SELECT m FROM Match m INNER JOIN m.homeTeam ht INNER JOIN m.awayTeam at WHERE ht.id = :teamId OR at.id = :teamId", Match.class)
+                    .setParameter("teamId", teamId).getResultList();
+            return true;
+        } catch (NoResultException ex) {
+            return false;
+        }
+    }
 }
