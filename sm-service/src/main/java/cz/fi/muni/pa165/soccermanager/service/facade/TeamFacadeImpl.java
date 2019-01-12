@@ -1,6 +1,7 @@
 package cz.fi.muni.pa165.soccermanager.service.facade;
 
 import cz.fi.muni.pa165.soccermanager.api.dto.PlayerDTO;
+import cz.fi.muni.pa165.soccermanager.api.dto.TeamChangeDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.TeamCreateDTO;
 import cz.fi.muni.pa165.soccermanager.api.dto.TeamDTO;
 import cz.fi.muni.pa165.soccermanager.api.facade.TeamFacade;
@@ -83,5 +84,15 @@ public class TeamFacadeImpl implements TeamFacade {
     @Override
     public void removePlayerFromTeam(Long playerId, Long teamId) {
         teamService.removePlayerFromTeam(teamService.findById(teamId), playerService.findPlayerById(playerId));
+    }
+
+    @Override
+    public void updateTeam(TeamChangeDTO teamChangeDTO) {
+        teamService.updateTeam(beanMapping.mapTo(teamChangeDTO, Team.class));
+    }
+
+    @Override
+    public boolean isTeamPicked(Long teamId) {
+        return teamService.isTeamPicked(teamId);
     }
 }

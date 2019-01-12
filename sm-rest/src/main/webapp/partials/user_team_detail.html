@@ -1,27 +1,19 @@
 <div>
-    <h1><b>{{team.clubName}}</b></h1>
-    <h2><b>Country: </b> {{team.country}}</h2>
-    <h2><b>Championship: </b>{{team.championshipName}}</h2>
-    <h2><b>Budget: </b>{{team.budget}}</h2>
-    <a ng-href="#!/teams/{{team.id}}/addplayer" class="btn btn-primary">
-        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-        Add player to the team
-    </a>
-        <a ng-href="#!/teams/pick" class="btn btn-primary">
-        <span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-        Change Team
-    </a>
+    <h1 style="text-align: center">My Team: <b>{{team.clubName}}</b></h1>
+    <p><b>Country: </b> {{team.country}}</p>
+    <p><b>Championship: </b>{{team.championshipName}}</p>
+    <p><b>Budget: </b>{{team.budget}}</p>
 
     <table class="table">
         <thead>
         <tr>
-            <th>id</th>
-            <th>player name</th>
-            <th>nationality</th>
-            <th>rating</th>
-            <th>footed</th>
-            <th>birth date</th>
-            <th>position</th>
+            <th>#</th>
+            <th>Name</th>
+            <th>Nationality</th>
+            <th>Birthday</th>
+            <th>Rating</th>
+            <th>Position</th>
+            <th>Footed</th>
         </tr>
         </thead>
         <tbody>
@@ -29,14 +21,24 @@
             <td>{{player.id}}</td>
             <td>{{player.playerName}}</td>
             <td>{{player.nationality}}</td>
-            <td>{{player.rating}}</td>
-            <td>{{player.footed}}</td>
             <td>{{player.birthDate}}</td>
+            <td>{{player.rating}}</td>
             <td>{{player.position}}</td>
+            <td>{{player.footed}}</td>
             <td>
                 <button ng-click="removePlayerFromTeam(team, player)" type="button" class="btn btn-primary">Remove from team</button>
             </td>
         </tr>
         </tbody>
     </table>
+
+    <a ng-href="#!/teams/{{team.id}}/addplayer" class="btn btn-primary">
+        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        Add a player to my team
+    </a>
+    <a ng-href="#!/user/teams/{{team.id}}" class="btn btn-primary">
+        <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
+        Update my team
+    </a>
+
 </div>

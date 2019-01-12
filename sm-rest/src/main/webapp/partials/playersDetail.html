@@ -6,16 +6,19 @@
 </head>
 <body>
 
-<h1><b><i>{{ player.playerName }}</i></b></h1>
+<h1 style="text-align: center"><b><i>{{ player.playerName }}</i></b></h1>
 <br>
-<h2><b>Nationality: </b> {{ player.nationality }}</h2>
-<h2><b>Birthday: </b>{{ player.birthDate }}</h2>
+<p><b>Nationality: </b>{{ player.nationality }}</p>
+<p><b>Birthday: </b>{{ date }}</p>
 <br>
-<h2><b>Rating: </b>{{ player.rating }}</h2>
+<p><b>Rating: </b>{{ player.rating }}</p>
+<p><b>Position: </b>{{ player.position }}</p>
+<p><b>Footed: </b>{{ player.footed }}</p>
 <br>
-<h3><b>Position: </b>{{ player.position }}</h3>
-<h3><b>Footed: </b>{{ player.footed }}</h3>
 
-<a href="#!/players" class="btn btn-primary" role="button">Back</a>
+<a href="#!/players" class="btn btn-primary" role="button">
+    <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span>
+    Go back
+</a>
 </body>
 </html>
